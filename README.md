@@ -9,17 +9,35 @@ todo
 todo
 
 # typescript
-## install
-To install you need to go to the typescript folder and run:
+## http-request
+### install
+To install you need to go to the typescript/http-request folder and run:
 ```bash
 npm install
 ```
 
-## docs
+### docs
+All the documentation can be found here:
+https://docs.gladia.io/v1.0.0/reference/overview
+
+### run
+To run a streaming example you have to:
+```bash
+npm run start
+```
+
+## websocket
+### install
+To install you need to go to the typescript/websocket folder and run:
+```bash
+npm install
+```
+
+### docs
 All the documentation can be found here:
 https://docs.gladia.io/v1.0.0/reference/live-audio
 
-## run
+### run
 To run a streaming example you have to:
 ```bash
 npm run streaming <your_gladia_key>

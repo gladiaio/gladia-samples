@@ -1,4 +1,4 @@
-typescript/node_modules/
+*node_modules/
 lib
 coverage
 yarn-error.log
