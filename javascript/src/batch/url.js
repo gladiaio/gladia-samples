@@ -1,16 +1,20 @@
 const axios = require("axios");
 const FormData = require("form-data");
-const GLADIA_API_KEY = process.env.GLADIA_API_KEY;
 
-async function example1() {
+const gladiaKey = process.argv[2]
+if (!gladiaKey) {
+  console.error('You must provide a gladia key. Go to app.gladia.io')
+  process.exit(1)
+} else {
+  console.log('using the gladia key : ' + gladiaKey)
+}
+
+async function url() {
   const form = new FormData();
   form.append(
     "audio_url",
     "http://files.gladia.io/example/audio-transcription/split_infinity.wav"
   );
-  form.append("diarization_max_speakers", "2");
-  form.append("language", "english");
-  form.append("language_behaviour", "automatic single language");
   form.append("output_format", "json");
 
   const response = await axios.post(
@@ -20,13 +24,13 @@ async function example1() {
       headers: {
         ...form.getHeaders(),
         accept: "application/json",
-        "x-gladia-key": GLADIA_API_KEY,
+        "x-gladia-key": gladiaKey,
         "Content-Type": "multipart/form-data",
       },
     }
   );
-
-  console.log(response.data);
+  const stringResponse = JSON.stringify(response.data, null, 2)
+  console.log(stringResponse);
 }
 
-module.exports = { example1 };
+url()
