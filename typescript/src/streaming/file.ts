@@ -46,7 +46,8 @@ socket.onopen = async () => {
 
   // Configure stream with a configuration message
   const configuration = {
-    "x_gladia_key": gladiaKey
+    "x_gladia_key": gladiaKey,
+    // "model_type":"accurate"
   }
   socket.send(JSON.stringify(configuration))
 
