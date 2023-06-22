@@ -19,3 +19,7 @@ You can still check the full documentation [here](https://docs.gladia.io/referen
 | **Pre-recorded** |               ✅                |                 ✅                  |                 ✅                  |
 |     **Live**     |               ✅                |                 ✅                  |                 ⏳                  |
 |    **README**    | [Link](python/README.md "Link") | [Link](typescript/README.md "Link") | [Link](javascript/README.md "Link") |
+
+## Something is missing ? Contact us !
+
+You can contact us directly [here](https://gladiaio.typeform.com/support?typeform-source=app.gladia.io) and you can also open an issue in this repository.
