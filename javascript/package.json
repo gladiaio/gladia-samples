@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "batch": "node src/batch/url.js"
+    "pre-recorded": "node src/pre-recorded/transcription.js"
   },
   "keywords": [],
   "author": "",
