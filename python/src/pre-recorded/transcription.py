@@ -2,10 +2,11 @@ import requests
 import os
 
 headers = {
-   'x-gladia-key': '', # Replace with your Gladia Token
+   'x-gladia-key': 'fd5f6819-e2a3-474d-a18b-326f03e1c681', # Replace with your Gladia Token
    'accept': 'application/json', # Accept json as a response, but we are sending a Multipart FormData
 }
 
+print(os.getcwd())
 file_path = '../../../data/anna-and-sasha-16000.wav' # Change with your file path
 
 if os.path.exists(file_path): # This is here to check if the file exists
@@ -26,6 +27,11 @@ with open(file_path, 'rb') as f:  # Open the file
   }
   print('- Sending request to Gladia API...');
   response = requests.post('https://api.gladia.io/audio/text/audio-transcription/', headers=headers, files=files)
-  print(response.text) # Get the results
-  print(response.status_code)
+  if response.status_code == 200:
+    print('- Request successful');
+    result = response.json()
+    print(result)
+  else:
+    print('- Request failed');
+    print(response.json())
   print('- End of work');
