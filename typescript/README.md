@@ -31,17 +31,18 @@ https://docs.gladia.io/reference/live-audio
 To run a streaming example you have to:
 
 ```bash
-npm run streaming-from-file <your_gladia_key>
+npm run streaming-file <your_gladia_key>
 ```
 
-or from microphone
+Or from microphone ( Requires [arecord](https://www.thegeekdiary.com/arecord-command-not-found/) on Linux and [SoX](https://formulae.brew.sh/formula/sox) on MacOS )
+
 ```bash
-npm run streaming-from-microphone <your_gladia_key>
+npm run streaming-microphone <your_gladia_key>
 ```
 
 Note: You can get your gladia key from app.gladia.io
 
-When running this example you should get an output like this one:
+When running the file example you should get an output like this one:
 
 ```bash
 empty ...
