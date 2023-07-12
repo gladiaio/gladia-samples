@@ -17,7 +17,7 @@ https://docs.gladia.io/reference/pre-recorded
 You can run a live example by running :
 
 ```bash
-npm run pre-recorded your_gladia_token
+npm run pre-recorded <your_gladia_key>
 ```
 
 ## Live
@@ -31,7 +31,12 @@ https://docs.gladia.io/reference/live-audio
 To run a streaming example you have to:
 
 ```bash
-npm run streaming <your_gladia_key>
+npm run streaming-from-file <your_gladia_key>
+```
+
+or from microphone
+```bash
+npm run streaming-from-microphone <your_gladia_key>
 ```
 
 Note: You can get your gladia key from app.gladia.io
@@ -53,7 +58,7 @@ final:  Hola, ¿qué tal? Yo estoy muy bien, ¿qué tal estás tú?
 partial:  Dạm mối biến
 final:  Yo muy bien.
 partial:  Okay.
-partial:  And guess it's right.
+partial:  And guess it\'s right.
 partial:  ¿Qué haces choyer?
 final:  ¿Qué has hecho ayer?
 empty ...

@@ -58,7 +58,9 @@ socket.on("open", async () => {
   // Once the initial message is sent, send audio data
   const file = resolve("../data/anna-and-sasha-16000.wav");
   const fileSync = fs.readFileSync(file);
-  const base64Frames = Buffer.from(fileSync).toString("base64");
+  const newBuffers = Buffer.from(fileSync)
+  const segment = newBuffers.slice(44, newBuffers.byteLength);
+  const base64Frames = segment.toString("base64");
   const partSize = 20000; // The size of each part
   const numberOfParts = Math.ceil(base64Frames.length / partSize);
 
@@ -73,6 +75,7 @@ socket.on("open", async () => {
     const message = {
       frames: part,
     };
+    // console.log(part)
     socket.send(JSON.stringify(message));
   }
 

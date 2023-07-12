@@ -1,6 +1,6 @@
 {
   "name": "gladia-websocket",
-  "version": "1.0.°",
+  "version": "1.0.0",
   "license": "MIT",
   "devDependencies": {
     "@types/ws": "^7.4.4",
@@ -8,7 +8,8 @@
     "ws": "^7.4.6"
   },
   "scripts": {
-    "streaming": "tsx src/streaming/live.ts",
+    "streaming-file": "tsx src/streaming/live-from-file.ts",
+    "streaming-microphone": "tsx src/streaming/live-from-microphone.ts",
     "pre-recorded": "tsx src/pre-recorded/transcription.ts"
   },
   "dependencies": {
@@ -16,6 +17,7 @@
     "@types/node": "^20.3.1",
     "axios": "^1.4.0",
     "form-data": "^4.0.0",
+    "mic": "^2.1.2",
     "tsx": "^3.12.7"
   }
 }
