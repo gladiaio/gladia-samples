@@ -1,3 +1,4 @@
+import os
 import asyncio
 import websockets
 import json
@@ -9,7 +10,8 @@ TRANSCRIPTION_KEY = 'transcription'
 LANGUAGE_KEY = 'language'
 
 # retrieve gladia key
-gladiaKey = ''  # replace with your gladia key
+gladiaKey = os.getenv("GLADIA_API_KEY")  # replace with your gladia key
+
 if not gladiaKey:
     print('You must provide a gladia key. Go to app.gladia.io')
     exit(1)
@@ -53,17 +55,24 @@ async def send_audio(socket):
     print("final closing")
 
 
+
+from time import time
+
+
 # get ready to receive transcriptions
 async def receive_transcription(socket):
     while True:
+        before = time()
         response = await socket.recv()
+        current_time = time()
+
         utterance = json.loads(response)
         if utterance:
             if ERROR_KEY in utterance:
                 print(f"{utterance[ERROR_KEY]}")
                 break
             else:
-                print(f"{utterance[TYPE_KEY]}: ({utterance[LANGUAGE_KEY]}) {utterance[TRANSCRIPTION_KEY]}")
+                print(f"{int((current_time - before) * 1000)}ms\t{utterance[TYPE_KEY]}: ({utterance[LANGUAGE_KEY]}) {utterance[TRANSCRIPTION_KEY]}")
         else:
             print('empty,waiting for next utterance...')
 
