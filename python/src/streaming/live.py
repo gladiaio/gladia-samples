@@ -4,6 +4,9 @@ import websockets
 import json
 import base64
 
+from time import time
+
+
 ERROR_KEY = 'error'
 TYPE_KEY = 'type'
 TRANSCRIPTION_KEY = 'transcription'
@@ -56,7 +59,7 @@ async def send_audio(socket):
 
 
 
-from time import time
+histo = []
 
 
 # get ready to receive transcriptions
@@ -66,13 +69,15 @@ async def receive_transcription(socket):
         response = await socket.recv()
         current_time = time()
 
+        histo.append(current_time - before)
+
         utterance = json.loads(response)
         if utterance:
             if ERROR_KEY in utterance:
                 print(f"{utterance[ERROR_KEY]}")
                 break
             else:
-                print(f"{int((current_time - before) * 1000)}ms\t{utterance[TYPE_KEY]}: ({utterance[LANGUAGE_KEY]}) {utterance[TRANSCRIPTION_KEY]}")
+                print(f"{int(sum(histo) / len(histo) * 1000)}ms\t{int(histo[-1] * 1000)}ms\t{utterance[TYPE_KEY]}: ({utterance[LANGUAGE_KEY]}) {utterance[TRANSCRIPTION_KEY]}")
         else:
             print('empty,waiting for next utterance...')
 
