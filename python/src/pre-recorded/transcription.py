@@ -2,7 +2,7 @@ import requests
 import os
 
 headers = {
-   'x-gladia-key': 'fd5f6819-e2a3-474d-a18b-326f03e1c681', # Replace with your Gladia Token
+   'x-gladia-key': '', # Replace with your Gladia Token
    'accept': 'application/json', # Accept json as a response, but we are sending a Multipart FormData
 }
 
