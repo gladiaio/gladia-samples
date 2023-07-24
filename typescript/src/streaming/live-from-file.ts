@@ -7,6 +7,7 @@ const ERROR_KEY = "error";
 const TYPE_KEY = "type";
 const TRANSCRIPTION_KEY = "transcription";
 const LANGUAGE_KEY = "language";
+const CONNECTION_ID = "apiCallId";
 
 const sleep = (delay: number): Promise<void> =>
   new Promise((f) => setTimeout(f, delay));
@@ -29,10 +30,16 @@ socket.on("message", (event: any) => {
   if (event) {
     const utterance = JSON.parse(event.toString());
     if (Object.keys(utterance).length !== 0) {
-      if (ERROR_KEY in utterance) {
+      if (CONNECTION_ID in utterance) {
+        console.log(`\n* Connection id: ${utterance[CONNECTION_ID]} *\n`);
+      } else if (ERROR_KEY in utterance) {
         console.error(`${utterance[ERROR_KEY]}`);
         socket.close();
-      } else {
+      } else if (
+        [TYPE_KEY, LANGUAGE_KEY, TRANSCRIPTION_KEY].every(
+          (key) => key in utterance
+        )
+      ) {
         console.log(
           `${utterance[TYPE_KEY]}: (${utterance[LANGUAGE_KEY]}) ${utterance[TRANSCRIPTION_KEY]}`
         );
@@ -58,7 +65,7 @@ socket.on("open", async () => {
   // Once the initial message is sent, send audio data
   const file = resolve("../data/anna-and-sasha-16000.wav");
   const fileSync = fs.readFileSync(file);
-  const newBuffers = Buffer.from(fileSync)
+  const newBuffers = Buffer.from(fileSync);
   const segment = newBuffers.slice(44, newBuffers.byteLength);
   const base64Frames = segment.toString("base64");
   const partSize = 20000; // The size of each part
