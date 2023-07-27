@@ -36,6 +36,11 @@ To run a streaming example you have to:
 cd streaming && python live.py
 ```
 
+Using bytes as frames format:
+```bash
+cd streaming && python live-binary.py
+```
+
 Note: You can get your gladia key from app.gladia.io
 
 When running this example you should get an output like this one:
