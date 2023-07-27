@@ -14,6 +14,7 @@ const sleep = (delay: number): Promise<void> =>
 
 // retrieve gladia key
 const gladiaKey = process.argv[2];
+
 if (!gladiaKey) {
   console.error("You must provide a gladia key. Go to app.gladia.io");
   exit(1);
@@ -57,7 +58,7 @@ socket.on("error", (error: WebSocket.ErrorEvent) => {
 socket.on("open", async () => {
   // Configure stream with a configuration message
   const configuration = {
-    x_gladia_key: "token_1",
+    x_gladia_key: gladiaKey,
     frames_format: "bytes",
     // "model_type":"accurate"
   };
@@ -79,7 +80,6 @@ socket.on("open", async () => {
 
     // Delay between sending parts (500 mseconds in this case)
     await sleep(500);
-    // console.log(part)
     socket.send(part, { binary: true });
   }
 
