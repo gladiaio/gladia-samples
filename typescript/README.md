@@ -34,6 +34,12 @@ To run a streaming example you have to:
 npm run streaming-file <your_gladia_key>
 ```
 
+And for bytes format:
+
+```bash
+npm run streaming-file-binary <your_gladia_key>
+```
+
 Or from microphone ( Requires [arecord](https://www.thegeekdiary.com/arecord-command-not-found/) on Linux and [SoX](https://formulae.brew.sh/formula/sox) on MacOS )
 
 ```bash

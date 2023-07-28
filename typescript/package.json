@@ -9,6 +9,7 @@
   },
   "scripts": {
     "streaming-file": "tsx src/streaming/live-from-file.ts",
+    "streaming-file-binary": "tsx src/streaming/live-from-file-binary.ts",
     "streaming-microphone": "tsx src/streaming/live-from-microphone.ts",
     "pre-recorded": "tsx src/pre-recorded/transcription.ts"
   },
