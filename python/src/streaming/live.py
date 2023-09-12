@@ -63,7 +63,8 @@ async def receive_transcription(socket):
                 print(f"{utterance[ERROR_KEY]}")
                 break
             else:
-                print(f"{utterance[TYPE_KEY]}: ({utterance[LANGUAGE_KEY]}) {utterance[TRANSCRIPTION_KEY]}")
+                if (TYPE_KEY in utterance):
+                    print(f"{utterance[TYPE_KEY]}: ({utterance[LANGUAGE_KEY]}) {utterance[TRANSCRIPTION_KEY]}")
         else:
             print('empty,waiting for next utterance...')
 
