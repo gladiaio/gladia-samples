@@ -6,7 +6,7 @@ const ERROR_KEY = "error";
 const TYPE_KEY = "type";
 const TRANSCRIPTION_KEY = "transcription";
 const LANGUAGE_KEY = "language";
-const SAMPLE_RATE = 16_000
+const SAMPLE_RATE = 16_000;
 
 // retrieve gladia key
 const gladiaKey = process.argv[2];
@@ -30,9 +30,10 @@ socket.on("message", (event: any) => {
         console.error(`${utterance[ERROR_KEY]}`);
         socket.close();
       } else {
-        console.log(
-          `${utterance[TYPE_KEY]}: (${utterance[LANGUAGE_KEY]}) ${utterance[TRANSCRIPTION_KEY]}`
-        );
+        if (utterance && utterance[TRANSCRIPTION_KEY])
+          console.log(
+            `${utterance[TYPE_KEY]}: (${utterance[LANGUAGE_KEY]}) ${utterance[TRANSCRIPTION_KEY]}`
+          );
       }
     }
   } else {
@@ -48,7 +49,7 @@ socket.on("open", async () => {
   // Configure stream with a configuration message
   const configuration = {
     x_gladia_key: gladiaKey,
-    sample_rate: SAMPLE_RATE
+    sample_rate: SAMPLE_RATE,
     // "model_type":"accurate"
   };
   socket.send(JSON.stringify(configuration));
@@ -56,18 +57,18 @@ socket.on("open", async () => {
   // create micrphone instance
   const micophoneInstance = mic({
     rate: SAMPLE_RATE,
-    channels: '1',
+    channels: "1",
   });
 
   const microphoneInputStream = micophoneInstance.getAudioStream();
-  microphoneInputStream.on('data', function (data: any) {
-    const base64 = data.toString('base64')
+  microphoneInputStream.on("data", function (data: any) {
+    const base64 = data.toString("base64");
     socket.send(JSON.stringify({ frames: base64 }));
   });
 
-  microphoneInputStream.on('error', function (err: any) {
+  microphoneInputStream.on("error", function (err: any) {
     console.log("Error in Input Stream: " + err);
   });
 
   micophoneInstance.start();
-})
+});
