@@ -14,7 +14,7 @@ if not gladiaKey:
     print('You must provide a gladia key. Go to app.gladia.io')
     exit(1)
 else:
-    print('using the gladia key : ' + gladiaKey)
+    print('Using the gladia key : ' + gladiaKey)
 
 # connect to api websocket
 gladiaUrl = "wss://api.gladia.io/audio/text/audio-transcription"
@@ -50,7 +50,7 @@ async def send_audio(socket):
         await socket.send(json.dumps(message))
 
     await asyncio.sleep(2)
-    print("final closing")
+    print("Final closing")
 
 
 # get ready to receive transcriptions
@@ -65,8 +65,10 @@ async def receive_transcription(socket):
             else:
                 if (TYPE_KEY in utterance):
                     print(f"{utterance[TYPE_KEY]}: ({utterance[LANGUAGE_KEY]}) {utterance[TRANSCRIPTION_KEY]}")
+                else:
+                    print('Empty, waiting for next utterance...')
         else:
-            print('empty,waiting for next utterance...')
+            print('Empty, waiting for next utterance...')
 
 
 # run both tasks concurrently
