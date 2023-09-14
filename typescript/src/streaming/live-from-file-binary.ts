@@ -19,12 +19,16 @@ if (!gladiaKey) {
   console.error("You must provide a gladia key. Go to app.gladia.io");
   exit(1);
 } else {
-  console.log("using the gladia key : " + gladiaKey);
+  console.log("Using the gladia key : " + gladiaKey);
 }
 
 // connect to api websocket
 const gladiaUrl = "wss://api.gladia.io/audio/text/audio-transcription";
 const socket = new WebSocket(gladiaUrl);
+
+socket.on("close", () => {
+  console.log("Connection closed by Gladia Server");
+});
 
 // get ready to receive transcriptions
 socket.on("message", (event: any) => {
@@ -47,11 +51,12 @@ socket.on("message", (event: any) => {
       }
     }
   } else {
-    console.log("empty ...");
+    console.log("Empty ...");
   }
 });
 
 socket.on("error", (error: WebSocket.ErrorEvent) => {
+  console.log("An error occurred:");
   console.log(error.message);
 });
 
@@ -80,10 +85,15 @@ socket.on("open", async () => {
 
     // Delay between sending parts (500 mseconds in this case)
     await sleep(500);
-    socket.send(part, { binary: true });
+    if (socket.readyState === WebSocket.OPEN) {
+      socket.send(part, { binary: true });
+    } else {
+      console.log("WebSocket ready state is not [OPEN]");
+      break;
+    }
   }
 
-  await sleep(2000);
-  console.log("final closing");
+  await sleep(1000);
+  console.log("Final closing");
   socket.close();
 });

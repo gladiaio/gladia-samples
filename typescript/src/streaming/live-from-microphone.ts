@@ -45,6 +45,10 @@ socket.on("error", (error: WebSocket.ErrorEvent) => {
   console.log(error.message);
 });
 
+socket.on("close", () => {
+  console.log("Connection closed by Gladia Server");
+});
+
 socket.on("open", async () => {
   // Configure stream with a configuration message
   const configuration = {
@@ -54,21 +58,27 @@ socket.on("open", async () => {
   };
   socket.send(JSON.stringify(configuration));
 
-  // create micrphone instance
-  const micophoneInstance = mic({
+  // create microphone instance
+  const microphone = mic({
     rate: SAMPLE_RATE,
     channels: "1",
   });
 
-  const microphoneInputStream = micophoneInstance.getAudioStream();
+  const microphoneInputStream = microphone.getAudioStream();
   microphoneInputStream.on("data", function (data: any) {
     const base64 = data.toString("base64");
     socket.send(JSON.stringify({ frames: base64 }));
+
+    if (socket.readyState === WebSocket.OPEN) {
+      socket.send(JSON.stringify({ frames: base64 }));
+    } else {
+      console.log("WebSocket ready state is not [OPEN]");
+    }
   });
 
   microphoneInputStream.on("error", function (err: any) {
     console.log("Error in Input Stream: " + err);
   });
 
-  micophoneInstance.start();
+  microphone.start();
 });

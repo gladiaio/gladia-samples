@@ -18,7 +18,7 @@ if (!gladiaKey) {
   console.error("You must provide a gladia key. Go to app.gladia.io");
   exit(1);
 } else {
-  console.log("using the gladia key : " + gladiaKey);
+  console.log("Using the gladia key : " + gladiaKey);
 }
 
 // connect to api websocket
@@ -46,11 +46,12 @@ socket.on("message", (event: any) => {
       }
     }
   } else {
-    console.log("empty ...");
+    console.log("Empty ...");
   }
 });
 
 socket.on("error", (error: WebSocket.ErrorEvent) => {
+  console.log("An error occurred:");
   console.log(error.message);
 });
 
@@ -82,11 +83,15 @@ socket.on("open", async () => {
     const message = {
       frames: part,
     };
-    // console.log(part)
-    socket.send(JSON.stringify(message));
+    if (socket.readyState === WebSocket.OPEN) {
+      socket.send(part, { binary: true });
+    } else {
+      console.log("WebSocket ready state is not [OPEN]");
+      break;
+    }
   }
 
   await sleep(2000);
-  console.log("final closing");
+  console.log("Final closing");
   socket.close();
 });
