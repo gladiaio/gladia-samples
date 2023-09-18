@@ -1,0 +1,8 @@
+click==8.0.1
+datetime==4.3
+pathlib==1.0.1
+pyaudio==0.2.11
+selenium==3.141.0
+wave==0.0.2
+sounddevice
+opencv-python-headless
