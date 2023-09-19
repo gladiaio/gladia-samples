@@ -84,7 +84,7 @@ socket.on("open", async () => {
       frames: part,
     };
     if (socket.readyState === WebSocket.OPEN) {
-      socket.send(part, { binary: true });
+      socket.send(JSON.stringify(message));
     } else {
       console.log("WebSocket ready state is not [OPEN]");
       break;
