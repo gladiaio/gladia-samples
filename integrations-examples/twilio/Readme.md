@@ -2,10 +2,10 @@
 
 ### Create and parametrize your Twilio account
 
+- Get your public ip address and choose a port to use for your app
 - Create an account on https://www.twilio.com/try-twilio
 - Get a phone number, following first step of main page after to connect to your Twilio account
-- On the left panel Develop > United States (US1) > Phone Numbers > Manage > Active numbers
-- Click on the phone number you just created
+- On the left panel Develop > United States (US1) > Phone Numbers > Manage > Active numbers > Click on the phone number you just created
 - In 'Configure' panel, 'Voice Configuration' section, 'A call comes in' field, choose 'Webhook' with URL = 'http://[your-id-address]:[your-app-port-number]' and HTTP = 'HTTP POST'
 
 ### Configure your server and install depandancies
