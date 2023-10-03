@@ -10,7 +10,9 @@ const SAMPLE_RATE = 48_000;
 // Your Gladia Token
 const gladiaKey = process.argv[2];
 if (!gladiaKey) {
-  console.error("You must provide a gladia key. Go to app.gladia.io to get one.");
+  console.error(
+    "You must provide a gladia key. Go to app.gladia.io to get one."
+  );
   exit(1);
 } else {
   console.log("using the gladia key : " + gladiaKey);
@@ -51,8 +53,9 @@ export function initGladiaConnection(userName) {
   socket.on("open", async () => {
     const configuration = {
       x_gladia_key: gladiaKey,
+      language_behaviour: "automatic single languages",
       sample_rate: SAMPLE_RATE,
-      // "model_type":"accurate"
+      // "model_type":"accurate" <- Slower but more accurate model, useful if you need precise addresses for example.
     };
     socket.send(JSON.stringify(configuration));
   });

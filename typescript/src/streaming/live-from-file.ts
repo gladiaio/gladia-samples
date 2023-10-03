@@ -59,7 +59,8 @@ socket.on("open", async () => {
   // Configure stream with a configuration message
   const configuration = {
     x_gladia_key: gladiaKey,
-    // "model_type":"accurate"
+    language_behaviour: "automatic multiple languages",
+    // "model_type":"accurate" <- Slower but more accurate model, useful if you need precise addresses for example.
   };
   socket.send(JSON.stringify(configuration));
 
