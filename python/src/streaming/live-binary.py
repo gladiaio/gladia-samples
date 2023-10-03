@@ -1,4 +1,3 @@
-import os
 import asyncio
 import websockets
 import json
@@ -20,13 +19,15 @@ else:
 # connect to api websocket
 GLADIA_URL = "wss://api.gladia.io/audio/text/audio-transcription"
 
+
 async def send_audio(socket):
 
     # Configure stream with a configuration message
     configuration = {
         "x_gladia_key": gladiaKey,
+        "language_behaviour": "automatic multiple languages",
         "frames_format": "bytes",
-        # "model_type":"accurate" <- Less faster but more accurate model_type, useful if you need precise addresses for example.
+        # "model_type":"accurate" <- Slower but more accurate model, useful if you need precise addresses for example.
     }
     await socket.send(json.dumps(configuration))
 
