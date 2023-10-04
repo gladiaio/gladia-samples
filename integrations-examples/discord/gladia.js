@@ -52,7 +52,7 @@ export function initGladiaConnection(userName) {
 
   socket.on("open", async () => {
     const configuration = {
-      x_gladia_key: gladiaKey,
+      "x-gladia-key": gladiaKey,
       language_behaviour: "automatic single languages",
       sample_rate: SAMPLE_RATE,
       // "model_type":"accurate" <- Slower but more accurate model, useful if you need precise addresses for example.

@@ -63,7 +63,7 @@ socket.on("error", (error: WebSocket.ErrorEvent) => {
 socket.on("open", async () => {
   // Configure stream with a configuration message
   const configuration = {
-    x_gladia_key: gladiaKey,
+    "x-gladia-key": gladiaKey,
     language_behaviour: "automatic multiple languages",
     frames_format: "bytes",
     // "model_type":"accurate" <- Slower but more accurate model, useful if you need precise addresses for example.

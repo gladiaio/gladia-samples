@@ -24,7 +24,7 @@ async def send_audio(socket):
 
     # Configure stream with a configuration message
     configuration = {
-        "x_gladia_key": gladiaKey,
+        "x-gladia-key": gladiaKey,
         "language_behaviour": "automatic multiple languages",
         # "model_type":"accurate" <- Slower but more accurate model, useful if you need precise addresses for example.
     }

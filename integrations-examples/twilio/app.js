@@ -41,7 +41,7 @@ app.post("/", async (req, res) => {
   gladiaSocket.on("open", async () => {
     console.log("Connecting to gladia socket");
     const configuration = {
-      x_gladia_key: gladiaApiKey,
+      "x-gladia-key": gladiaApiKey,
       language_behaviour: "automatic multiple languages",
       sample_rate: 8000,
       encoding: "wav/ulaw",
