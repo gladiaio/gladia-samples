@@ -53,7 +53,7 @@ app.post("/", async (req, res) => {
   gladiaSocket.on("message", async (event) => {
     const gladiaMsg = JSON.parse(event.toString());
     if (!fisrtGladiaMessage) {
-      console.log(`Gladia web socket connection id: ${gladiaMsg.apiCallId}`);
+      console.log(`Gladia web socket connection id: ${gladiaMsg.request_id}`);
       fisrtGladiaMessage = true;
     } else if (
       gladiaMsg.hasOwnProperty("transcription") &&

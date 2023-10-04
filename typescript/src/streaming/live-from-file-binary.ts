@@ -7,7 +7,7 @@ const ERROR_KEY = "error";
 const TYPE_KEY = "type";
 const TRANSCRIPTION_KEY = "transcription";
 const LANGUAGE_KEY = "language";
-const CONNECTION_ID = "apiCallId";
+const CONNECTION_ID = "request_id";
 
 const sleep = (delay: number): Promise<void> =>
   new Promise((f) => setTimeout(f, delay));
