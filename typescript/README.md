@@ -1,6 +1,6 @@
 # TypeScript
 
-First, install all the required package by running:
+First, install all the required packages by running:
 
 ```bash
 npm install
@@ -14,13 +14,19 @@ https://docs.gladia.io/reference/pre-recorded
 
 ### run
 
-You can run a live example by running :
+You can run an example with a pre-recorded file on disk :
 
 ```bash
-npm run pre-recorded <your_gladia_key>
+npm run pre-recorded-file <your_gladia_key>
 ```
 
-## Live
+To run with an url pointing to an audio or video file :
+
+```bash
+npm run pre-recorded-url <your_gladia_key>
+```
+
+## Live - Basic
 
 Documentation can be found here:
 
@@ -31,19 +37,19 @@ https://docs.gladia.io/reference/live-audio
 To run a streaming example you have to:
 
 ```bash
-npm run streaming-file <your_gladia_key>
+npm run basic-streaming-file <your_gladia_key>
 ```
 
 And for bytes format:
 
 ```bash
-npm run streaming-file-binary <your_gladia_key>
+npm run basic-streaming-file-binary <your_gladia_key>
 ```
 
 Or from microphone ( Requires [arecord](https://www.thegeekdiary.com/arecord-command-not-found/) on Linux and [SoX](https://formulae.brew.sh/formula/sox) on MacOS )
 
 ```bash
-npm run streaming-microphone <your_gladia_key>
+npm run basic-streaming-microphone <your_gladia_key>
 ```
 
 Note: You can get your gladia key from app.gladia.io
@@ -114,4 +120,30 @@ partial:  Устроилась недавно, но работа очень нр
 partial:  Устроилась недавно, но работа очень нравится, и вся чувствую прекрасно делаю это что мне нравится.
 partial:  Устроилась недавно, но работа очень нравится. Я чувствую прекрасно делать это, что мне нравится.
 final:  Устроилась недавно, но работа очень нравится, я чувствую прекрасно, делаю то, что мне нравится.
+```
+
+## Live - With error handling and automatic reconnection mechanism
+
+Documentation can be found here:
+
+https://docs.gladia.io/reference/live-audio
+
+### run
+
+To run a streaming example you have to:
+
+```bash
+npm run streaming-file <your_gladia_key>
+```
+
+And for bytes format:
+
+```bash
+npm run streaming-file-binary <your_gladia_key>
+```
+
+Or from microphone ( Requires [arecord](https://www.thegeekdiary.com/arecord-command-not-found/) on Linux and [SoX](https://formulae.brew.sh/formula/sox) on MacOS )
+
+```bash
+npm run streaming-microphone <your_gladia_key>
 ```
