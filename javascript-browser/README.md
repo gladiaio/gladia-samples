@@ -18,4 +18,4 @@ https://docs.gladia.io/reference/live-audio
 
 ### run
 
--> Coming Soon !
+Open the file `src/streaming.html` in a recent browser and submit the form.
