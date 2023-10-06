@@ -23,6 +23,7 @@
     "streaming-file-binary": "tsx src/streaming-auto-reconnect/live-from-file-binary.ts",
     "streaming-microphone": "tsx src/streaming-auto-reconnect/live-from-microphone.ts",
     "pre-recorded-file": "tsx src/pre-recorded/pre-recorded-file.ts",
-    "pre-recorded-url": "tsx src/pre-recorded/pre-recorded-url.ts"
+    "pre-recorded-url": "tsx src/pre-recorded/pre-recorded-url.ts",
+    "to-js": "tsc && cp ./README.md ../javascript/README.md"
   }
 }

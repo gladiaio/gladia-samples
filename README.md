@@ -17,7 +17,7 @@ You can still check the full documentation [here](https://docs.gladia.io/referen
 |                  |             Python              |             TypeScript              |             JavaScript              |             Browser              |
 | :--------------: | :-----------------------------: | :---------------------------------: | :---------------------------------: | :---------------------------------: |
 | **Pre-recorded** |               ✅                |                 ✅                  |                 ✅                  |                 ✅                  |
-|     **Live**     |               ✅                |                 ✅                  |                 ⏳                  |                 ✅                  |
+|     **Live**     |               ✅                |                 ✅                  |                 ✅                  |                 ✅                  |
 |    **README**    | [Link](python/README.md "Link") | [Link](typescript/README.md "Link") | [Link](javascript/README.md "Link") | [Link](javascript-browser/README.md "Link") |
 
 ## Something is missing ? Contact us !
