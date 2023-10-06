@@ -3,12 +3,6 @@ import fs from "fs";
 import { resolve } from "path";
 import { exit } from "process";
 
-const ERROR_KEY = "error";
-const TYPE_KEY = "type";
-const TRANSCRIPTION_KEY = "transcription";
-const LANGUAGE_KEY = "language";
-const CONNECTION_ID = "request_id";
-
 const sleep = (delay: number): Promise<void> =>
   new Promise((f) => setTimeout(f, delay));
 
@@ -22,8 +16,9 @@ if (!gladiaKey) {
   console.log("Using the gladia key : " + gladiaKey);
 }
 
-// connect to api websocket
 const gladiaUrl = "wss://api.gladia.io/audio/text/audio-transcription";
+
+// connect to api websocket
 const socket = new WebSocket(gladiaUrl);
 
 socket.on("close", () => {
@@ -32,32 +27,33 @@ socket.on("close", () => {
 
 // get ready to receive transcriptions
 socket.on("message", (event: any) => {
-  if (event) {
-    const utterance = JSON.parse(event.toString());
-    if (Object.keys(utterance).length !== 0) {
-      if (CONNECTION_ID in utterance) {
-        console.log(`\n* Connection id: ${utterance[CONNECTION_ID]} *\n`);
-      } else if (ERROR_KEY in utterance) {
-        console.error(`${utterance[ERROR_KEY]}`);
-        socket.close();
-      } else if (
-        [TYPE_KEY, LANGUAGE_KEY, TRANSCRIPTION_KEY].every(
-          (key) => key in utterance
-        )
-      ) {
-        console.log(
-          `${utterance[TYPE_KEY]}: (${utterance[LANGUAGE_KEY]}) ${utterance[TRANSCRIPTION_KEY]}`
-        );
-      }
-    }
-  } else {
+  if (!event) return;
+
+  const utterance = JSON.parse(event.toString());
+
+  if (!Object.keys(utterance).length) {
     console.log("Empty ...");
+    return;
+  }
+
+  if (utterance.event === "connected") {
+    console.log(`\n* Connection id: ${utterance.request_id} *\n`);
+  } else if (utterance.event === "error") {
+    console.error(`[${utterance.code}] ${utterance.message}`);
+    socket.close();
+  } else if (utterance.event === "transcript" && utterance.transcription) {
+    console.log(
+      `${utterance.type}: (${utterance.language}) ${utterance.transcription}`
+    );
   }
 });
 
 socket.on("error", (error: WebSocket.ErrorEvent) => {
-  console.log("An error occurred:");
-  console.log(error.message);
+  console.log("An error occurred:", error.message);
+});
+
+socket.on("close", () => {
+  console.log("Connection closed");
 });
 
 socket.on("open", async () => {

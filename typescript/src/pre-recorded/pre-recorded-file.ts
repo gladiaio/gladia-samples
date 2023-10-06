@@ -11,6 +11,8 @@ if (!gladiaKey) {
   console.log("using the gladia key : " + gladiaKey);
 }
 
+const gladiaUrl = "https://api.gladia.io/audio/text/audio-transcription/";
+
 const headers = {
   "x-gladia-key": gladiaKey, // Replace with your Gladia Token
   accept: "application/json", // Accept json as a response, but we are sending a Multipart FormData
@@ -32,16 +34,12 @@ fs.access(file_path, fs.constants.F_OK, (err) => {
       filename: "anna-and-sasha-16000.wav",
       contentType: "audio/wav",
     });
-    // form.append(
-    //   "audio_url",
-    //   "http://files.gladia.io/example/audio-transcription/split_infinity.wav"
-    // );
     form.append("toggle_diarization", "true"); // form-data library requires fields to be string, Buffer or Stream
 
     console.log("- Sending request to Gladia API...");
 
     axios
-      .post("https://api.gladia.io/audio/text/audio-transcription/", form, {
+      .post(gladiaUrl, form, {
         // form.getHeaders to get correctly formatted form-data boundaries
         // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type
         headers: { ...form.getHeaders(), ...headers },

@@ -2,10 +2,6 @@ import { exit } from "process";
 import WebSocket from "ws";
 import mic from "mic";
 
-const ERROR_KEY = "error";
-const TYPE_KEY = "type";
-const TRANSCRIPTION_KEY = "transcription";
-const LANGUAGE_KEY = "language";
 const SAMPLE_RATE = 16_000;
 
 // retrieve gladia key
@@ -17,43 +13,47 @@ if (!gladiaKey) {
   console.log("using the gladia key : " + gladiaKey);
 }
 
-// connect to api websocket
 const gladiaUrl = "wss://api.gladia.io/audio/text/audio-transcription";
+
+// connect to api websocket
 const socket = new WebSocket(gladiaUrl);
 
 // get ready to receive transcriptions
 socket.on("message", (event: any) => {
-  if (event) {
-    const utterance = JSON.parse(event.toString());
-    if (Object.keys(utterance).length !== 0) {
-      if (ERROR_KEY in utterance) {
-        console.error(`${utterance[ERROR_KEY]}`);
-        socket.close();
-      } else {
-        if (utterance && utterance[TRANSCRIPTION_KEY])
-          console.log(
-            `${utterance[TYPE_KEY]}: (${utterance[LANGUAGE_KEY]}) ${utterance[TRANSCRIPTION_KEY]}`
-          );
-      }
-    }
-  } else {
-    console.log("empty ...");
+  if (!event) return;
+
+  const utterance = JSON.parse(event.toString());
+
+  if (!Object.keys(utterance).length) {
+    console.log("Empty ...");
+    return;
+  }
+
+  if (utterance.event === "connected") {
+    console.log(`\n* Connection id: ${utterance.request_id} *\n`);
+  } else if (utterance.event === "error") {
+    console.error(`[${utterance.code}] ${utterance.message}`);
+    socket.close();
+  } else if (utterance.event === "transcript" && utterance.transcription) {
+    console.log(
+      `${utterance.type}: (${utterance.language}) ${utterance.transcription}`
+    );
   }
 });
 
 socket.on("error", (error: WebSocket.ErrorEvent) => {
-  console.log(error.message);
+  console.log("An error occurred:", error.message);
 });
 
 socket.on("close", () => {
-  console.log("Connection closed by Gladia Server");
+  console.log("Connection closed");
 });
 
 socket.on("open", async () => {
   // Configure stream with a configuration message
   const configuration = {
     x_gladia_key: gladiaKey,
-    language_behaviour: "automatic single languages",
+    language_behaviour: "automatic single language",
     sample_rate: SAMPLE_RATE,
     // "model_type":"accurate" <- Slower but more accurate model, useful if you need precise addresses for example.
   };
