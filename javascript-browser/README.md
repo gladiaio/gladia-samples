@@ -8,7 +8,8 @@ https://docs.gladia.io/reference/pre-recorded
 
 ### run
 
-Open the file `src/pre-recorded.html` in a recent browser and submit the form.
+Download and open the file `src/pre-recorded.html` in a recent browser and submit the form.  
+You can also access it directly here: https://gladiaio.github.io/gladia-samples/pre-recorded.html.
 
 ## Live
 
@@ -18,4 +19,5 @@ https://docs.gladia.io/reference/live-audio
 
 ### run
 
-Open the file `src/streaming.html` in a recent browser and submit the form.
+Download and open the file `src/streaming.html` in a recent browser and submit the form.
+You can also access it directly here: https://gladiaio.github.io/gladia-samples/streaming.html.
