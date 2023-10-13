@@ -68,8 +68,6 @@ socket.on("open", async () => {
   const microphoneInputStream = microphone.getAudioStream();
   microphoneInputStream.on("data", function (data: any) {
     const base64 = data.toString("base64");
-    socket.send(JSON.stringify({ frames: base64 }));
-
     if (socket.readyState === WebSocket.OPEN) {
       socket.send(JSON.stringify({ frames: base64 }));
     } else {
