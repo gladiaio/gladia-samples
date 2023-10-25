@@ -23,3 +23,12 @@ You can still check the full documentation [here](https://docs.gladia.io/referen
 ## Something is missing ? Contact us !
 
 You can contact us directly [here](https://gladiaio.typeform.com/support?typeform-source=github.com/gladiaio/gladia-samples) and you can also open an issue in this repository.
+
+## git lfs
+
+to retrieve data files you need to :
+```
+brew install git-lfs
+git lfs install
+git lfs pull
+```
