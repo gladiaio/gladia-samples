@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Gladia - Embedded</title>
+    <!-- We are using a 3rd party library to record audio as WAV on every browser. -->
+    <!-- Each browser uses its own audio encoding and some of them are not compatible. -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/RecordRTC/5.6.2/RecordRTC.js"></script>
+    <style>
+      body {
+      margin: 0;
+      background-color: #333;
+      }
+      #result {
+      padding: 4rem;
+      color: #fff;
+      font-weight: 700;
+      font-size: 48px;
+      line-height: 1.25;
+      text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="result"></div>
+    <script>
+      const SAMPLE_RATE = 48000;
+      
+      /** We try to (re)connect to the WS during 5 min before giving up */
+      const MAX_CONNECTION_DURATION = 5 * 60 * 1000;
+      
+      /**
+      * @returns {{promise: Promise<any>; resolve(value: any): void; reject(err: any): void;}}
+      */
+      function deferredPromise() {
+          const deferred = {};
+          deferred.promise = new Promise((resolve, reject) => {
+          deferred.resolve = resolve;
+          deferred.reject = reject;
+          });
+          return deferred;
+      }
+      
+      class WebSocketClient {
+          #url;
+          #configuration;
+          #listeners;
+      
+          #socket = null;
+      
+          #status = "initializing";
+          #readyPromise = null;
+      
+          #pendingMessages = [];
+          #pendingPromise = null;
+      
+          #currentTimeout = undefined;
+      
+          constructor(url, configuration, listeners) {
+          this.#url = url;
+          this.#configuration = configuration;
+          this.#listeners = listeners;
+          this.#init();
+          }
+      
+          ready() {
+          if (this.#status === "ready") {
+              return Promise.resolve(true);
+          } else if (this.#status === "closed") {
+              return Promise.reject(new Error("closed"));
+          } else {
+              if (!this.#readyPromise) {
+              this.#readyPromise = deferredPromise();
+              }
+              return this.#readyPromise.promise;
+          }
+          }
+      
+          sendMessage(message) {
+          if (this.#status === "closed") {
+              return this.ready();
+          }
+      
+          this.#pendingMessages.push(message);
+          if (!this.#pendingPromise) {
+              this.#pendingPromise = this.ready()
+              .then(() => {
+                  try {
+                  while (this.#pendingMessages.length) {
+                      const message = this.#pendingMessages.shift();
+                      if (message) {
+                      this.#socket?.send(message);
+                      }
+                  }
+                  return true;
+                  } catch (err) {
+                  console.error("Error while sending a message", err);
+                  return false;
+                  }
+              })
+              .finally(() => {
+                  this.#pendingPromise = null;
+              });
+          }
+          return this.#pendingPromise;
+          }
+      
+          close() {
+          if (this.#status === "closed") return;
+      
+          this.#doClose();
+          }
+      
+          #init() {
+          this.#clearSocket();
+      
+          if (this.#status !== "initializing") {
+              this.#readyPromise = deferredPromise();
+              this.#status = "initializing";
+          }
+      
+          const startTime = Date.now();
+          let retries = 0;
+      
+          const connect = () => {
+              const reject = (err) => {
+              clearTimeout(this.#currentTimeout);
+              this.#clearSocket();
+              if (this.#status === "closed") return;
+      
+              this.#currentTimeout = setTimeout(() => {
+                  if (this.#status === "closed") return;
+      
+                  connect();
+              }, Math.min(20000, 500 * Math.pow(2, ++retries)));
+              };
+              const resolve = () => {
+              clearTimeout(this.#currentTimeout);
+              if (this.#status === "closed") return;
+              if (!this.#socket) {
+                  // should never happen
+                  reject({ code: 4500, reason: "No socket" });
+                  return;
+              }
+      
+              console.log("Connected to WebSocket and ready to send frames");
+      
+              this.#socket.onopen = null;
+              this.#socket.onerror = null;
+              this.#socket.onmessage = null;
+              this.#socket.onclose = null;
+              this.#socket.addEventListener("message", this.#onMessage);
+              this.#socket.addEventListener("close", this.#onClose);
+              this.#status = "ready";
+              this.#readyPromise?.resolve(true);
+              };
+      
+              this.#socket = new WebSocket(this.#url);
+              this.#socket.onopen = () => {
+              this.#socket?.send(JSON.stringify(this.#configuration));
+              };
+              this.#socket.onerror = () => {
+              reject({ code: 1012, reason: `Couldn't connect to the server` });
+              };
+              this.#socket.onclose = (event) => {
+              reject(event);
+              };
+              this.#socket.onmessage = (event) => {
+              let data;
+              try {
+                  data = JSON.parse(event.data);
+              } catch (err) {
+                  reject({
+                  code: 4500,
+                  reason: `Cannot parse the message: ${event.data}`,
+                  });
+              }
+      
+              if (data?.event === "connected") {
+                  // Since we can't know exactly when the server is rdy, we wait a bit
+                  this.#currentTimeout = setTimeout(() => {
+                  resolve();
+                  }, 1000);
+              } else {
+                  reject({
+                  code: 4500,
+                  reason: `Server sent an unexpected message: ${event.data}`,
+                  });
+              }
+              };
+          };
+          connect();
+          }
+      
+          #clearSocket() {
+          if (this.#socket) {
+              this.#socket.onopen = null;
+              this.#socket.onerror = null;
+              this.#socket.onmessage = null;
+              this.#socket.onclose = null;
+              this.#socket.removeEventListener("message", this.#onMessage);
+              this.#socket.removeEventListener("close", this.#onClose);
+              if (
+              this.#socket.readyState === WebSocket.CONNECTING ||
+              this.#socket.readyState === WebSocket.OPEN
+              ) {
+              try {
+                  this.#socket.close();
+              } catch (err) {
+                  console.error("Error closing the websocket", err);
+              }
+              }
+              this.#socket = null;
+          }
+          }
+      
+          #onMessage = (event) => {
+          let message;
+          try {
+              message = JSON.parse(event.data);
+          } catch (err) {
+              try {
+              this.#listeners.onError?.({
+                  event: "error",
+                  code: 4500,
+                  reason: `Cannot parse the received api-key: ${event.data}`,
+                  closed: false,
+              });
+              } catch (error) {
+              console.error("Error caught on error callback", error);
+              }
+              return;
+          }
+      
+          try {
+              this.#listeners.onMessage?.(message);
+          } catch (error) {
+              console.error("Error caught on message callback", error);
+          }
+      
+          switch (message.event) {
+              case "transcript":
+              try {
+                  this.#listeners.onTranscript?.(message);
+              } catch (error) {
+                  console.error("Error caught on transcript callback", error);
+              }
+              break;
+              case "error":
+              try {
+                  this.#listeners.onError?.({
+                  ...message,
+                  closed: false,
+                  });
+              } catch (error) {
+                  console.error("Error caught on error callback", error);
+              }
+              break;
+              default:
+              console.log("Received an unknown message type", message);
+          }
+          };
+      
+          #onClose = (event) => {
+          const code = event.code || 1005;
+          const reason = event.reason || "Connection closed";
+          console.error(`[${code}] ${reason}. Reconnecting...`);
+          this.#init();
+          };
+      
+          #doClose(err) {
+          this.#status = "closed";
+          this.#pendingMessages = [];
+          clearTimeout(this.#currentTimeout);
+      
+          this.#clearSocket();
+      
+          if (err) {
+              try {
+              this.#listeners.onError?.({
+                  event: "error",
+                  code: err.code,
+                  reason: err.reason,
+                  closed: true,
+              });
+              } catch (error) {
+              console.error("Error caught on error callback", error);
+              }
+          }
+      
+          if (this.#readyPromise) {
+              this.#readyPromise.reject(
+              new Error(err ? `[${err.code}] ${err.reason}` : "Closed by user")
+              );
+          }
+          }
+      }
+      
+      start();
+      
+      async function start() {
+          /** @type {HTMLDivElement} */
+          const resultContainer = document.querySelector("#result"); // Move this line to the top of the start function
+          
+      
+          const gladiaKey = new URLSearchParams(window.location.search).get(
+          "token"
+          );
+          if (!gladiaKey) {
+          window.alert(
+              'Append your API token to query param "token": "?token=aaaa-bbbb-cccc-dddd".\nYou can get one for free at https://app.gladia.io/\nYou can add a source language with "source_language" and a target language with "target_language".\nto perform a realtime translation.\nthe url should look like subtitles.gladia.io/?token=aaaa-bbbb-cccc-dddd&source_language=french&target_language=english\nfor example to translate from french to english.'
+          );
+          return;
+          }
+      
+          const source_language = new URLSearchParams(window.location.search).get(
+          "source_language"
+          );
+      
+          const target_language = new URLSearchParams(window.location.search).get(
+          "target_language"
+          ) ?? source_language;
+      
+      
+          const font_size = new URLSearchParams(window.location.search).get(
+          "font_size"
+          ) ?? 24;
+      
+          const font_name = new URLSearchParams(window.location.search).get(
+          "font_name"
+          ) ?? "Arial";
+      
+          const background_color = new URLSearchParams(window.location.search).get(
+              "background_color"
+          ) ?? "#333";
+      
+          const text_color = new URLSearchParams(window.location.search).get(
+              "text_color"
+          ) ?? "#fff";
+      
+          if (font_size) {
+              resultContainer.style.fontSize = `${font_size}px`;
+          }
+      
+          if (font_name) {
+              resultContainer.style.fontFamily = font_name;
+          }
+      
+          
+          if (background_color) {
+              resultContainer.style.backgroundColor = background_color.startsWith("#") ? background_color : `#${background_color}`;
+          }
+          
+          if (text_color) {
+              resultContainer.style.color = text_color.startsWith("#") ? text_color : `#${text_color}`;
+          }
+      
+      
+      
+          /** @type {MediaStream | undefined} */
+          let audioStream;
+          /** @type {RecordRTC | undefined} */
+          let recorder;
+          /** @type {WebSocketClient | undefined} */
+          let socket;
+      
+          try {
+          socket = new WebSocketClient(
+              "wss://api.gladia.io/audio/text/audio-transcription",
+              {
+              x_gladia_key: gladiaKey,
+              frames_format: "bytes",
+              language_behaviour: "manual",
+      ...(source_language ? { language: source_language } : {}),
+              sample_rate: SAMPLE_RATE,
+              model_type: "accurate",
+              endpointing: 300,
+              },
+              {
+              async onTranscript(transcription) {
+      console.log(resultContainer.textContent);
+                  if (
+                  transcription.transcription &&
+                  transcription.type === "final"
+                  ) {
+                  if (!["Thank you.", "Merci.", "Salut!", "Bye."].includes(transcription.transcription) ) {
+                      if (source_language == target_language || !source_language ) {
+                          resultContainer.textContent = transcription.transcription;
+                      } else {   
+                          const url = 'https://subtitles.gladia.io/translate';
+                          const rep = await fetch(url, {  
+                              method: "POST",
+                              headers: {
+                                  "Content-Type": "application/json",
+                                  },
+                              body: JSON.stringify({
+                                  source_lang: source_language.charAt(0).toUpperCase() + source_language.slice(1),
+                                  target_lang: target_language.charAt(0).toUpperCase() + target_language.slice(1),
+                                  text: [transcription.transcription]
+                              }) 
+                          });
+                          const data = await rep.json();
+                          resultContainer.textContent = data[0].toString();
+                      }
+                  }
+                  }
+              },
+              onError(err) {
+                  const message = `Lost connection to the server: [${err.code}] ${err.reason}`;
+                  console.error(message);
+      
+                  if (!err.closed) {
+                  return;
+                  }
+      
+                  window.alert(message);
+              },
+              }
+          );
+      
+          // Get the input stream
+          audioStream = await navigator.mediaDevices.getUserMedia({
+              audio: true,
+          });
+      
+          // Initializes the recorder
+          recorder = new RecordRTC(audioStream, {
+              type: "audio",
+              mimeType: "audio/wav",
+              recorderType: RecordRTC.StereoAudioRecorder,
+              timeSlice: 100,
+              ondataavailable(blob) {
+              socket?.sendMessage(blob);
+              },
+              sampleRate: SAMPLE_RATE,
+              desiredSampRate: SAMPLE_RATE,
+              numberOfAudioChannels: 1,
+              reinject_context: true,
+              model_type: "accurate",
+              language_behaviour: "manual",
+              ...(source_language ? { language: source_language } : {}),
+          });
+      
+          await socket.ready();
+          } catch (err) {
+          window.alert(
+              `Error during the initialization: ${err?.message || err}`
+          );
+          console.error(err);
+          return;
+          }
+      
+          // Start the recording
+          recorder.startRecording();
+      }
+    </script>
+  </body>
+</html>
