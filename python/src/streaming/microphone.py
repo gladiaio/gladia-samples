@@ -11,7 +11,7 @@ load_dotenv()
 
 GLADIA_KEY = os.environ["GLADIA_KEY"]
 
-STREAM_CHUNK_SIZE = "20"
+STREAM_CHUNK_SIZE = 20
 LANGUAGE = "en"
 GLADIA_URL = "wss://api.gladia.io/audio/text/audio-transcription"
 
