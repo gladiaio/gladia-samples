@@ -1,13 +1,9 @@
 import os
 
-import asyncio
-import json
 import base64
 import pyaudio
 import time
 from dotenv import load_dotenv
-import asyncio
-import json
 import websockets
 
 
