@@ -1,10 +1,8 @@
 import asyncio
 import json
 import os
-
 import base64
 import pyaudio
-import time
 from dotenv import load_dotenv
 import websockets
 
