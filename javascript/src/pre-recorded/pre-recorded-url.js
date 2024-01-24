@@ -1,35 +1,69 @@
-import axios from "axios";
-import FormData from "form-data";
+import axios, { AxiosError } from "axios";
+
 // retrieve gladia key
 const gladiaKey = process.argv[2];
 if (!gladiaKey) {
-    console.error("You must provide a gladia key. Go to app.gladia.io");
-    process.exit(1);
+  console.error("You must provide a gladia key. Go to app.gladia.io");
+  process.exit(1);
+} else {
+  console.log("Using the gladia key : " + gladiaKey);
 }
-else {
-    console.log("using the gladia key : " + gladiaKey);
+
+const gladiaV2BaseUrl = "https://api.gladia.io/v2/";
+
+async function pollForResult(resultUrl, headers) {
+  while (true) {
+    console.log("Polling for results...");
+    const pollResponse = (await axios.get(resultUrl, { headers: headers }))
+      .data;
+
+    if (pollResponse.status === "done") {
+      console.log("- Transcription done: \n ");
+      console.log(pollResponse.result.transcription.full_transcript);
+      break;
+    } else {
+      console.log("- Transcription status: ", pollResponse.status);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    }
+  }
 }
-const gladiaUrl = "https://api.gladia.io/audio/text/audio-transcription/";
-const headers = {
-    "x-gladia-key": gladiaKey,
-    accept: "application/json", // Accept json as a response, but we are sending a Multipart FormData
-};
-const audio_url = "http://files.gladia.io/example/audio-transcription/split_infinity.wav";
-const form = new FormData();
-form.append("audio_url", audio_url);
-form.append("toggle_diarization", "true"); // form-data library requires fields to be string, Buffer or Stream
-console.log("- Sending request to Gladia API...");
-axios
-    .post(gladiaUrl, form, {
-    // form.getHeaders to get correctly formatted form-data boundaries
-    // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type
-    headers: { ...form.getHeaders(), ...headers },
-})
-    .then((response) => {
-    console.log(response.data); // Get the results
-    console.log(response.status); // Status code
-    console.log("- End of work");
-})
-    .catch((error) => {
-    console.error(error);
-});
+
+async function startTranscription() {
+  try {
+    const requestData = {
+      audio_url:
+        "http://files.gladia.io/example/audio-transcription/split_infinity.wav",
+      diarization: true,
+    };
+    const headers = {
+      "x-gladia-key": gladiaKey,
+      "Content-Type": "application/json",
+    };
+
+    console.log("- Sending initial request to Gladia API...");
+
+    const initialResponse = (
+      await axios.post(gladiaV2BaseUrl + "transcription/", requestData, {
+        headers,
+      })
+    ).data;
+
+    console.log("- Initial response with Transcription ID:", initialResponse);
+
+    if (initialResponse.result_url) {
+      await pollForResult(initialResponse.result_url, headers);
+    }
+  } catch (e) {
+    if (e instanceof AxiosError) {
+      console.log(
+        `AxiosError on ${e.config?.url}: ${e.message}\n-> ${JSON.stringify(
+          e.response?.data
+        )}`
+      );
+    } else {
+      console.log(e);
+    }
+  }
+}
+
+startTranscription();
