@@ -4,7 +4,6 @@ import subprocess
 import click
 import datetime
 import requests
-import json
 
 from time import sleep
 
@@ -12,14 +11,6 @@ import undetected_chromedriver as uc
 
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-
-
-def make_request(url, headers, method="GET", data=None, files=None):
-    if method == "POST":
-        response = requests.post(url, headers=headers, json=data, files=files)
-    else:
-        response = requests.get(url, headers=headers)
-    return response.json()
 
 
 async def run_command_async(command):
@@ -349,6 +340,11 @@ async def join_meet():
     print("Done recording")
     print("Transcribing using Gladia")
 
+    headers = {
+        "x-gladia-key": os.getenv("GLADIA_API_KEY", ""),
+        "accept": "application/json",
+    }
+
     file_path = "recordings/output.mp4"  # Change with your file path
 
     if os.path.exists(file_path):  # This is here to check if the file exists
@@ -369,62 +365,40 @@ async def join_meet():
         "oui",
         "o",
     ]:
-        diarization = "true"
+        toggle_diarization = True
     else:
-        diarization = "false"
+        toggle_diarization = False
 
     with open(file_path, "rb") as f:  # Open the file
         file_content = f.read()  # Read the content of the file
 
-    headers = {
-        "x-gladia-key": os.getenv("GLADIA_API_KEY", ""),
-        "accept": "application/json",
+    files = {
+        "video": (
+            file_path,
+            file_content,
+            "video/" + file_extension[1:],
+        ),  # Use the file content here
+        "toggle_diarization": (None, toggle_diarization),
     }
-
-    files = [("audio", (file_path, file_content, "video/" + file_extension[1:]))]
-
-    print("- Uploading file to Gladia...")
-    upload_response = make_request(
-        "https://api.gladia.io/v2/upload/", headers, "POST", files=files
-    )
-    print("Upload response with File ID:", upload_response)
-    audio_url = upload_response.get("audio_url")
-
-    data = {
-        "audio_url": audio_url,
-        "diarization": diarization,
-    }
-
-    headers["Content-Type"] = "application/json"
 
     print("- Sending request to Gladia API...")
-    post_response = make_request(
-        "https://api.gladia.io/v2/transcription/", headers, "POST", data=data
+
+    response = requests.post(
+        "https://api.gladia.io/video/text/video-transcription/",
+        headers=headers,
+        files=files,
     )
+    if response.status_code == 200:
+        print("- Request successful")
+        # save the json response to recordings folder as transcript.json
+        with open("recordings/transcript.json", "w") as f:
+            f.write(response.text)
+    else:
+        print("- Request failed")
 
-    print("Post response with Transcription ID:", post_response)
-    result_url = post_response.get("result_url")
-
-    if result_url:
-        while True:
-            print("Polling for results...")
-            poll_response = make_request(result_url, headers)
-
-            if poll_response.get("status") == "done":
-                file_path = "recordings/transcript.json"
-                print("- Transcription done | recording results to {file_path}")
-                # save the json response to recordings folder as transcript.json
-                with open(file_path, "w") as f:
-                    json.dump(poll_response, f, indent=2)
-                break
-            elif poll_response.get("status") == "error":
-                file_path = "recordings/error.json"
-                print("- Transcription failed | recording results to {file_path}")
-                with open(file_path, "w") as f:
-                    json.dump(poll_response, f, indent=2)
-            else:
-                print("Transcription status:", poll_response.get("status"))
-            sleep(1)
+        # save the json response to recordings folder as error.json
+        with open("recordings/error.json", "w") as f:
+            f.write(response.text)
 
     print("- End of work")
 
