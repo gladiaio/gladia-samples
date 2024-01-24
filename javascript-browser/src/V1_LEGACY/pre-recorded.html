@@ -82,8 +82,6 @@
       /** @type {HTMLDivElement} */
       const resultContainer = document.querySelector("#result");
 
-      const gladiaV2BaseUrl = "https://api.gladia.io/v2/";
-
       form.addEventListener("submit", async (evt) => {
         evt.preventDefault();
 
@@ -95,7 +93,7 @@
 
         const gladiaKey = formData.get("gladia_key");
 
-        let audioUrl = formData.get("audio_url");
+        const audioUrl = formData.get("audio_url");
         let audio = formData.get("audio");
         if (!audio?.size) {
           audio = null;
@@ -113,99 +111,43 @@
         const newFormData = new FormData();
         if (audio) {
           newFormData.set("audio", audio);
-
-          const uploadResponse = await fetch(
-            gladiaV2BaseUrl + "upload/",
-            {
-              method: "POST",
-              headers: {
-                "X-Gladia-Key": gladiaKey
-              },
-              body: newFormData
-            }
-          );
-
-          if (!uploadResponse.ok) {
-            window.alert(`[${uploadResponse.status}] ${uploadResponse.statusText}`);
-            console.error(uploadResponse.status, await uploadResponse.text());
-            return;
-          }
-
-          const uploadJson = await uploadResponse.json();
-          console.log(uploadJson);
-          audioUrl = uploadJson.audio_url
-
+        } else {
+          newFormData.set("audio_url", audioUrl);
         }
-
-        console.log("audioUrl:", audioUrl)
-
-        const requestData = {
-          audio_url: audioUrl,
-          // You can add more parameters here if you want
-          // cf https://docs-v2.gladia.io/chapters/speech-to-text-api/pages/speech-recognition
-          // diarization: true,
-        };
-
-        console.log("body:", JSON.stringify(requestData))
-
+        // You can add more parameters here if you want
+        // cf https://docs.gladia.io/reference/pre-recorded
+        // newFormData.set("toggle_diarization", "true");
 
         // We are using the audio endpoint even if audio_url or audio points to a video
         // Behind the scene, it's the same thing
-        const postTranscriptionResponse = await fetch(
-          gladiaV2BaseUrl + "transcription/",
+        const response = await fetch(
+          "https://api.gladia.io/audio/text/audio-transcription/",
           {
             method: "POST",
             headers: {
-              "X-Gladia-Key": gladiaKey,
-              "Content-Type": "application/json"
+              "X-Gladia-Key": gladiaKey
             },
-            body: JSON.stringify(requestData)
+            body: newFormData
           }
         );
 
-        if (!postTranscriptionResponse.ok) {
-          window.alert(`[${postTranscriptionResponse.status}] ${postTranscriptionResponse.statusText}`);
-          console.error(postTranscriptionResponse.status, await postTranscriptionResponse.text());
+        // Re-enable the submit button
+        submitButton.removeAttribute("disabled");
+        submitButton.textContent = "Submit";
+
+        if (!response.ok) {
+          window.alert(`[${response.status}] ${response.statusText}`);
+          console.error(response.status, await response.text());
           return;
         }
 
-        const postTranscriptionJson = await postTranscriptionResponse.json();
-        console.log(postTranscriptionJson);
-        const resultUrl = postTranscriptionJson.result_url
-
-        while (true) {
-          const pollResponse = await fetch(
-            resultUrl,
-            {
-              method: "GET",
-              headers: {
-                "X-Gladia-Key": gladiaKey,
-                "Content-Type": "application/json"
-              }            
-            }
-          );
-
-          const json = await pollResponse.json();
-
-          if (json.status === "done") {
-            // Re-enable the submit button
-            submitButton.removeAttribute("disabled");
-            submitButton.textContent = "Submit";
-
-            // Show the result
-            console.log(json);
-            resultContainer.style.display = "block";
-            resultContainer.textContent = json.result.transcription.full_transcript
-            break;
-          } else if (json.status === "error") {
-            window.alert(`Transcription status: ${json.status}`);
-            console.error(pollResponse.status, await pollResponse.text());
-            return;
-          } else {
-            console.log("Transcription status: ", json.status);
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-          }
-        }
+        // Show the result
+        const json = await response.json();
+        console.log(json);
+        resultContainer.style.display = "block";
+        resultContainer.textContent = json.prediction
+          .map((pred) => pred.transcription)
+          .join(" ");
       });
     </script>
   </body>
