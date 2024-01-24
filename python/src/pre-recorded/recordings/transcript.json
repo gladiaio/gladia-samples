@@ -1,0 +1,1617 @@
+{
+  "id": "88cfa47b-acc8-400b-bd96-8dc86136cb71",
+  "request_id": "G-88cfa47b",
+  "kind": "pre-recorded",
+  "status": "done",
+  "created_at": "2024-01-22T15:13:06.577Z",
+  "completed_at": "2024-01-22T15:13:37.869Z",
+  "file": {
+    "id": "6f9afe23-9d17-44f1-bcb1-f25316bb9ed7",
+    "filename": "../../../data/anna-and-sasha-16000.wav",
+    "source": null,
+    "audio_duration": 82.688,
+    "number_of_channels": 1
+  },
+  "request_params": {
+    "audio_url": "https://api.gladia.io/file/6f9afe23-9d17-44f1-bcb1-f25316bb9ed7",
+    "diarization": true
+  },
+  "result": {
+    "metadata": {
+      "audio_duration": 82.688,
+      "number_of_distinct_channels": 1,
+      "billing_time": 82.688,
+      "transcription_time": 31.292
+    },
+    "transcription": {
+      "languages": [
+        "es"
+      ],
+      "full_transcript": "Hola Sasha, \u00bfqu\u00e9 tal? Hace mucho tiempo que no nos vemos. \u00bfC\u00f3mo vas? Hola, \u00bfqu\u00e9 tal? Yo estoy muy bien. \u00bfQu\u00e9 tal est\u00e1s t\u00fa? Yo muy bien. \u00bfQu\u00e9 has hecho ayer? Pues ayer estuve trabajando todo el d\u00eda. Desde que tengo el trabajo nuevo no paro. Tengo muchas cosas que hacer y a veces pienso que no me da tiempo. Qu\u00e9 l\u00edo. \u00bfY qu\u00e9 est\u00e1s haciendo exactamente? Trabajo de periodista en una compa\u00f1\u00eda espa\u00f1ola para el diario ASS. Qu\u00e9 guay. \u00bfY cu\u00e1nto tiempo trabajas en esta trabajo? Bueno, me he quedado hace poco, pero me gusta mucho la trabajo, me siento muy bien, hago lo que me gusta. \u00bfY no te asusta la Rusia? No, me gusta mucho vivir aqu\u00ed y me gusta mucho el clima, la gente, todo es muy bien, el lugar es muy bien. \u00bfY d\u00f3nde te ves en el futuro, como cinco a\u00f1os de ahora? Bueno, me gustar\u00eda empezar mi nueva empresa y empezar a construir una nueva startup que tengo en mente, pero todav\u00eda tengo algunas ideas. Y finalmente, hay que hablar en franc\u00e9s. As\u00ed que s\u00e9 que no hablas franc\u00e9s, pero puedes decirme un palabra para terminar la conversaci\u00f3n. S\u00ed, gracias.",
+      "utterances": [
+        {
+          "text": "Hola Sasha,",
+          "language": "es",
+          "start": 1.25803,
+          "end": 1.7383600000000001,
+          "channel": 0,
+          "speaker": 0,
+          "words": [
+            {
+              "word": "Hola",
+              "start": 1.25803,
+              "end": 1.41814,
+              "confidence": 0.72
+            },
+            {
+              "word": " Sasha,",
+              "start": 1.5182099999999998,
+              "end": 1.7383600000000001,
+              "confidence": 0.61
+            }
+          ]
+        },
+        {
+          "text": "\u00bfqu\u00e9 tal?",
+          "language": "es",
+          "start": 1.77839,
+          "end": 2.17867,
+          "channel": 0,
+          "speaker": 0,
+          "words": [
+            {
+              "word": " \u00bfqu\u00e9",
+              "start": 1.77839,
+              "end": 1.89847,
+              "confidence": 0.98
+            },
+            {
+              "word": " tal?",
+              "start": 1.9385,
+              "end": 2.17867,
+              "confidence": 1
+            }
+          ]
+        },
+        {
+          "text": "Hace mucho tiempo que no nos vemos.",
+          "language": "es",
+          "start": 2.35879,
+          "end": 3.75977,
+          "channel": 0,
+          "speaker": 0,
+          "words": [
+            {
+              "word": " Hace",
+              "start": 2.35879,
+              "end": 2.51891,
+              "confidence": 0.91
+            },
+            {
+              "word": " mucho",
+              "start": 2.57895,
+              "end": 2.75907,
+              "confidence": 0.99
+            },
+            {
+              "word": " tiempo",
+              "start": 2.7991,
+              "end": 2.99924,
+              "confidence": 0.95
+            },
+            {
+              "word": " que",
+              "start": 2.99924,
+              "end": 3.09931,
+              "confidence": 0.99
+            },
+            {
+              "word": " no",
+              "start": 3.0793,
+              "end": 3.17937,
+              "confidence": 0.98
+            },
+            {
+              "word": " nos",
+              "start": 3.1993799999999997,
+              "end": 3.35949,
+              "confidence": 0.87
+            },
+            {
+              "word": " vemos.",
+              "start": 3.41953,
+              "end": 3.75977,
+              "confidence": 0.99
+            }
+          ]
+        },
+        {
+          "text": "\u00bfC\u00f3mo vas?",
+          "language": "es",
+          "start": 3.95991,
+          "end": 4.40022,
+          "channel": 0,
+          "speaker": 0,
+          "words": [
+            {
+              "word": " \u00bfC\u00f3mo",
+              "start": 3.95991,
+              "end": 4.10001,
+              "confidence": 0.99
+            },
+            {
+              "word": " vas?",
+              "start": 4.16005,
+              "end": 4.40022,
+              "confidence": 0.98
+            }
+          ]
+        },
+        {
+          "text": "Hola,",
+          "language": "es",
+          "start": 5.30085,
+          "end": 5.64108,
+          "channel": 0,
+          "speaker": 1,
+          "words": [
+            {
+              "word": " Hola,",
+              "start": 5.30085,
+              "end": 5.64108,
+              "confidence": 0.72
+            }
+          ]
+        },
+        {
+          "text": "\u00bfqu\u00e9 tal?",
+          "language": "es",
+          "start": 5.68111,
+          "end": 5.98132,
+          "channel": 0,
+          "speaker": 1,
+          "words": [
+            {
+              "word": " \u00bfqu\u00e9",
+              "start": 5.68111,
+              "end": 5.80119,
+              "confidence": 0.92
+            },
+            {
+              "word": " tal?",
+              "start": 5.82121,
+              "end": 5.98132,
+              "confidence": 0.87
+            }
+          ]
+        },
+        {
+          "text": "Yo estoy muy bien.",
+          "language": "es",
+          "start": 6.04136,
+          "end": 6.72184,
+          "channel": 0,
+          "speaker": 1,
+          "words": [
+            {
+              "word": " Yo",
+              "start": 6.04136,
+              "end": 6.16144,
+              "confidence": 0.55
+            },
+            {
+              "word": " estoy",
+              "start": 6.16144,
+              "end": 6.36158,
+              "confidence": 0.38
+            },
+            {
+              "word": " muy",
+              "start": 6.42163,
+              "end": 6.54171,
+              "confidence": 0.79
+            },
+            {
+              "word": " bien.",
+              "start": 6.58174,
+              "end": 6.72184,
+              "confidence": 0.97
+            }
+          ]
+        },
+        {
+          "text": "\u00bfQu\u00e9 tal est\u00e1s t\u00fa?",
+          "language": "es",
+          "start": 6.72184,
+          "end": 7.46235,
+          "channel": 0,
+          "speaker": 1,
+          "words": [
+            {
+              "word": " \u00bfQu\u00e9",
+              "start": 6.72184,
+              "end": 6.84192,
+              "confidence": 0.99
+            },
+            {
+              "word": " tal",
+              "start": 6.86193,
+              "end": 7.0020299999999995,
+              "confidence": 0.99
+            },
+            {
+              "word": " est\u00e1s",
+              "start": 7.04206,
+              "end": 7.30224,
+              "confidence": 0.98
+            },
+            {
+              "word": " t\u00fa?",
+              "start": 7.34227,
+              "end": 7.46235,
+              "confidence": 0.78
+            }
+          ]
+        },
+        {
+          "text": "Yo muy bien.",
+          "language": "es",
+          "start": 8.28292,
+          "end": 8.863330000000001,
+          "channel": 0,
+          "speaker": 0,
+          "words": [
+            {
+              "word": " Yo",
+              "start": 8.28292,
+              "end": 8.40301,
+              "confidence": 0.92
+            },
+            {
+              "word": " muy",
+              "start": 8.44303,
+              "end": 8.56312,
+              "confidence": 0.94
+            },
+            {
+              "word": " bien.",
+              "start": 8.60315,
+              "end": 8.863330000000001,
+              "confidence": 0.97
+            }
+          ]
+        },
+        {
+          "text": "\u00bfQu\u00e9 has hecho ayer?",
+          "language": "es",
+          "start": 9.84401,
+          "end": 10.56451,
+          "channel": 0,
+          "speaker": 0,
+          "words": [
+            {
+              "word": " \u00bfQu\u00e9",
+              "start": 9.84401,
+              "end": 9.96409,
+              "confidence": 0.97
+            },
+            {
+              "word": " has",
+              "start": 9.94408,
+              "end": 10.06416,
+              "confidence": 0.87
+            },
+            {
+              "word": " hecho",
+              "start": 10.08418,
+              "end": 10.2643,
+              "confidence": 0.8
+            },
+            {
+              "word": " ayer?",
+              "start": 10.32435,
+              "end": 10.56451,
+              "confidence": 0.95
+            }
+          ]
+        },
+        {
+          "text": "Pues ayer estuve trabajando todo el d\u00eda.",
+          "language": "es",
+          "start": 11.90545,
+          "end": 13.72672,
+          "channel": 0,
+          "speaker": 1,
+          "words": [
+            {
+              "word": " Pues",
+              "start": 11.90545,
+              "end": 12.04555,
+              "confidence": 0.99
+            },
+            {
+              "word": " ayer",
+              "start": 12.08557,
+              "end": 12.28571,
+              "confidence": 0.94
+            },
+            {
+              "word": " estuve",
+              "start": 12.32574,
+              "end": 12.56591,
+              "confidence": 0.96
+            },
+            {
+              "word": " trabajando",
+              "start": 12.60594,
+              "end": 13.16633,
+              "confidence": 1
+            },
+            {
+              "word": " todo",
+              "start": 13.24638,
+              "end": 13.42651,
+              "confidence": 0.98
+            },
+            {
+              "word": " el",
+              "start": 13.44652,
+              "end": 13.54659,
+              "confidence": 0.58
+            },
+            {
+              "word": " d\u00eda.",
+              "start": 13.54659,
+              "end": 13.72672,
+              "confidence": 1
+            }
+          ]
+        },
+        {
+          "text": "Desde que tengo el trabajo nuevo no paro.",
+          "language": "es",
+          "start": 13.80677,
+          "end": 15.72811,
+          "channel": 0,
+          "speaker": 1,
+          "words": [
+            {
+              "word": " Desde",
+              "start": 13.80677,
+              "end": 14.02693,
+              "confidence": 0.99
+            },
+            {
+              "word": " que",
+              "start": 14.04694,
+              "end": 14.16702,
+              "confidence": 0.99
+            },
+            {
+              "word": " tengo",
+              "start": 14.18704,
+              "end": 14.38718,
+              "confidence": 0.98
+            },
+            {
+              "word": " el",
+              "start": 14.38718,
+              "end": 14.48725,
+              "confidence": 0.99
+            },
+            {
+              "word": " trabajo",
+              "start": 14.50726,
+              "end": 14.86751,
+              "confidence": 0.97
+            },
+            {
+              "word": " nuevo",
+              "start": 14.96758,
+              "end": 15.22776,
+              "confidence": 0.98
+            },
+            {
+              "word": " no",
+              "start": 15.26779,
+              "end": 15.38787,
+              "confidence": 0.99
+            },
+            {
+              "word": " paro.",
+              "start": 15.44792,
+              "end": 15.72811,
+              "confidence": 0.97
+            }
+          ]
+        },
+        {
+          "text": "Tengo muchas cosas que hacer y a veces pienso que no me da tiempo.",
+          "language": "es",
+          "start": 15.76814,
+          "end": 18.67016,
+          "channel": 0,
+          "speaker": 1,
+          "words": [
+            {
+              "word": " Tengo",
+              "start": 15.76814,
+              "end": 15.94826,
+              "confidence": 1
+            },
+            {
+              "word": " muchas",
+              "start": 15.98829,
+              "end": 16.22846,
+              "confidence": 1
+            },
+            {
+              "word": " cosas",
+              "start": 16.26849,
+              "end": 16.528669999999998,
+              "confidence": 1
+            },
+            {
+              "word": " que",
+              "start": 16.528669999999998,
+              "end": 16.64875,
+              "confidence": 0.8
+            },
+            {
+              "word": " hacer",
+              "start": 16.64875,
+              "end": 16.908929999999998,
+              "confidence": 0.85
+            },
+            {
+              "word": " y",
+              "start": 16.94896,
+              "end": 17.06905,
+              "confidence": 0.89
+            },
+            {
+              "word": " a",
+              "start": 17.08906,
+              "end": 17.209139999999998,
+              "confidence": 0.95
+            },
+            {
+              "word": " veces",
+              "start": 17.22916,
+              "end": 17.50935,
+              "confidence": 1
+            },
+            {
+              "word": " pienso",
+              "start": 17.56939,
+              "end": 17.80956,
+              "confidence": 0.94
+            },
+            {
+              "word": " que",
+              "start": 17.82958,
+              "end": 17.94966,
+              "confidence": 0.95
+            },
+            {
+              "word": " no",
+              "start": 17.92965,
+              "end": 18.02972,
+              "confidence": 0.96
+            },
+            {
+              "word": " me",
+              "start": 18.0097,
+              "end": 18.12979,
+              "confidence": 0.83
+            },
+            {
+              "word": " da",
+              "start": 18.12979,
+              "end": 18.24987,
+              "confidence": 0.84
+            },
+            {
+              "word": " tiempo.",
+              "start": 18.30991,
+              "end": 18.67016,
+              "confidence": 0.99
+            }
+          ]
+        },
+        {
+          "text": "Qu\u00e9 l\u00edo.",
+          "language": "es",
+          "start": 19.71089,
+          "end": 20.15119,
+          "channel": 0,
+          "speaker": 0,
+          "words": [
+            {
+              "word": " Qu\u00e9",
+              "start": 19.71089,
+              "end": 19.83097,
+              "confidence": 0.94
+            },
+            {
+              "word": " l\u00edo.",
+              "start": 19.89101,
+              "end": 20.15119,
+              "confidence": 0.98
+            }
+          ]
+        },
+        {
+          "text": "\u00bfY qu\u00e9 est\u00e1s haciendo exactamente?",
+          "language": "es",
+          "start": 20.33132,
+          "end": 21.69227,
+          "channel": 0,
+          "speaker": 0,
+          "words": [
+            {
+              "word": " \u00bfY",
+              "start": 20.33132,
+              "end": 20.4514,
+              "confidence": 0.99
+            },
+            {
+              "word": " qu\u00e9",
+              "start": 20.43139,
+              "end": 20.55147,
+              "confidence": 0.98
+            },
+            {
+              "word": " est\u00e1s",
+              "start": 20.5915,
+              "end": 20.77163,
+              "confidence": 0.98
+            },
+            {
+              "word": " haciendo",
+              "start": 20.81165,
+              "end": 21.09185,
+              "confidence": 0.95
+            },
+            {
+              "word": " exactamente?",
+              "start": 21.13188,
+              "end": 21.69227,
+              "confidence": 0.95
+            }
+          ]
+        },
+        {
+          "text": "Trabajo de periodista en una compa\u00f1\u00eda espa\u00f1ola para el diario ASS.",
+          "language": "es",
+          "start": 22.77302,
+          "end": 28.45698,
+          "channel": 0,
+          "speaker": 1,
+          "words": [
+            {
+              "word": " Trabajo",
+              "start": 22.77302,
+              "end": 23.27337,
+              "confidence": 0.98
+            },
+            {
+              "word": " de",
+              "start": 24.09394,
+              "end": 24.21403,
+              "confidence": 0.86
+            },
+            {
+              "word": " periodista",
+              "start": 25.615,
+              "end": 26.25545,
+              "confidence": 0.99
+            },
+            {
+              "word": " en",
+              "start": 26.29548,
+              "end": 26.41556,
+              "confidence": 0.99
+            },
+            {
+              "word": " una",
+              "start": 26.43557,
+              "end": 26.55566,
+              "confidence": 0.99
+            },
+            {
+              "word": " compa\u00f1\u00eda",
+              "start": 26.6157,
+              "end": 26.99596,
+              "confidence": 0.97
+            },
+            {
+              "word": " espa\u00f1ola",
+              "start": 27.05601,
+              "end": 27.55635,
+              "confidence": 0.99
+            },
+            {
+              "word": " para",
+              "start": 27.67644,
+              "end": 27.81654,
+              "confidence": 0.99
+            },
+            {
+              "word": " el",
+              "start": 27.81654,
+              "end": 27.93662,
+              "confidence": 0.93
+            },
+            {
+              "word": " diario",
+              "start": 27.93662,
+              "end": 28.21681,
+              "confidence": 0.99
+            },
+            {
+              "word": " ASS.",
+              "start": 28.29687,
+              "end": 28.45698,
+              "confidence": 0.64
+            }
+          ]
+        },
+        {
+          "text": "Qu\u00e9 guay.",
+          "language": "es",
+          "start": 29.3376,
+          "end": 29.75789,
+          "channel": 0,
+          "speaker": 0,
+          "words": [
+            {
+              "word": " Qu\u00e9",
+              "start": 29.3376,
+              "end": 29.45768,
+              "confidence": 0.97
+            },
+            {
+              "word": " guay.",
+              "start": 29.49771,
+              "end": 29.75789,
+              "confidence": 0.77
+            }
+          ]
+        },
+        {
+          "text": "\u00bfY cu\u00e1nto tiempo trabajas en esta trabajo?",
+          "language": "es",
+          "start": 30.626,
+          "end": 32.62786,
+          "channel": 0,
+          "speaker": 0,
+          "words": [
+            {
+              "word": " \u00bfY",
+              "start": 30.626,
+              "end": 30.726090000000003,
+              "confidence": 0
+            },
+            {
+              "word": " cu\u00e1nto",
+              "start": 30.74611,
+              "end": 30.96632,
+              "confidence": 0.33
+            },
+            {
+              "word": " tiempo",
+              "start": 30.986340000000002,
+              "end": 31.18652,
+              "confidence": 0
+            },
+            {
+              "word": " trabajas",
+              "start": 31.18652,
+              "end": 31.747040000000002,
+              "confidence": 0.62
+            },
+            {
+              "word": " en",
+              "start": 31.76706,
+              "end": 32.04732,
+              "confidence": 0.49
+            },
+            {
+              "word": " esta",
+              "start": 32.1274,
+              "end": 32.24751,
+              "confidence": 0.49
+            },
+            {
+              "word": " trabajo?",
+              "start": 32.24751,
+              "end": 32.62786,
+              "confidence": 0.43
+            }
+          ]
+        },
+        {
+          "text": "Bueno,",
+          "language": "es",
+          "start": 33.3085,
+          "end": 33.66883,
+          "channel": 0,
+          "speaker": 1,
+          "words": [
+            {
+              "word": " Bueno,",
+              "start": 33.3085,
+              "end": 33.66883,
+              "confidence": 0.4
+            }
+          ]
+        },
+        {
+          "text": "me he quedado hace poco,",
+          "language": "es",
+          "start": 33.66883,
+          "end": 35.07013,
+          "channel": 0,
+          "speaker": 1,
+          "words": [
+            {
+              "word": " me",
+              "start": 33.66883,
+              "end": 33.76892,
+              "confidence": 0
+            },
+            {
+              "word": " he",
+              "start": 33.74891,
+              "end": 33.86902,
+              "confidence": 0
+            },
+            {
+              "word": " quedado",
+              "start": 33.90905,
+              "end": 34.42954,
+              "confidence": 0.55
+            },
+            {
+              "word": " hace",
+              "start": 34.48959,
+              "end": 34.729820000000004,
+              "confidence": 0.04
+            },
+            {
+              "word": " poco,",
+              "start": 34.78987,
+              "end": 35.07013,
+              "confidence": 0.5
+            }
+          ]
+        },
+        {
+          "text": "pero me gusta mucho la trabajo,",
+          "language": "es",
+          "start": 35.15021,
+          "end": 37.112030000000004,
+          "channel": 0,
+          "speaker": 1,
+          "words": [
+            {
+              "word": " pero",
+              "start": 35.15021,
+              "end": 35.5706,
+              "confidence": 0.49
+            },
+            {
+              "word": " me",
+              "start": 35.63066,
+              "end": 35.75077,
+              "confidence": 0.01
+            },
+            {
+              "word": " gusta",
+              "start": 35.770790000000005,
+              "end": 36.091080000000005,
+              "confidence": 0.23
+            },
+            {
+              "word": " mucho",
+              "start": 36.091080000000005,
+              "end": 36.47144,
+              "confidence": 0.49
+            },
+            {
+              "word": " la",
+              "start": 36.47144,
+              "end": 36.531490000000005,
+              "confidence": 0.03
+            },
+            {
+              "word": " trabajo,",
+              "start": 36.531490000000005,
+              "end": 37.112030000000004,
+              "confidence": 0.34
+            }
+          ]
+        },
+        {
+          "text": "me siento muy bien,",
+          "language": "es",
+          "start": 37.15207,
+          "end": 37.91278,
+          "channel": 0,
+          "speaker": 1,
+          "words": [
+            {
+              "word": " me",
+              "start": 37.15207,
+              "end": 37.27218,
+              "confidence": 0.48
+            },
+            {
+              "word": " siento",
+              "start": 37.31222,
+              "end": 37.69257,
+              "confidence": 0.46
+            },
+            {
+              "word": " muy",
+              "start": 37.69257,
+              "end": 37.79267,
+              "confidence": 0.18
+            },
+            {
+              "word": " bien,",
+              "start": 37.79267,
+              "end": 37.91278,
+              "confidence": 0.23
+            }
+          ]
+        },
+        {
+          "text": "hago lo que me gusta.",
+          "language": "es",
+          "start": 37.97283,
+          "end": 41.47609,
+          "channel": 0,
+          "speaker": 0,
+          "words": [
+            {
+              "word": " hago",
+              "start": 37.97283,
+              "end": 38.23308,
+              "confidence": 0.23
+            },
+            {
+              "word": " lo",
+              "start": 38.27311,
+              "end": 38.433260000000004,
+              "confidence": 0
+            },
+            {
+              "word": " que",
+              "start": 41.19583,
+              "end": 41.31594,
+              "confidence": 0
+            },
+            {
+              "word": " me",
+              "start": 41.31594,
+              "end": 41.376000000000005,
+              "confidence": 0.48
+            },
+            {
+              "word": " gusta.",
+              "start": 41.376000000000005,
+              "end": 41.47609,
+              "confidence": 0.2
+            }
+          ]
+        },
+        {
+          "text": "\u00bfY no te asusta la Rusia?",
+          "language": "es",
+          "start": 41.47609,
+          "end": 42.37693,
+          "channel": 0,
+          "speaker": 0,
+          "words": [
+            {
+              "word": " \u00bfY",
+              "start": 41.47609,
+              "end": 41.49611,
+              "confidence": 0
+            },
+            {
+              "word": " no",
+              "start": 41.49611,
+              "end": 41.55617,
+              "confidence": 0.01
+            },
+            {
+              "word": " te",
+              "start": 41.53615,
+              "end": 41.63624,
+              "confidence": 0
+            },
+            {
+              "word": " asusta",
+              "start": 41.65626,
+              "end": 41.85645,
+              "confidence": 0.33
+            },
+            {
+              "word": " la",
+              "start": 41.85645,
+              "end": 41.93652,
+              "confidence": 0
+            },
+            {
+              "word": " Rusia?",
+              "start": 41.93652,
+              "end": 42.37693,
+              "confidence": 0.59
+            }
+          ]
+        },
+        {
+          "text": "No,",
+          "language": "es",
+          "start": 43.47796,
+          "end": 43.658120000000004,
+          "channel": 0,
+          "speaker": 1,
+          "words": [
+            {
+              "word": " No,",
+              "start": 43.47796,
+              "end": 43.658120000000004,
+              "confidence": 0.47
+            }
+          ]
+        },
+        {
+          "text": "me gusta mucho vivir aqu\u00ed y me gusta mucho el clima,",
+          "language": "es",
+          "start": 44.23866,
+          "end": 50.00403,
+          "channel": 0,
+          "speaker": 1,
+          "words": [
+            {
+              "word": " me",
+              "start": 44.23866,
+              "end": 44.35877,
+              "confidence": 0.49
+            },
+            {
+              "word": " gusta",
+              "start": 44.39881,
+              "end": 44.61902,
+              "confidence": 0
+            },
+            {
+              "word": " mucho",
+              "start": 44.63904,
+              "end": 45.05943,
+              "confidence": 0.48
+            },
+            {
+              "word": " vivir",
+              "start": 45.09946,
+              "end": 45.43978,
+              "confidence": 0.2
+            },
+            {
+              "word": " aqu\u00ed",
+              "start": 45.519850000000005,
+              "end": 45.72004,
+              "confidence": 0.46
+            },
+            {
+              "word": " y",
+              "start": 47.52172,
+              "end": 47.64183,
+              "confidence": 0
+            },
+            {
+              "word": " me",
+              "start": 47.64183,
+              "end": 47.76194,
+              "confidence": 0.49
+            },
+            {
+              "word": " gusta",
+              "start": 47.96213,
+              "end": 48.54267,
+              "confidence": 0.2
+            },
+            {
+              "word": " mucho",
+              "start": 49.043130000000005,
+              "end": 49.343410000000006,
+              "confidence": 0.63
+            },
+            {
+              "word": " el",
+              "start": 49.52358,
+              "end": 49.64369000000001,
+              "confidence": 0.02
+            },
+            {
+              "word": " clima,",
+              "start": 49.72377,
+              "end": 50.00403,
+              "confidence": 0.79
+            }
+          ]
+        },
+        {
+          "text": "la gente,",
+          "language": "es",
+          "start": 50.08410000000001,
+          "end": 50.58457,
+          "channel": 0,
+          "speaker": 1,
+          "words": [
+            {
+              "word": " la",
+              "start": 50.08410000000001,
+              "end": 50.20421,
+              "confidence": 0.66
+            },
+            {
+              "word": " gente,",
+              "start": 50.24425,
+              "end": 50.58457,
+              "confidence": 0.18
+            }
+          ]
+        },
+        {
+          "text": "todo es muy bien,",
+          "language": "es",
+          "start": 50.64462,
+          "end": 51.36529,
+          "channel": 0,
+          "speaker": 1,
+          "words": [
+            {
+              "word": " todo",
+              "start": 50.64462,
+              "end": 50.86483,
+              "confidence": 0
+            },
+            {
+              "word": " es",
+              "start": 50.88485,
+              "end": 51.00496,
+              "confidence": 0.5
+            },
+            {
+              "word": " muy",
+              "start": 51.00496,
+              "end": 51.12507,
+              "confidence": 0.22
+            },
+            {
+              "word": " bien,",
+              "start": 51.12507,
+              "end": 51.36529,
+              "confidence": 0.25
+            }
+          ]
+        },
+        {
+          "text": "el lugar es muy bien.",
+          "language": "es",
+          "start": 51.36529,
+          "end": 52.126000000000005,
+          "channel": 0,
+          "speaker": 1,
+          "words": [
+            {
+              "word": " el",
+              "start": 51.36529,
+              "end": 51.4854,
+              "confidence": 0
+            },
+            {
+              "word": " lugar",
+              "start": 51.4854,
+              "end": 51.66557,
+              "confidence": 0.2
+            },
+            {
+              "word": " es",
+              "start": 51.70561,
+              "end": 51.845740000000006,
+              "confidence": 0.5
+            },
+            {
+              "word": " muy",
+              "start": 51.88578,
+              "end": 52.00589,
+              "confidence": 0.23
+            },
+            {
+              "word": " bien.",
+              "start": 52.00589,
+              "end": 52.126000000000005,
+              "confidence": 0
+            }
+          ]
+        },
+        {
+          "text": "\u00bfY d\u00f3nde te ves en el futuro,",
+          "language": "es",
+          "start": 54.05801,
+          "end": 56.23877,
+          "channel": 0,
+          "speaker": 0,
+          "words": [
+            {
+              "word": " \u00bfY",
+              "start": 54.05801,
+              "end": 54.17806,
+              "confidence": 0
+            },
+            {
+              "word": " d\u00f3nde",
+              "start": 54.17806,
+              "end": 54.47816,
+              "confidence": 0.42
+            },
+            {
+              "word": " te",
+              "start": 54.65822,
+              "end": 54.77827,
+              "confidence": 0.45
+            },
+            {
+              "word": " ves",
+              "start": 54.83829,
+              "end": 55.03836,
+              "confidence": 0.34
+            },
+            {
+              "word": " en",
+              "start": 55.11838,
+              "end": 55.678580000000004,
+              "confidence": 0.9
+            },
+            {
+              "word": " el",
+              "start": 55.71859,
+              "end": 55.83864,
+              "confidence": 0.49
+            },
+            {
+              "word": " futuro,",
+              "start": 55.83864,
+              "end": 56.23877,
+              "confidence": 0.83
+            }
+          ]
+        },
+        {
+          "text": "como cinco a\u00f1os de ahora?",
+          "language": "es",
+          "start": 56.23877,
+          "end": 58.55958,
+          "channel": 0,
+          "speaker": 0,
+          "words": [
+            {
+              "word": " como",
+              "start": 56.23877,
+              "end": 56.45885,
+              "confidence": 0
+            },
+            {
+              "word": " cinco",
+              "start": 56.51887,
+              "end": 57.19911,
+              "confidence": 0.37
+            },
+            {
+              "word": " a\u00f1os",
+              "start": 57.23912,
+              "end": 57.47921,
+              "confidence": 0.47
+            },
+            {
+              "word": " de",
+              "start": 57.47921,
+              "end": 57.59925,
+              "confidence": 0
+            },
+            {
+              "word": " ahora?",
+              "start": 58.23947,
+              "end": 58.55958,
+              "confidence": 0.15
+            }
+          ]
+        },
+        {
+          "text": "Bueno,",
+          "language": "es",
+          "start": 58.57959,
+          "end": 58.81967,
+          "channel": 0,
+          "speaker": 1,
+          "words": [
+            {
+              "word": " Bueno,",
+              "start": 58.57959,
+              "end": 58.81967,
+              "confidence": 0.2
+            }
+          ]
+        },
+        {
+          "text": "me gustar\u00eda empezar mi nueva empresa y empezar a construir una nueva startup que tengo en mente,",
+          "language": "es",
+          "start": 58.81967,
+          "end": 64.68172,
+          "channel": 0,
+          "speaker": 1,
+          "words": [
+            {
+              "word": " me",
+              "start": 58.81967,
+              "end": 58.8997,
+              "confidence": 0.59
+            },
+            {
+              "word": " gustar\u00eda",
+              "start": 58.91971,
+              "end": 59.43989,
+              "confidence": 0.5
+            },
+            {
+              "word": " empezar",
+              "start": 59.459900000000005,
+              "end": 59.61995,
+              "confidence": 0.1
+            },
+            {
+              "word": " mi",
+              "start": 59.61995,
+              "end": 59.84003,
+              "confidence": 0.49
+            },
+            {
+              "word": " nueva",
+              "start": 59.96007,
+              "end": 60.20016,
+              "confidence": 0.28
+            },
+            {
+              "word": " empresa",
+              "start": 60.28018,
+              "end": 60.58029,
+              "confidence": 0.27
+            },
+            {
+              "word": " y",
+              "start": 60.58029,
+              "end": 60.70033,
+              "confidence": 0.98
+            },
+            {
+              "word": " empezar",
+              "start": 60.86039,
+              "end": 61.44059,
+              "confidence": 0.01
+            },
+            {
+              "word": " a",
+              "start": 61.66067,
+              "end": 61.78071,
+              "confidence": 0.05
+            },
+            {
+              "word": " construir",
+              "start": 61.80071,
+              "end": 62.22086,
+              "confidence": 0.32
+            },
+            {
+              "word": " una",
+              "start": 62.30089,
+              "end": 62.72104,
+              "confidence": 0.61
+            },
+            {
+              "word": " nueva",
+              "start": 62.82107,
+              "end": 63.161190000000005,
+              "confidence": 0.22
+            },
+            {
+              "word": " startup",
+              "start": 63.36126,
+              "end": 63.7614,
+              "confidence": 0.94
+            },
+            {
+              "word": " que",
+              "start": 63.78141,
+              "end": 63.90145,
+              "confidence": 0
+            },
+            {
+              "word": " tengo",
+              "start": 63.92145,
+              "end": 64.14153,
+              "confidence": 0.2
+            },
+            {
+              "word": " en",
+              "start": 64.20155,
+              "end": 64.32159,
+              "confidence": 0.93
+            },
+            {
+              "word": " mente,",
+              "start": 64.38161,
+              "end": 64.68172,
+              "confidence": 0.4
+            }
+          ]
+        },
+        {
+          "text": "pero todav\u00eda tengo algunas ideas.",
+          "language": "es",
+          "start": 64.68172,
+          "end": 65.80211,
+          "channel": 0,
+          "speaker": 1,
+          "words": [
+            {
+              "word": " pero",
+              "start": 64.68172,
+              "end": 64.80176,
+              "confidence": 0
+            },
+            {
+              "word": " todav\u00eda",
+              "start": 64.82177,
+              "end": 65.00183,
+              "confidence": 0.28
+            },
+            {
+              "word": " tengo",
+              "start": 65.00183,
+              "end": 65.16189,
+              "confidence": 0.28
+            },
+            {
+              "word": " algunas",
+              "start": 65.18189,
+              "end": 65.44198,
+              "confidence": 0.13
+            },
+            {
+              "word": " ideas.",
+              "start": 65.54202000000001,
+              "end": 65.80211,
+              "confidence": 0.96
+            }
+          ]
+        },
+        {
+          "text": "Y finalmente,",
+          "language": "es",
+          "start": 65.96217,
+          "end": 70.56377,
+          "channel": 0,
+          "speaker": 0,
+          "words": [
+            {
+              "word": " Y",
+              "start": 65.96217,
+              "end": 66.08221,
+              "confidence": 0.01
+            },
+            {
+              "word": " finalmente,",
+              "start": 69.94355,
+              "end": 70.56377,
+              "confidence": 0.88
+            }
+          ]
+        },
+        {
+          "text": "hay que hablar en franc\u00e9s.",
+          "language": "es",
+          "start": 70.60379,
+          "end": 71.96426,
+          "channel": 0,
+          "speaker": 0,
+          "words": [
+            {
+              "word": " hay",
+              "start": 70.60379,
+              "end": 70.78385,
+              "confidence": 0.27
+            },
+            {
+              "word": " que",
+              "start": 70.78385,
+              "end": 70.88388,
+              "confidence": 0.84
+            },
+            {
+              "word": " hablar",
+              "start": 70.88388,
+              "end": 71.16398000000001,
+              "confidence": 0.34
+            },
+            {
+              "word": " en",
+              "start": 71.224,
+              "end": 71.36405,
+              "confidence": 0.98
+            },
+            {
+              "word": " franc\u00e9s.",
+              "start": 71.40406,
+              "end": 71.96426,
+              "confidence": 0.71
+            }
+          ]
+        },
+        {
+          "text": "As\u00ed que s\u00e9 que no hablas franc\u00e9s,",
+          "language": "es",
+          "start": 72.88458,
+          "end": 74.3651,
+          "channel": 0,
+          "speaker": 0,
+          "words": [
+            {
+              "word": " As\u00ed",
+              "start": 72.88458,
+              "end": 73.06464,
+              "confidence": 0.01
+            },
+            {
+              "word": " que",
+              "start": 73.12466,
+              "end": 73.24471,
+              "confidence": 0.32
+            },
+            {
+              "word": " s\u00e9",
+              "start": 73.26471000000001,
+              "end": 73.38476,
+              "confidence": 0.58
+            },
+            {
+              "word": " que",
+              "start": 73.40476,
+              "end": 73.5248,
+              "confidence": 0.82
+            },
+            {
+              "word": " no",
+              "start": 73.5248,
+              "end": 73.64485,
+              "confidence": 0
+            },
+            {
+              "word": " hablas",
+              "start": 73.66485,
+              "end": 73.92493999999999,
+              "confidence": 0.59
+            },
+            {
+              "word": " franc\u00e9s,",
+              "start": 73.96496,
+              "end": 74.3651,
+              "confidence": 0.73
+            }
+          ]
+        },
+        {
+          "text": "pero puedes decirme un palabra para terminar la conversaci\u00f3n.",
+          "language": "es",
+          "start": 74.40511000000001,
+          "end": 78.02637,
+          "channel": 0,
+          "speaker": 0,
+          "words": [
+            {
+              "word": " pero",
+              "start": 74.40511000000001,
+              "end": 74.64519,
+              "confidence": 0
+            },
+            {
+              "word": " puedes",
+              "start": 74.68521,
+              "end": 74.88528,
+              "confidence": 0.32
+            },
+            {
+              "word": " decirme",
+              "start": 74.88528,
+              "end": 75.08535,
+              "confidence": 0.3
+            },
+            {
+              "word": " un",
+              "start": 75.08535,
+              "end": 75.16538,
+              "confidence": 0.13
+            },
+            {
+              "word": " palabra",
+              "start": 75.18538000000001,
+              "end": 75.98566,
+              "confidence": 0.15
+            },
+            {
+              "word": " para",
+              "start": 76.14572,
+              "end": 76.42582,
+              "confidence": 0
+            },
+            {
+              "word": " terminar",
+              "start": 76.42582,
+              "end": 77.2461,
+              "confidence": 0.5
+            },
+            {
+              "word": " la",
+              "start": 77.26611,
+              "end": 77.38615,
+              "confidence": 0.98
+            },
+            {
+              "word": " conversaci\u00f3n.",
+              "start": 77.40616,
+              "end": 78.02637,
+              "confidence": 0.91
+            }
+          ]
+        },
+        {
+          "text": "S\u00ed,",
+          "language": "es",
+          "start": 79.24680000000001,
+          "end": 79.38685,
+          "channel": 0,
+          "speaker": 1,
+          "words": [
+            {
+              "word": " S\u00ed,",
+              "start": 79.24680000000001,
+              "end": 79.38685,
+              "confidence": 0.29
+            }
+          ]
+        },
+        {
+          "text": "gracias.",
+          "language": "es",
+          "start": 80.4072,
+          "end": 82.20783,
+          "channel": 0,
+          "speaker": 1,
+          "words": [
+            {
+              "word": " gracias.",
+              "start": 80.4072,
+              "end": 82.20783,
+              "confidence": 0.01
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
