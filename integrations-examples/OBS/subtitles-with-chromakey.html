@@ -264,8 +264,11 @@
             mimeType: "audio/wav",
             recorderType: RecordRTC.StereoAudioRecorder,
             timeSlice: 100,
-            ondataavailable(blob) {
-              socket?.sendMessage(blob);
+            async ondataavailable(blob) {
+              const buffer = await blob.arrayBuffer();
+              // Remove WAV header
+              const modifiedBuffer = buffer.slice(44);
+              socket?.sendMessage(modifiedBuffer);
             },
             sampleRate: SAMPLE_RATE,
             desiredSampRate: SAMPLE_RATE,
