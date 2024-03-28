@@ -27,7 +27,7 @@ You can customize the API call by adding parameters such as your API token, sour
 Here's an example of a URL constructed with various parameters:
 
 ```
-https://subtitles.gladia.io/subtitles-3.html?token=YOUR_API_KEY&source_language=english&font_size=40&font_name=Comic%20Sans%20MS&background_color=00ff00&text_color=ffffff
+https://subtitles.gladia.io/subtitles-3.html?token=YOUR_API_KEY&source_language=english&font_size=40&font_name=Comic%20Sans%20MS&background_color=00ff00&text_color=ffffff&endpoint=5
 ```
 
 ### Parameters:
@@ -39,7 +39,7 @@ https://subtitles.gladia.io/subtitles-3.html?token=YOUR_API_KEY&source_language=
 - `font_name`: The font family for the subtitles (e.g., "Arial").
 - `background_color`: The background color of the subtitles in hex format (e.g., "000000" for black).
 - `text_color`: The color of the text for the subtitles in hex format (e.g., "ffffff" for white).
-- `endpointing`: The endpointing duration in seconds. (Specifies the endpointing duration in milliseconds. i.e. the duration of silence which will cause the utterance to be considered finished and a result of type ‘final’ to be sent.)
+- `endpointing`: The endpointing duration in seconds. (Specifies the endpointing duration in milliseconds. i.e. the duration of silence which will cause the utterance to be considered finished and a result of type ‘final’ to be sent.) (recommended 5 for 5ms for conferences)
 - `max_lines`: The maximum number of lines for subtitles.
 - `line_height`: The line height for subtitles.
 - `scroll_speed`: The speed at which the subtitles scroll in milliseconds per pixel.
