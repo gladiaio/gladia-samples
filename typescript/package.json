@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "license": "MIT",
   "dependencies": {
-    "axios": "^1.4.0",
+    "axios": "^1.6.0",
     "form-data": "^4.0.0",
     "mic": "^2.1.2",
-    "ws": "^8.14.2"
+    "ws": "^8.17.1"
   },
   "devDependencies": {
     "@types/form-data": "^2.5.0",
