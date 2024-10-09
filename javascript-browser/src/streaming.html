@@ -118,12 +118,13 @@
         const media = await navigator.mediaDevices.getUserMedia({
           audio: true
         });
-        // Stop all the tracks now that we have the user permission
-        media.getTracks().forEach((track) => track.stop());
 
         const audioDevices = await navigator.mediaDevices
           .enumerateDevices()
           .then((devices) => devices.filter((d) => d.kind === 'audioinput' && d.deviceId));
+
+        // Stop all the tracks now that we have the user permission
+        media.getTracks().forEach((track) => track.stop());
 
         if (!audioDevices.length) {
           window.alert('No audio input device found');
