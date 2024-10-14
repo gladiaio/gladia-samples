@@ -6,7 +6,7 @@ Then, change your gladia keys in `pre-recorded/transcription.php`
 
 Documentation can be found here:
 
-https://docs.gladia.io/reference/pre-recorded
+https://docs.gladia.io/api-reference/pre-recorded-flow
 
 ### run
 

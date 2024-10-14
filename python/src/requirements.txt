@@ -1,2 +1,4 @@
-websockets==11.0.3
-Requests==2.31.0
+PyAudio~=0.2.11
+python-dotenv~=1.0.1
+requests~=2.32.0
+websockets~=13.1

@@ -1,5 +1,6 @@
-import requests
 import os
+
+import requests
 
 headers = {
     "x-gladia-key": "",  # Replace with your Gladia Token
@@ -28,7 +29,7 @@ with open(file_path, "rb") as f:  # Open the file
         ),  # Send it. Here it represents: (filename: string, file: BufferReader, fileMimeType: string)
         # You can also send an URL for your audio file. Make sure it's the direct link and publicly accessible.
         # 'audio_url': (None, 'http://files.gladia.io/example/audio-transcription/split_infinity.wav'),
-        # Then you can pass any parameters you wants. Please see: https://docs.gladia.io/reference/pre-recorded
+        # Then you can pass any parameters you wants. Please see: https://docs.gladia.io/api-reference/pre-recorded-flow
         "toggle_diarization": (None, True),
     }
     print("- Sending request to Gladia API...")

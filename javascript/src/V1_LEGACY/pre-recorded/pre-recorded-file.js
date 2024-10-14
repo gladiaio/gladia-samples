@@ -15,7 +15,7 @@ const headers = {
     "x-gladia-key": gladiaKey,
     accept: "application/json", // Accept json as a response, but we are sending a Multipart FormData
 };
-const file_path = "../data/anna-and-sasha-16000.wav"; // Change with your file path
+const file_path = "../data/long.wav"; // Change with your file path
 fs.access(file_path, fs.constants.F_OK, (err) => {
     if (err) {
         console.log("- File does not exist");

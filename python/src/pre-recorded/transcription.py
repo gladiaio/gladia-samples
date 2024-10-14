@@ -1,6 +1,7 @@
-import requests
 import os
 from time import sleep
+
+import requests
 
 
 def make_request(url, headers, method="GET", data=None, files=None):
@@ -47,7 +48,7 @@ data = {
     "diarization": True,
 }
 # You can also send an URL directly without uploading it. Make sure it's the direct link and publicly accessible.
-# For any parameters, please see: https://docs.gladia.io/reference/pre-recorded
+# For any parameters, please see: https://docs.gladia.io/api-reference/pre-recorded-flow
 
 headers["Content-Type"] = "application/json"
 

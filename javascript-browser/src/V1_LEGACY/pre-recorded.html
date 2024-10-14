@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -72,7 +72,7 @@
       </div>
       <button type="submit">Submit</button>
     </form>
-    <div id="result" style="display: none;"></div>
+    <div id="result" style="display: none"></div>
 
     <script>
       /** @type {HTMLFormElement} */
@@ -115,7 +115,7 @@
           newFormData.set("audio_url", audioUrl);
         }
         // You can add more parameters here if you want
-        // cf https://docs.gladia.io/reference/pre-recorded
+        // cf https://docs.gladia.io/api-reference/pre-recorded-flow
         // newFormData.set("toggle_diarization", "true");
 
         // We are using the audio endpoint even if audio_url or audio points to a video
@@ -125,9 +125,9 @@
           {
             method: "POST",
             headers: {
-              "X-Gladia-Key": gladiaKey
+              "X-Gladia-Key": gladiaKey,
             },
-            body: newFormData
+            body: newFormData,
           }
         );
 

@@ -12,7 +12,7 @@ Then, change your gladia keys in `pre-recorded/transcription.py` or `streaming/l
 
 Documentation can be found here:
 
-https://docs.gladia.io/reference/pre-recorded
+https://docs.gladia.io/api-reference/pre-recorded-flow
 
 ### run
 
@@ -26,87 +26,40 @@ cd pre-recorded && python transcription.py
 
 Documentation can be found here:
 
-https://docs.gladia.io/reference/live-audio
+https://docs.gladia.io/api-reference/live-flow
 
 ### run
 
-To run a streaming example you have to:
+To run a streaming example you have to first install the dependencies located in `src/requirements.txt`. You can use a virtual environment for this.
+
+Then run the following python file:
 
 ```bash
-cd streaming && python live.py
+python src/streaming/live-from-file.py <gladia_key>
 ```
 
-Using bytes as frames format:
-```bash
-cd streaming && python live-binary.py
-```
-
-Note: You can get your gladia key from app.gladia.io
+Note: You can get your Gladia key by following the [documentation](https://docs.gladia.io/chapters/get-started/pages/configure-account)
 
 When running this example you should get an output like this one:
 
+```
+################ Begin session ################
+
+00:00:01.124 --> 00:00:04.588 | Hola Sasha, ¿qué tal? Hace mucho tiempo que no nos vemos. ¿Cómo vas?
+00:00:05.128 --> 00:00:10.707 | Hola, ¿qué tal? Yo estoy muy bien. ¿Qué tal estás tú? Yo muy bien. ¿Qué has hecho ayer?
+00:00:11.788 --> 00:00:18.836 | Pues ayer estuve trabajando todo el día, desde que tengo el trabajo nuevo no paro, tengo muchas cosas que hacer y a veces pienso que no me da tiempo.
+00:00:19.599 --> 00:00:28.635 | ¿Qué lío? ¿Y qué estás haciendo exactamente? Trabajo... de periodista en una compañía española para el diario AS.
+00:00:29.240 --> 00:00:38.596 | Как долго ты работаешь на этой работе? Ну, устроилась недавно, но работа очень нравится, я чувствую прекрасно, делаю то, что мне нравится.
+00:00:39.700 --> 00:00:52.164 | И ты не скучаешь по России? Нет. Мне очень нравится. Здесь жить, и мне очень нравится климат, люди, всё прекрасно, место прекрасное.
+00:00:53.924 --> 00:00:57.740 | And where do you see yourself in the future, like five years from now?
+00:00:58.120 --> 00:01:06.384 | Well, I would like to start off my new company and start building a new startup that I have in mind, but that's still some ideas that I have.
+00:01:08.592 --> 00:01:22.691 | Et finalement, il faut qu'on parle en français. Donc je sais que tu parles pas français mais tu peux quand même dire un mot pour finir la conversation. Oui merci, oui.
+
+################ End of session ################
+```
+
+If you want to test it using your microphone, use:
+
 ```bash
-empty ...
-partial:  لا أساعدك
-partial:  Hola, sachet de talle. A ce moment, chute.
-partial:  Hola, es ayer que tal, hace mucho tiempo que no lo...
-partial:  Hola, es ayer que tal, hace mucho tiempo que nos lo sabemos.
-partial:  Hola, es ayer que tal, hace mucho tiempo que nos lo vemos. Como va.
-partial:  Hola, estás aquí tal, hace mucho tiempo que nos lo vemos, como vas?
-final:  Hola Sasha, ¿qué tal? Hace mucho tiempo que no nos vemos. ¿Cómo vas?
-partial:  o la que tal, yo estoy muy...
-partial:  o la que tal, ya estoy muy bien, que tal
-final:  Hola, ¿qué tal? Yo estoy muy bien, ¿qué tal estás tú?
-partial:  Dạm mối biến
-final:  Yo muy bien.
-partial:  Okay.
-partial:  And guess it's right.
-partial:  ¿Qué haces choyer?
-final:  ¿Qué has hecho ayer?
-empty ...
-partial:  pues hay eres tu otro
-partial:  Pues ahí eres tu trabajando.
-partial:  Pues ahí eres tu trabajando Tony.
-partial:  Pues ahí eres tu trabajando todo el día desde...
-partial:  Pues ahí eres tu trabajando todo el día desde que tengo el...
-partial:  Pues ahí eres tu trabajando todo el día desde que tengo el trabajo un nuevo no?
-partial:  Pues ahí eres tu trabajando todo el día desde que tengo el trabajo, no puedo haber o tengo...
-partial:  Pues ahí eres tu trabajando todo el día desde que tengo el trabajo, no puedo no puedo tener muchas cosas cacer.
-partial:  Pues ahí eres tu trabajando todo el día desde que tengo el trabajo, no puedo pagar o tengo muchas cosas cacer y a ver.
-partial:  Pues ahí eres tu vez trabajando todo el día desde que tengo el trabajo, no puedo pagar o tengo muchas cosas cacer y a veces pienso.
-partial:  Pues ahí eres tu vez trabajando todo el día desde que tengo el trabajo, no puedo pagar o tengo muchas cosas cacer y a veces pienso que no me da.
-final:  Pues ayer estuve trabajando todo el día, desde que tengo el trabajo nuevo no paro, tengo muchas cosas que hacer y a veces pienso que no me da tiempo.
-partial:  que al ello y que es...
-partial:  que alío y que esto es haciendo
-partial:  que alío y que esto es haciendo exactamente.
-final:  ¿Qué lío? ¿Y qué estás haciendo exactamente?
-partial:  trabajo
-partial:  trabajo de...
-partial:  trabajo de...
-final:  trabajo de...
-partial:  lista en una con...
-partial:  lista en una compañía española.
-partial:  lista en una compañía española para el diario.
-partial:  lista en una compañía española por el diario Az.
-final:  en una compañía española para el diario AS.
-partial:  Bye bye.
-final:  Que guay.
-partial:  ikan tuh
-partial: いかんとぐてらぼう
-partial:  E cá que tudo que te araboteis
-partial:  И както гетеработъя ще не е терапа?
-partial:  I kak to gati raboteš nejte raboteš.
-final:  И как долго ты работаешь на этой работе?
-partial:  through.
-partial:  Устроилась недавно.
-partial:  Устроилась недавно, но...
-partial:  Устроилась недавно на работу.
-partial:  Устроилась недавно, но работ очень нравится.
-partial:  Устроилась недавно, но работа очень нравитсяся.
-partial:  Устроилась недавно, но работа очень нравится себя чувству.
-partial:  Устроилась недавно, но работа очень нравится себя чувствую прекрасно.
-partial:  Устроилась недавно, но работа очень нравится себя чувствую прекрасно делать это.
-partial:  Устроилась недавно, но работа очень нравится, и вся чувствую прекрасно делаю это что мне нравится.
-partial:  Устроилась недавно, но работа очень нравится. Я чувствую прекрасно делать это, что мне нравится.
-final:  Устроилась недавно, но работа очень нравится, я чувствую прекрасно, делаю то, что мне нравится.
+python src/streaming/live-from-microphone.py <gladia_key>
 ```
