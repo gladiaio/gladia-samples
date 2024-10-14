@@ -62,7 +62,7 @@ socket.on("open", async () => {
   // create microphone instance
   const microphone = mic({
     rate: SAMPLE_RATE,
-    channels: "1",
+    channels: 1,
   });
 
   const microphoneInputStream = microphone.getAudioStream();

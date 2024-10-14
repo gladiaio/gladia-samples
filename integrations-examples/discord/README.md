@@ -12,7 +12,7 @@ Then, you will to setup the `index.js` script with your Discord keys, guild ID (
 
 Documentation can be found here for Gladia live transcription :
 
-https://docs.gladia.io/reference/live-audio
+https://docs.gladia.io/api-reference/live-flow
 
 Once everything is setup properly, just run
 

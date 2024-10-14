@@ -7,16 +7,13 @@
     "axios": "^1.4.0",
     "form-data": "^4.0.0",
     "mic": "^2.1.2",
-    "wavefile": "^11.0.0",
     "ws": "^8.14.2"
   },
   "scripts": {
-    "basic-streaming-file": "node src/streaming-basic/live-from-file.js",
-    "basic-streaming-file-binary": "node src/streaming-basic/live-from-file-binary.js",
-    "basic-streaming-microphone": "node src/streaming-basic/live-from-microphone.js",
-    "streaming-file": "node src/streaming-auto-reconnect/live-from-file.js",
-    "streaming-file-binary": "node src/streaming-auto-reconnect/live-from-file-binary.js",
-    "streaming-microphone": "node src/streaming-auto-reconnect/live-from-microphone.js",
+    "live-file": "node src/live/live-from-file.js",
+    "live-microphone": "node src/live/live-from-microphone.js",
+    "live-file-with-resume": "node src/live/live-from-file-with-resume.js",
+    "live-microphone-with-resume": "node src/live/live-from-microphone-with-resume.js",
     "pre-recorded-file": "node src/pre-recorded/pre-recorded-file.js",
     "pre-recorded-url": "node src/pre-recorded/pre-recorded-url.js"
   }

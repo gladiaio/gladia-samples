@@ -18,7 +18,7 @@ $data = [
     'audio' => $audio_file,
     // You can also send an URL for your audio file. Make sure it's the direct link and publicly accessible.
     // 'audio_url' => 'http://files.gladia.io/example/audio-transcription/split_infinity.wav',
-    // Then you can pass any parameters you want. Please see: https://docs.gladia.io/reference/pre-recorded
+    // Then you can pass any parameters you want. Please see: https://docs.gladia.io/api-reference/pre-recorded-flow
     'toggle_diarization' => true,
 ];
 
