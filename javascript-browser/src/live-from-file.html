@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Gladia - Live from file</title>
+
+    <style>
+      body {
+        margin: 1rem;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      form > div {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      form,
+      #result {
+        box-sizing: border-box;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+
+      #result {
+        margin-top: 1rem;
+        border-top: 1px solid #333;
+        padding-top: 1rem;
+        text-align: justify;
+      }
+    </style>
+  </head>
+  <body>
+    <form id="form">
+      <div>
+        <label for="gladia_key">Gladia API key</label>
+        <input
+          id="gladia_key"
+          name="gladia_key"
+          type="text"
+          placeholder="Gladia API key"
+          required
+        />
+      </div>
+      <div>
+        <label for="audio">Audio file</label>
+        <input
+          id="audio"
+          name="audio"
+          type="file"
+          accept="audio/wav, audio/x-wav"
+        />
+      </div>
+      <button type="submit">Start streaming</button>
+    </form>
+
+    <div id="result" style="display: none;">
+      <audio id="audio-player"></audio>
+      <div id="finals"></div>
+      <div style="color: red;" id="partials"></div>
+    </div>
+
+    <script>
+      /**
+       * @returns {{promise: Promise<any>; resolve(value: any): void; reject(err: any): void;}}
+       */
+      function deferredPromise() {
+        const deferred = {};
+        deferred.promise = new Promise((resolve, reject) => {
+          deferred.resolve = resolve;
+          deferred.reject = reject;
+        });
+        return deferred;
+      }
+
+      async function extractAudioFileData(audio) {
+        const textDecoder = new TextDecoder();
+        const buffer = await audio.arrayBuffer();
+        if (
+          textDecoder.decode(buffer.slice(0, 4)) !== 'RIFF' ||
+          textDecoder.decode(buffer.slice(8, 12)) !== 'WAVE' ||
+          textDecoder.decode(buffer.slice(12, 16)) !== 'fmt '
+        ) {
+          throw new Error('Unsupported file format');
+        }
+
+        const dataview = new DataView(buffer);
+        const fmtSize = dataview.getUint32(16, true);
+        let encoding;
+        const format = dataview.getUint16(20, true);
+        if (format === 1) {
+          encoding = 'wav/pcm';
+        } else if (format === 6) {
+          encoding = 'wav/alaw';
+        } else if (format === 7) {
+          encoding = 'wav/ulaw';
+        } else {
+          throw new Error('Unsupported encoding');
+        }
+        const channels = dataview.getUint16(22, true);
+        const sample_rate = dataview.getUint32(24, true);
+        const bit_depth = dataview.getUint16(34, true);
+
+        let nextSubChunk = 16 + 4 + fmtSize;
+        while (textDecoder.decode(buffer.slice(nextSubChunk, nextSubChunk + 4)) !== 'data') {
+          nextSubChunk += 8 + dataview.getUint32(nextSubChunk + 4, true);
+        }
+
+        return {
+          encoding,
+          sample_rate,
+          channels,
+          bit_depth,
+          data: buffer.slice(nextSubChunk + 8, dataview.getUint32(nextSubChunk + 4, true)),
+        };
+      }
+
+      async function initiateSession(gladiaKey, config) {
+        const response = await fetch(`https://api.gladia.io/v2/live`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-GLADIA-KEY": gladiaKey,
+          },
+          body: JSON.stringify(config),
+        })
+        if (!response.ok) {
+          const message = `${response.status}: ${(await response.text()) || response.statusText}`
+          throw new Error(message)
+        }
+        return await response.json()
+      }
+
+      /** @type {HTMLFormElement} */
+      const form = document.querySelector('#form');
+      /** @type {HTMLButtonElement} */
+      const submitButton = document.querySelector('button[type="submit"]');
+      /** @type {HTMLDivElement} */
+      const resultContainer = document.querySelector('#result');
+      /** @type {HTMLAudioElement} */
+      const audioPlayer = document.querySelector('#audio-player');
+      /** @type {HTMLDivElement} */
+      const finalsContainer = document.querySelector('#finals');
+      /** @type {HTMLDivElement} */
+      const partialsContainer = document.querySelector('#partials');
+
+      form.addEventListener('submit', async (evt) => {
+        evt.preventDefault();
+
+        // Parse submitted data
+        const formData = new FormData(form);
+        const gladiaKey = formData.get('gladia_key');
+        const audioFile = formData.get('audio');
+
+        // Update the UI
+        submitButton.setAttribute('disabled', 'true');
+        submitButton.textContent = 'Waiting for connection...';
+        resultContainer.style.display = 'none';
+        finalsContainer.innerHTML = '';
+        partialsContainer.textContent = '...';
+
+        /** @type {WebSocket | undefined} */
+        let socket;
+        let config;
+        let audioData;
+        let audioSrc = URL.createObjectURL(audioFile);
+
+        const stop = () => {
+          audioPlayer.pause();
+          audioPlayer.src = '';
+          URL.revokeObjectURL(audioSrc);
+          audioSrc = null;
+          
+          submitButton.removeAttribute('disabled');
+          submitButton.style.display = 'block';
+          submitButton.textContent = 'Start streaming';
+
+          if (socket) {
+            socket.onopen = null;
+            socket.onerror = null;
+            socket.onclose = null;
+            socket.onmessage = null;
+            socket.close();
+          }
+        };
+
+        try {
+          const {data, ...rest} = await extractAudioFileData(audioFile);
+          audioData = data;
+          config = rest;
+
+          const {url} = await initiateSession(gladiaKey, config);
+
+          const socketPromise = deferredPromise();
+
+          // Initializes the websocket
+          socket = new WebSocket(url);
+          socket.onopen = () => {
+            socketPromise.resolve(true);
+          };
+          socket.onerror = () => {
+            socketPromise.reject(new Error(`Couldn't connect to the server`));
+          };
+          socket.onclose = (event) => {
+            socketPromise.reject(
+              new Error(
+                `Server refuses the connection: [${event.code}] ${event.reason}`
+              )
+            );
+          };
+
+          await socketPromise.promise;
+        } catch (err) {
+          window.alert(
+            `Error during the initialization: ${err?.message || err}`
+          );
+          console.error(err);
+          stop();
+          return;
+        }
+
+        // Register new listeners
+        socket.onopen = null;
+        socket.onerror = null;
+        socket.onclose = (event) => {
+          if (event.code === 1000) {
+            stop();
+            return;
+          }
+
+          const message = `Lost connection to the server: [${event.code}] ${event.reason}`;
+          window.alert(message);
+          console.error(message);
+          stop();
+        };
+        socket.onmessage = (event) => {
+          const message = JSON.parse(event.data);
+          console.log(message);
+          if (message?.type === 'transcript') {
+            let prefix = '- ';
+            if (config.channels > 1) {
+              prefix = `${message.data.utterance.channel}: `
+            }
+            if (message.data.is_final) {
+              finalsContainer.innerHTML += `<div>${prefix}${message.data.utterance.text}</div>`;
+              partialsContainer.textContent = '';
+            } else {
+              partialsContainer.textContent = `${prefix}${message.data.utterance.text}`;
+            }
+          }
+        };
+
+        submitButton.textContent = 'Streaming…';
+
+        resultContainer.style.display = 'block';
+
+        // Start the streaming
+        audioPlayer.src = audioSrc;
+        audioPlayer.play();
+
+        // Send chunk of 50ms
+        const chunkDuration = 50;
+        const bytesPerSample = config.bit_depth / 8;
+        const bytesPerSecond = config.sample_rate * config.channels * bytesPerSample;
+        const chunkSize = Math.round((chunkDuration / 1000) * bytesPerSecond);
+        for (let i = 0; i < audioData.byteLength; i += chunkSize) {
+          socket.send(audioData.slice(i, i + chunkSize));
+          await new Promise((resolve) => setTimeout(resolve, chunkDuration));
+        }
+        socket.send(JSON.stringify({type: 'stop_recording'}));
+      });
+    </script>
+  </body>
+</html>
