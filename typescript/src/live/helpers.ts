@@ -141,7 +141,6 @@ export function initFileRecorder(
         if (offset >= buffer.length) {
           console.log(">>>>> Sent all audio data");
           this.stop();
-          onEnd();
         }
       }, chunkDuration * 1000);
     },

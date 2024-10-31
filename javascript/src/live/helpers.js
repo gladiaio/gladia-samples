@@ -104,7 +104,6 @@ export function initFileRecorder(config, onAudioChunk, onEnd, filePath = "../dat
                 if (offset >= buffer.length) {
                     console.log(">>>>> Sent all audio data");
                     this.stop();
-                    onEnd();
                 }
             }, chunkDuration * 1000);
         },
