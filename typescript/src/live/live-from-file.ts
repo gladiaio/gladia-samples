@@ -1,18 +1,27 @@
 import WebSocket from "ws";
-import { initFileRecorder, printMessage, readGladiaKey } from "./helpers";
-import { InitiateResponse, StreamingConfig } from "./types";
+import {
+  getAudioFileFormat,
+  initFileRecorder,
+  printMessage,
+  readGladiaKey,
+} from "./helpers";
+import {
+  InitiateResponse,
+  StreamingAudioFormat,
+  StreamingConfig,
+} from "./types";
 
 const gladiaApiUrl = "https://api.gladia.io";
 const gladiaKey = readGladiaKey();
 
+const filepath = "../data/anna-and-sasha-16000.wav";
 const config: StreamingConfig = {
-  encoding: "wav/pcm",
-  sample_rate: 16_000,
-  bit_depth: 16,
-  channels: 1,
   language_config: {
     languages: ["es", "ru", "en", "fr"],
     code_switching: true,
+  },
+  pre_processing: {
+    audio_enhancer: false,
   },
 };
 
@@ -23,7 +32,7 @@ async function initLiveSession(): Promise<InitiateResponse> {
       "Content-Type": "application/json",
       "X-GLADIA-KEY": gladiaKey,
     },
-    body: JSON.stringify(config),
+    body: JSON.stringify({ ...getAudioFileFormat(filepath), ...config }),
   });
   if (!response.ok) {
     console.error(
@@ -74,12 +83,12 @@ async function start() {
   let socket: WebSocket | null = null;
 
   const recorder = initFileRecorder(
-    config,
     // Send every chunk from recorder to the socket
     (chunk) => socket?.send(chunk),
     // When the recording is stopped, we send a message to tell the server
     // we are done sending audio and it can start the post-processing
-    () => socket?.send(JSON.stringify({ type: "stop_recording" }))
+    () => socket?.send(JSON.stringify({ type: "stop_recording" })),
+    filepath
   );
 
   // Connect to the WebSocket and start recording once the connection is open

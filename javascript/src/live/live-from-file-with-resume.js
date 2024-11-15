@@ -1,15 +1,15 @@
 import WebSocket from "ws";
-import { initFileRecorder, printMessage, readGladiaKey } from "./helpers";
+import { getAudioFileFormat, initFileRecorder, printMessage, readGladiaKey, } from "./helpers";
 const gladiaApiUrl = "https://api.gladia.io";
 const gladiaKey = readGladiaKey();
+const filepath = "../data/anna-and-sasha-16000.wav";
 const config = {
-    encoding: "wav/pcm",
-    sample_rate: 16000,
-    bit_depth: 16,
-    channels: 1,
     language_config: {
         languages: ["es", "ru", "en", "fr"],
         code_switching: true,
+    },
+    pre_processing: {
+        audio_enhancer: false,
     },
 };
 async function initLiveSession() {
@@ -19,7 +19,7 @@ async function initLiveSession() {
             "Content-Type": "application/json",
             "X-GLADIA-KEY": gladiaKey,
         },
-        body: JSON.stringify(config),
+        body: JSON.stringify({ ...getAudioFileFormat(filepath), ...config }),
     });
     if (!response.ok) {
         console.error(`${response.status}: ${(await response.text()) || response.statusText}`);
@@ -96,7 +96,7 @@ async function start() {
     const initiateResponse = await initLiveSession();
     const client = initWebSocketClient(initiateResponse);
     let closeInterval = null;
-    const recorder = initFileRecorder(config, 
+    const recorder = initFileRecorder(
     // Send every chunk from recorder to the socket
     (chunk) => client.sendAudioChunk(chunk), 
     // When the recording is stopped, we send a message to tell the server
@@ -105,7 +105,7 @@ async function start() {
         if (closeInterval)
             clearInterval(closeInterval);
         client.stopRecording();
-    });
+    }, filepath);
     // We can start the recording without waiting for the connection to be open
     // since the client buffers the audio
     console.log();
