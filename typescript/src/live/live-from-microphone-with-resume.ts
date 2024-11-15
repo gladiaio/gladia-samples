@@ -1,15 +1,23 @@
 import WebSocket from "ws";
-import { initMicrophoneRecorder, printMessage, readGladiaKey } from "./helpers";
+import {
+  getMicrophoneAudioFormat,
+  initMicrophoneRecorder,
+  printMessage,
+  readGladiaKey,
+} from "./helpers";
 import { InitiateResponse, StreamingConfig } from "./types";
 
 const gladiaApiUrl = "https://api.gladia.io";
 const gladiaKey = readGladiaKey();
 
 const config: StreamingConfig = {
-  encoding: "wav/pcm",
-  sample_rate: 16_000,
-  bit_depth: 16,
-  channels: 1,
+  language_config: {
+    languages: [],
+    code_switching: false,
+  },
+  pre_processing: {
+    audio_enhancer: false,
+  },
 };
 
 async function initLiveSession(): Promise<InitiateResponse> {
@@ -19,7 +27,7 @@ async function initLiveSession(): Promise<InitiateResponse> {
       "Content-Type": "application/json",
       "X-GLADIA-KEY": gladiaKey,
     },
-    body: JSON.stringify(config),
+    body: JSON.stringify({ ...getMicrophoneAudioFormat(), ...config }),
   });
   if (!response.ok) {
     console.error(
@@ -114,7 +122,6 @@ async function start() {
   let closeInterval: NodeJS.Timeout | null = null;
 
   const recorder = initMicrophoneRecorder(
-    config,
     // Send every chunk from recorder to the socket
     (chunk) => client.sendAudioChunk(chunk),
     // When the recording is stopped, we send a message to tell the server

@@ -53,7 +53,16 @@ function formatSeconds(duration) {
         milliseconds.toString().padStart(3, "0"),
     ].join(".");
 }
-export function initMicrophoneRecorder(config, onAudioChunk, onEnd) {
+export function getMicrophoneAudioFormat() {
+    return {
+        encoding: "wav/pcm",
+        bit_depth: 16,
+        sample_rate: 16000,
+        channels: 1,
+    };
+}
+export function initMicrophoneRecorder(onAudioChunk, onEnd) {
+    const config = getMicrophoneAudioFormat();
     const microphone = mic({
         rate: config.sample_rate,
         channels: config.channels,
@@ -87,21 +96,64 @@ export function initMicrophoneRecorder(config, onAudioChunk, onEnd) {
     process.on("SIGINT", () => recorder.stop());
     return recorder;
 }
-export function initFileRecorder(config, onAudioChunk, onEnd, filePath = "../data/anna-and-sasha-16000.wav") {
+function parseAudioFile(filePath) {
+    const textDecoder = new TextDecoder();
+    const buffer = readFileSync(resolve(filePath));
+    if (textDecoder.decode(buffer.subarray(0, 4)) !== "RIFF" ||
+        textDecoder.decode(buffer.subarray(8, 12)) !== "WAVE" ||
+        textDecoder.decode(buffer.subarray(12, 16)) !== "fmt ") {
+        throw new Error("Unsupported file format");
+    }
+    const fmtSize = buffer.readUInt32LE(16);
+    let encoding;
+    const format = buffer.readUInt16LE(20);
+    if (format === 1) {
+        encoding = "wav/pcm";
+    }
+    else if (format === 6) {
+        encoding = "wav/alaw";
+    }
+    else if (format === 7) {
+        encoding = "wav/ulaw";
+    }
+    else {
+        throw new Error("Unsupported encoding");
+    }
+    const channels = buffer.readUInt16LE(22);
+    const sample_rate = buffer.readUInt32LE(24);
+    const bit_depth = buffer.readUInt16LE(34);
+    let nextSubChunk = 16 + 4 + fmtSize;
+    while (textDecoder.decode(buffer.subarray(nextSubChunk, nextSubChunk + 4)) !==
+        "data") {
+        nextSubChunk += 8 + buffer.readUInt32LE(nextSubChunk + 4);
+    }
+    return {
+        encoding,
+        sample_rate,
+        channels,
+        bit_depth,
+        startDataChunk: nextSubChunk,
+        buffer,
+    };
+}
+export function getAudioFileFormat(filePath) {
+    const { startDataChunk, buffer, ...format } = parseAudioFile(filePath);
+    return format;
+}
+export function initFileRecorder(onAudioChunk, onEnd, filePath) {
+    const { startDataChunk, buffer, bit_depth, sample_rate, channels } = parseAudioFile(filePath);
+    const audioData = buffer.subarray(startDataChunk + 8, buffer.readUInt32LE(startDataChunk + 4));
     const chunkDuration = 0.1; // 100 ms
-    const bytesPerSample = config.bit_depth / 8;
-    const bytesPerSecond = config.sample_rate * config.channels * bytesPerSample;
+    const bytesPerSample = bit_depth / 8;
+    const bytesPerSecond = sample_rate * channels * bytesPerSample;
     const chunkSize = chunkDuration * bytesPerSecond;
-    const buffer = readFileSync(resolve(filePath))
-        // remove wav header
-        .subarray(44);
     const recorder = {
         interval: null,
         start() {
             let offset = 0;
             this.interval = setInterval(() => {
-                onAudioChunk(buffer.subarray(offset, (offset += chunkSize)));
-                if (offset >= buffer.length) {
+                onAudioChunk(audioData.subarray(offset, (offset += chunkSize)));
+                if (offset >= audioData.length) {
                     console.log(">>>>> Sent all audio data");
                     this.stop();
                 }
