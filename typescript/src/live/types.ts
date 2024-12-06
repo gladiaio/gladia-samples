@@ -6,13 +6,33 @@ export type StreamingAudioFormat = {
 };
 
 export type StreamingConfig = {
+  custom_metadata?: Record<string, any>;
+
   language_config?: {
     languages?: string[];
     code_switching?: boolean;
   };
 
   pre_processing?: {
-    audio_enhancer: boolean;
+    audio_enhancer?: boolean;
+  };
+
+  realtime_processing?: {
+    words_accurate_timestamps?: boolean;
+    custom_vocabulary?: boolean;
+    custom_vocabulary_config?: {
+      vocabulary: string[];
+    };
+    named_entity_recognition?: boolean;
+    sentiment_analysis?: boolean;
+  };
+
+  post_processing?: {
+    summarization?: boolean;
+    summarization_config?: {
+      type?: "general" | "bullet_points" | "concise";
+    };
+    chapterization?: boolean;
   };
 };
 

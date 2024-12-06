@@ -15,9 +15,6 @@ const config: StreamingConfig = {
     languages: [],
     code_switching: false,
   },
-  pre_processing: {
-    audio_enhancer: false,
-  },
 };
 
 async function initLiveSession(): Promise<InitiateResponse> {

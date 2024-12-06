@@ -7,9 +7,6 @@ const config = {
         languages: [],
         code_switching: false,
     },
-    pre_processing: {
-        audio_enhancer: false,
-    },
 };
 async function initLiveSession() {
     const response = await fetch(`${gladiaApiUrl}/v2/live`, {
