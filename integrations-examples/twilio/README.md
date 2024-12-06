@@ -11,7 +11,7 @@
 ### Configure your server and install depandancies
 
 - in .env file, add `GLADIA_API_KEY` var with your api key obtained from gladia website (https://app.gladia.io/auth/signin) and `PORT` var, the port you used to configure your phone number in above section (default is 8080)
-- install dependancies:
+- install dependencies:
 
 ```bash
 npm i
