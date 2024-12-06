@@ -5,11 +5,7 @@ import {
   printMessage,
   readGladiaKey,
 } from "./helpers";
-import {
-  InitiateResponse,
-  StreamingAudioFormat,
-  StreamingConfig,
-} from "./types";
+import { InitiateResponse, StreamingConfig } from "./types";
 
 const gladiaApiUrl = "https://api.gladia.io";
 const gladiaKey = readGladiaKey();
@@ -19,9 +15,6 @@ const config: StreamingConfig = {
   language_config: {
     languages: ["es", "ru", "en", "fr"],
     code_switching: true,
-  },
-  pre_processing: {
-    audio_enhancer: false,
   },
 };
 
