@@ -14,13 +14,13 @@ https://docs.gladia.io/api-reference/pre-recorded-flow
 
 ### run
 
-You can run an example with a pre-recorded file on disk :
+You can run an example with a pre-recorded file on disk:
 
 ```bash
 npm run pre-recorded-file <your_gladia_key>
 ```
 
-To run with an url pointing to an audio or video file :
+To run with a url pointing to an audio or video file:
 
 ```bash
 npm run pre-recorded-url <your_gladia_key>

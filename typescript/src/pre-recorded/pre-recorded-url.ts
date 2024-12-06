@@ -1,12 +1,14 @@
 import axios, { AxiosError } from "axios";
 
-// retrieve gladia key
+// retrieve Gladia key
 const gladiaKey = process.argv[2];
 if (!gladiaKey) {
-  console.error("You must provide a gladia key. Go to app.gladia.io");
+  console.error(
+    "You must provide a Gladia key. Go to https://app.gladia.io to get yours.",
+  );
   process.exit(1);
 } else {
-  console.log("Using the gladia key : " + gladiaKey);
+  console.log(`Using the Gladia key: ${gladiaKey}`);
 }
 
 const gladiaV2BaseUrl = "https://api.gladia.io/v2/";
@@ -57,8 +59,8 @@ async function startTranscription() {
     if (e instanceof AxiosError) {
       console.log(
         `AxiosError on ${e.config?.url}: ${e.message}\n-> ${JSON.stringify(
-          e.response?.data
-        )}`
+          e.response?.data,
+        )}`,
       );
     } else {
       console.log(e);

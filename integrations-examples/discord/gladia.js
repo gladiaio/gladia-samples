@@ -11,11 +11,11 @@ const SAMPLE_RATE = 48_000;
 const gladiaKey = process.argv[2];
 if (!gladiaKey) {
   console.error(
-    "You must provide a gladia key. Go to app.gladia.io to get one."
+    "You must provide a Gladia key. Go to https://app.gladia.io to get yours."
   );
   exit(1);
 } else {
-  console.log("using the gladia key : " + gladiaKey);
+  console.log(`Using the Gladia key: ${gladiaKey}`);
 }
 
 const gladiaUrl = "wss://api.gladia.io/audio/text/audio-transcription";

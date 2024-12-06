@@ -8,7 +8,7 @@ Documentation can be found [here](https://docs.gladia.io/api-reference/pre-recor
 
 ### run
 
-You can run a live example by running :
+You can run a live example by running:
 
 ```bash
 cd pre-recorded && php transcription.php

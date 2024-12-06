@@ -29,7 +29,7 @@ async function initLiveSession(): Promise<InitiateResponse> {
   });
   if (!response.ok) {
     console.error(
-      `${response.status}: ${(await response.text()) || response.statusText}`
+      `${response.status}: ${(await response.text()) || response.statusText}`,
     );
     process.exit(response.status);
   }
@@ -39,7 +39,7 @@ async function initLiveSession(): Promise<InitiateResponse> {
 
 function initWebSocket(
   { url }: InitiateResponse,
-  onOpen: () => void
+  onOpen: () => void,
 ): WebSocket {
   const socket = new WebSocket(url);
 
@@ -81,7 +81,7 @@ async function start() {
     // When the recording is stopped, we send a message to tell the server
     // we are done sending audio and it can start the post-processing
     () => socket?.send(JSON.stringify({ type: "stop_recording" })),
-    filepath
+    filepath,
   );
 
   // Connect to the WebSocket and start recording once the connection is open
