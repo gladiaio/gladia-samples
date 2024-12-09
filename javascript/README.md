@@ -1,4 +1,4 @@
-# TypeScript
+# JavaScript
 
 First, install all the required packages by running:
 
@@ -8,19 +8,17 @@ npm install
 
 ## Pre-recorded
 
-Documentation can be found here:
-
-https://docs.gladia.io/api-reference/pre-recorded-flow
+Documentation can be found [here](https://docs.gladia.io/api-reference/pre-recorded-flow)
 
 ### run
 
-You can run an example with a pre-recorded file on disk :
+You can run an example with a pre-recorded file on disk:
 
 ```bash
 npm run pre-recorded-file <your_gladia_key>
 ```
 
-To run with an url pointing to an audio or video file :
+To run with a url pointing to an audio or video file:
 
 ```bash
 npm run pre-recorded-url <your_gladia_key>
@@ -28,9 +26,7 @@ npm run pre-recorded-url <your_gladia_key>
 
 ## Live - Basic
 
-Documentation can be found here:
-
-https://docs.gladia.io/api-reference/live-flow
+Documentation can be found [here](https://docs.gladia.io/api-reference/live-flow)
 
 ### run
 
@@ -46,7 +42,7 @@ Or from microphone (it requires [arecord](https://www.thegeekdiary.com/arecord-c
 npm run live-microphone <your_gladia_key>
 ```
 
-Note: You can get your gladia key from https://app.gladia.io.
+Note: You can get your Gladia key from https://app.gladia.io.
 
 When running the file example you should get an output like this one:
 
@@ -64,9 +60,7 @@ When running the file example you should get an output like this one:
 
 ## Live - With error handling and automatic reconnection mechanism
 
-Documentation can be found here:
-
-https://docs.gladia.io/api-reference/live-flow
+Documentation can be found [here](https://docs.gladia.io/api-reference/live-flow)
 
 ### run
 

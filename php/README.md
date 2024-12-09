@@ -1,16 +1,14 @@
 # PHP
 
-Then, change your gladia keys in `pre-recorded/transcription.php`
+Then, change your Gladia keys in `pre-recorded/transcription.php`
 
 ## Pre-recorded
 
-Documentation can be found here:
-
-https://docs.gladia.io/api-reference/pre-recorded-flow
+Documentation can be found [here](https://docs.gladia.io/api-reference/pre-recorded-flow)
 
 ### run
 
-You can run a live example by running :
+You can run a live example by running:
 
 ```bash
 cd pre-recorded && php transcription.php

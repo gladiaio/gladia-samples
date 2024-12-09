@@ -29,7 +29,7 @@ async function initLiveSession(): Promise<InitiateResponse> {
   });
   if (!response.ok) {
     console.error(
-      `${response.status}: ${(await response.text()) || response.statusText}`
+      `${response.status}: ${(await response.text()) || response.statusText}`,
     );
     process.exit(response.status);
   }
@@ -82,7 +82,7 @@ function initWebSocketClient({ url }: InitiateResponse) {
 
       if (message.type === "audio_chunk" && message.acknowledged) {
         audioBuffer = audioBuffer.subarray(
-          message.data.byte_range[1] - bytesSent
+          message.data.byte_range[1] - bytesSent,
         );
         bytesSent = message.data.byte_range[1];
       }
@@ -128,7 +128,7 @@ async function start() {
       if (closeInterval) clearInterval(closeInterval);
       client.stopRecording();
     },
-    filepath
+    filepath,
   );
 
   // We can start the recording without waiting for the connection to be open

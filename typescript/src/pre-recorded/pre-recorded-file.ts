@@ -1,13 +1,16 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import fs from "fs";
+import { access } from "fs/promises";
 import FormData from "form-data";
 
 const gladiaKey = process.argv[2];
 if (!gladiaKey) {
-  console.error("You must provide a gladia key. Go to app.gladia.io");
+  console.error(
+    "You must provide a Gladia key. Go to https://app.gladia.io to get yours."
+  );
   process.exit(1);
 } else {
-  console.log("Using the gladia key: " + gladiaKey);
+  console.log(`Using the Gladia key: ${gladiaKey}`);
 }
 
 const gladiaV2BaseUrl = "https://api.gladia.io/v2/";
@@ -23,7 +26,7 @@ async function pollForResult(resultUrl: string, headers: any) {
       console.log(pollResponse.result.transcription.full_transcript);
       break;
     } else {
-      console.log("Transcription status : ", pollResponse.status);
+      console.log("Transcription status: ", pollResponse.status);
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
   }
@@ -33,14 +36,13 @@ async function startTranscription() {
   try {
     const file_path = "../data/anna-and-sasha-16000.wav"; // Change with your file path
 
-    fs.access(file_path, fs.constants.F_OK, async (err) => {
-      if (err) {
-        console.log("- File does not exist");
-        process.exit(0);
-      } else {
-        console.log("- File exists");
-      }
-    });
+    try {
+      await access(file_path, fs.constants.F_OK);
+      console.log("- File exists");
+    } catch (err: unknown) {
+      console.log("- File does not exist");
+      process.exit(0);
+    }
 
     const form = new FormData();
     const stream = fs.createReadStream(file_path);
@@ -80,22 +82,22 @@ async function startTranscription() {
     ).data;
 
     console.log(
-      "Initial response with Transcription ID :",
+      "Initial response with Transcription ID:",
       postTranscriptionResponse
     );
 
     if (postTranscriptionResponse.result_url) {
       await pollForResult(postTranscriptionResponse.result_url, headers);
     }
-  } catch (e) {
-    if (e instanceof AxiosError) {
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
       console.log(
-        `AxiosError on ${e.config?.url}: ${e.message}\n-> ${JSON.stringify(
-          e.response?.data
+        `AxiosError on ${err.config?.url}: ${err.message}\n-> ${JSON.stringify(
+          err.response?.data
         )}`
       );
     } else {
-      console.log(e);
+      console.log(err);
     }
   }
 }

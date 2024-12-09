@@ -7,7 +7,7 @@ export function readGladiaKey(): string {
   const gladiaKey = process.argv[2];
   if (!gladiaKey) {
     console.error(
-      "You must provide a Gladia key. Go to https://app.gladia.io to get yours."
+      "You must provide a Gladia key. Go to https://app.gladia.io to get yours.",
     );
     process.exit(1);
   }
@@ -21,7 +21,7 @@ export function printMessage(message: {
   if (message.type === "transcript" && message.data.is_final) {
     const { text, start, end } = message.data.utterance;
     console.log(
-      `${formatSeconds(start)} --> ${formatSeconds(end)} | ${text.trim()}`
+      `${formatSeconds(start)} --> ${formatSeconds(end)} | ${text.trim()}`,
     );
   } else if (message.type === "post_final_transcript") {
     console.log();
@@ -81,7 +81,7 @@ export function getMicrophoneAudioFormat(): StreamingAudioFormat {
 
 export function initMicrophoneRecorder(
   onAudioChunk: (chunk: Buffer) => void,
-  onEnd: () => void
+  onEnd: () => void,
 ): Recorder {
   const config = getMicrophoneAudioFormat();
   const microphone = mic({
@@ -126,7 +126,7 @@ export function initMicrophoneRecorder(
 }
 
 function parseAudioFile(
-  filePath: string
+  filePath: string,
 ): StreamingAudioFormat & { startDataChunk: number; buffer: Buffer } {
   const textDecoder = new TextDecoder();
   const buffer = readFileSync(resolve(filePath));
@@ -152,10 +152,10 @@ function parseAudioFile(
   }
   const channels = buffer.readUInt16LE(22);
   const sample_rate = buffer.readUInt32LE(
-    24
+    24,
   ) as StreamingAudioFormat["sample_rate"];
   const bit_depth = buffer.readUInt16LE(
-    34
+    34,
   ) as StreamingAudioFormat["bit_depth"];
 
   let nextSubChunk = 16 + 4 + fmtSize;
@@ -184,13 +184,13 @@ export function getAudioFileFormat(filePath: string): StreamingAudioFormat {
 export function initFileRecorder(
   onAudioChunk: (chunk: Buffer) => void,
   onEnd: () => void,
-  filePath: string
+  filePath: string,
 ): Recorder {
   const { startDataChunk, buffer, bit_depth, sample_rate, channels } =
     parseAudioFile(filePath);
   const audioData = buffer.subarray(
     startDataChunk + 8,
-    buffer.readUInt32LE(startDataChunk + 4)
+    buffer.readUInt32LE(startDataChunk + 4),
   );
 
   const chunkDuration = 0.1; // 100 ms

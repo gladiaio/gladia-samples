@@ -16,7 +16,7 @@ https://docs.gladia.io/api-reference/pre-recorded-flow
 
 ### run
 
-You can run a live example by running :
+You can run a live example by running:
 
 ```bash
 cd pre-recorded && python transcription.py
