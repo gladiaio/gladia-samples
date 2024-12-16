@@ -9,7 +9,6 @@
     "ws": "^8.14.2"
   },
   "devDependencies": {
-    "@types/form-data": "^2.5.0",
     "@types/node": "^20.3.1",
     "@types/ws": "^8.5.6",
     "tsx": "^3.12.7",
@@ -22,6 +21,6 @@
     "live-microphone-with-resume": "tsx src/live/live-from-microphone-with-resume.ts",
     "pre-recorded-file": "tsx src/pre-recorded/pre-recorded-file.ts",
     "pre-recorded-url": "tsx src/pre-recorded/pre-recorded-url.ts",
-    "to-js": "tsc && cp ./README.md ../javascript/README.md"
+    "to-js": "tsc && sed 's/# TypeScript/# JavaScript/' ./README.md > ../javascript/README.md"
   }
 }
