@@ -93,14 +93,14 @@ STREAMING_CONFIGURATION: StreamingConfiguration = {
     "bit_depth": 16,
     "channels": 1,
     "language_config": {
-        "languages": ["es", "ru", "en", "fr"],
-        "code_switching": True,
+        "languages": ["en"],
+        "code_switching": False,
     },
 }
 
 
 async def send_audio(socket: ClientConnection) -> None:
-    file = "../../../data/anna-and-sasha-16000.wav"
+    file = "../../../data/test.wav"
     with open(os.path.join(os.path.dirname(__file__), file), "rb") as f:
         file_content = f.read()
     file_content = file_content[44:]  # Skip the WAV header
