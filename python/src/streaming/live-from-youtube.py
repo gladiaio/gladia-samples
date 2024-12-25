@@ -30,6 +30,7 @@ class StreamingConfiguration(TypedDict):
     sample_rate: Literal[8_000, 16_000, 32_000, 44_100, 48_000]
     channels: int
     language_config: LanguageConfiguration | None
+    realtime_processing: dict[str, dict[str, list[str]]] | None
 
 
 STREAMING_CONFIGURATION: StreamingConfiguration = {
@@ -38,9 +39,15 @@ STREAMING_CONFIGURATION: StreamingConfiguration = {
     "bit_depth": 16,
     "channels": 1,
     "language_config": {
-        "languages": ["ru"],
+        "languages": ["ru"],  # Default to Russian transcription
         "code_switching": False,
     },
+    "realtime_processing": {
+        "custom_vocabulary": True,
+        "custom_vocabulary_config": {
+            "vocabulary": ["поджоги", "взрывы", "МВД", "мошенники", "Фицо", "Москва", "Путин", "Вологда", "губернатор", "Сталин", "дельфины", "мазут", "Черное море"]
+        }
+    }
 }
 
 
@@ -151,6 +158,16 @@ def format_duration(seconds: float) -> str:
 
 async def main():
     """Main function to transcribe a YouTube livestream."""
+    # Allow dynamic input for custom vocabulary
+    custom_vocab_input = input("Enter custom vocabulary (comma-separated, or press Enter to use default): ").strip()
+    if custom_vocab_input:
+        STREAMING_CONFIGURATION["realtime_processing"] = {
+            "custom_vocabulary": True,
+            "custom_vocabulary_config": {
+                "vocabulary": [word.strip() for word in custom_vocab_input.split(",")[:100]]  # Limit to 100 entries
+            }
+        }
+
     print("Initializing live transcription session...")
     response = init_live_session(STREAMING_CONFIGURATION)
     print(f"WebSocket URL: {response['url']}")
