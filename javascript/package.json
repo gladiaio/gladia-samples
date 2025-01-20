@@ -2,7 +2,6 @@
   "name": "gladia-samples-javascript",
   "version": "1.0.0",
   "license": "MIT",
-  "type": "module",
   "dependencies": {
     "axios": "^1.4.0",
     "form-data": "^4.0.0",

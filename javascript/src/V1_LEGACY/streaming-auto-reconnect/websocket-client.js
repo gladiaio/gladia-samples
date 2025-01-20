@@ -1,4 +1,10 @@
-import WebSocket from "ws";
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.WebSocketClient = void 0;
+const ws_1 = __importDefault(require("ws"));
 /** We try to (re)connect to the WS during 5 min before giving up */
 const MAX_CONNECTION_DURATION = 5 * 60 * 1000;
 function deferredPromise() {
@@ -10,7 +16,7 @@ function deferredPromise() {
     // @ts-expect-error it's ok, the properties are here
     return deferred;
 }
-export class WebSocketClient {
+class WebSocketClient {
     #url;
     #configuration;
     #listeners;
@@ -118,7 +124,7 @@ export class WebSocketClient {
                 this.#status = "ready";
                 this.#readyPromise?.resolve(true);
             };
-            this.#socket = new WebSocket(this.#url);
+            this.#socket = new ws_1.default(this.#url);
             this.#socket.addEventListener("open", () => {
                 this.#socket?.send(JSON.stringify(this.#configuration));
             });
@@ -159,8 +165,8 @@ export class WebSocketClient {
     #clearSocket() {
         if (this.#socket) {
             this.#socket.removeAllListeners();
-            if (this.#socket.readyState === WebSocket.CONNECTING ||
-                this.#socket.readyState === WebSocket.OPEN) {
+            if (this.#socket.readyState === ws_1.default.CONNECTING ||
+                this.#socket.readyState === ws_1.default.OPEN) {
                 try {
                     this.#socket.close();
                 }
@@ -265,3 +271,4 @@ export class WebSocketClient {
         }
     }
 }
+exports.WebSocketClient = WebSocketClient;

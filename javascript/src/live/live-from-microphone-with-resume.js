@@ -1,7 +1,12 @@
-import WebSocket from "ws";
-import { getMicrophoneAudioFormat, initMicrophoneRecorder, printMessage, readGladiaKey, } from "./helpers";
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const ws_1 = __importDefault(require("ws"));
+const helpers_1 = require("./helpers");
 const gladiaApiUrl = "https://api.gladia.io";
-const gladiaKey = readGladiaKey();
+const gladiaKey = (0, helpers_1.readGladiaKey)();
 const config = {
     language_config: {
         languages: [],
@@ -15,7 +20,7 @@ async function initLiveSession() {
             "Content-Type": "application/json",
             "X-GLADIA-KEY": gladiaKey,
         },
-        body: JSON.stringify({ ...getMicrophoneAudioFormat(), ...config }),
+        body: JSON.stringify({ ...(0, helpers_1.getMicrophoneAudioFormat)(), ...config }),
     });
     if (!response.ok) {
         console.error(`${response.status}: ${(await response.text()) || response.statusText}`);
@@ -30,7 +35,7 @@ function initWebSocketClient({ url }) {
     let stopRecording = false;
     function initWebSocket() {
         console.log(">>>>> Connecting to websocket");
-        socket = new WebSocket(url);
+        socket = new ws_1.default(url);
         socket.addEventListener("open", function () {
             console.log(">>>>> Connected to websocket");
             if (audioBuffer.byteLength) {
@@ -60,7 +65,7 @@ function initWebSocketClient({ url }) {
         socket.addEventListener("message", function (event) {
             // All the messages we are sending are in JSON format
             const message = JSON.parse(event.data.toString());
-            printMessage(message);
+            (0, helpers_1.printMessage)(message);
             if (message.type === "audio_chunk" && message.acknowledged) {
                 audioBuffer = audioBuffer.subarray(message.data.byte_range[1] - bytesSent);
                 bytesSent = message.data.byte_range[1];
@@ -71,18 +76,18 @@ function initWebSocketClient({ url }) {
     return {
         sendAudioChunk: (chunk) => {
             audioBuffer = Buffer.concat([audioBuffer, chunk]);
-            if (socket?.readyState === WebSocket.OPEN) {
+            if (socket?.readyState === ws_1.default.OPEN) {
                 socket.send(chunk);
             }
         },
         stopRecording: () => {
             stopRecording = true;
-            if (socket?.readyState === WebSocket.OPEN) {
+            if (socket?.readyState === ws_1.default.OPEN) {
                 socket.send(JSON.stringify({ type: "stop_recording" }));
             }
         },
         forceClose: () => {
-            if (socket?.readyState === WebSocket.OPEN) {
+            if (socket?.readyState === ws_1.default.OPEN) {
                 socket.close(4500);
             }
         },
@@ -92,7 +97,7 @@ async function start() {
     const initiateResponse = await initLiveSession();
     const client = initWebSocketClient(initiateResponse);
     let closeInterval = null;
-    const recorder = initMicrophoneRecorder(
+    const recorder = (0, helpers_1.initMicrophoneRecorder)(
     // Send every chunk from recorder to the socket
     (chunk) => client.sendAudioChunk(chunk), 
     // When the recording is stopped, we send a message to tell the server

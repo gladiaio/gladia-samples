@@ -1,6 +1,11 @@
-import axios from "axios";
-import fs from "fs";
-import FormData from "form-data";
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const axios_1 = __importDefault(require("axios"));
+const fs_1 = __importDefault(require("fs"));
+const form_data_1 = __importDefault(require("form-data"));
 // retrieve gladia key
 const gladiaKey = process.argv[2];
 if (!gladiaKey) {
@@ -16,14 +21,14 @@ const headers = {
     accept: "application/json", // Accept json as a response, but we are sending a Multipart FormData
 };
 const file_path = "../data/long.wav"; // Change with your file path
-fs.access(file_path, fs.constants.F_OK, (err) => {
+fs_1.default.access(file_path, fs_1.default.constants.F_OK, (err) => {
     if (err) {
         console.log("- File does not exist");
     }
     else {
         console.log("- File exists");
-        const form = new FormData();
-        const stream = fs.createReadStream(file_path);
+        const form = new form_data_1.default();
+        const stream = fs_1.default.createReadStream(file_path);
         // Explicitly set filename, and mimeType
         form.append("audio", stream, {
             filename: "anna-and-sasha-16000.wav",
@@ -31,7 +36,7 @@ fs.access(file_path, fs.constants.F_OK, (err) => {
         });
         form.append("toggle_diarization", "true"); // form-data library requires fields to be string, Buffer or Stream
         console.log("- Sending request to Gladia API...");
-        axios
+        axios_1.default
             .post(gladiaUrl, form, {
             // form.getHeaders to get correctly formatted form-data boundaries
             // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type

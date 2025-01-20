@@ -1,7 +1,13 @@
-import { readFileSync } from "fs";
-import mic from "mic";
-import { resolve } from "path";
-export function readGladiaKey() {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.initFileRecorder = exports.getAudioFileFormat = exports.initMicrophoneRecorder = exports.getMicrophoneAudioFormat = exports.printMessage = exports.readGladiaKey = void 0;
+const fs_1 = require("fs");
+const mic_1 = __importDefault(require("mic"));
+const path_1 = require("path");
+function readGladiaKey() {
     const gladiaKey = process.argv[2];
     if (!gladiaKey) {
         console.error("You must provide a Gladia key. Go to https://app.gladia.io to get yours.");
@@ -9,7 +15,8 @@ export function readGladiaKey() {
     }
     return gladiaKey;
 }
-export function printMessage(message) {
+exports.readGladiaKey = readGladiaKey;
+function printMessage(message) {
     if (message.type === "transcript" && message.data.is_final) {
         const { text, start, end } = message.data.utterance;
         console.log(`${formatSeconds(start)} --> ${formatSeconds(end)} | ${text.trim()}`);
@@ -21,6 +28,7 @@ export function printMessage(message) {
         console.log(JSON.stringify(message.data, null, 2));
     }
 }
+exports.printMessage = printMessage;
 function extractDurationFromDurationInMs(durationInMs) {
     if (!Number.isFinite(durationInMs) || durationInMs < 0) {
         throw new Error(`${durationInMs} isn't a valid duration`);
@@ -53,7 +61,7 @@ function formatSeconds(duration) {
         milliseconds.toString().padStart(3, "0"),
     ].join(".");
 }
-export function getMicrophoneAudioFormat() {
+function getMicrophoneAudioFormat() {
     return {
         encoding: "wav/pcm",
         bit_depth: 16,
@@ -61,9 +69,10 @@ export function getMicrophoneAudioFormat() {
         channels: 1,
     };
 }
-export function initMicrophoneRecorder(onAudioChunk, onEnd) {
+exports.getMicrophoneAudioFormat = getMicrophoneAudioFormat;
+function initMicrophoneRecorder(onAudioChunk, onEnd) {
     const config = getMicrophoneAudioFormat();
-    const microphone = mic({
+    const microphone = (0, mic_1.default)({
         rate: config.sample_rate,
         channels: config.channels,
     });
@@ -96,9 +105,10 @@ export function initMicrophoneRecorder(onAudioChunk, onEnd) {
     process.on("SIGINT", () => recorder.stop());
     return recorder;
 }
+exports.initMicrophoneRecorder = initMicrophoneRecorder;
 function parseAudioFile(filePath) {
     const textDecoder = new TextDecoder();
-    const buffer = readFileSync(resolve(filePath));
+    const buffer = (0, fs_1.readFileSync)((0, path_1.resolve)(filePath));
     if (textDecoder.decode(buffer.subarray(0, 4)) !== "RIFF" ||
         textDecoder.decode(buffer.subarray(8, 12)) !== "WAVE" ||
         textDecoder.decode(buffer.subarray(12, 16)) !== "fmt ") {
@@ -136,11 +146,12 @@ function parseAudioFile(filePath) {
         buffer,
     };
 }
-export function getAudioFileFormat(filePath) {
+function getAudioFileFormat(filePath) {
     const { startDataChunk, buffer, ...format } = parseAudioFile(filePath);
     return format;
 }
-export function initFileRecorder(onAudioChunk, onEnd, filePath) {
+exports.getAudioFileFormat = getAudioFileFormat;
+function initFileRecorder(onAudioChunk, onEnd, filePath) {
     const { startDataChunk, buffer, bit_depth, sample_rate, channels } = parseAudioFile(filePath);
     const audioData = buffer.subarray(startDataChunk + 8, buffer.readUInt32LE(startDataChunk + 4));
     const chunkDuration = 0.1; // 100 ms
@@ -173,3 +184,4 @@ export function initFileRecorder(onAudioChunk, onEnd, filePath) {
     process.on("SIGINT", () => recorder.stop());
     return recorder;
 }
+exports.initFileRecorder = initFileRecorder;
