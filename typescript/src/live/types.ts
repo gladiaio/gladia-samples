@@ -15,6 +15,7 @@ export type StreamingConfig = {
 
   pre_processing?: {
     audio_enhancer?: boolean;
+    speech_threshold?: number;
   };
 
   realtime_processing?: {
