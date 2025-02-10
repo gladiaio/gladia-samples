@@ -6,6 +6,10 @@ export type StreamingAudioFormat = {
 };
 
 export type StreamingConfig = {
+  model?: 'fast' | 'accurate';
+  endpointing?: number;
+  maximum_duration_without_endpointing?: number;
+
   custom_metadata?: Record<string, any>;
 
   language_config?: {
@@ -34,6 +38,11 @@ export type StreamingConfig = {
       type?: "general" | "bullet_points" | "concise";
     };
     chapterization?: boolean;
+  };
+
+  callback?: boolean;
+  callback_config?: {
+    url: string;
   };
 };
 
