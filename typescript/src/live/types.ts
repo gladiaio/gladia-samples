@@ -26,7 +26,8 @@ export type StreamingConfig = {
     words_accurate_timestamps?: boolean;
     custom_vocabulary?: boolean;
     custom_vocabulary_config?: {
-      vocabulary: string[];
+      vocabulary: (Vocab | string)[];
+      default_intensity?: number;
     };
     named_entity_recognition?: boolean;
     sentiment_analysis?: boolean;
@@ -45,6 +46,13 @@ export type StreamingConfig = {
     url: string;
   };
 };
+
+export type Vocab = {
+  value: string;
+  intensity?: number;
+  pronunciations?: string[];
+  language?: string;
+}
 
 export type Recorder = {
   start(): void;
