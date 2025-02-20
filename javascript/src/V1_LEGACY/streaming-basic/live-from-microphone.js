@@ -1,19 +1,24 @@
-import { exit } from "process";
-import WebSocket from "ws";
-import mic from "mic";
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const process_1 = require("process");
+const ws_1 = __importDefault(require("ws"));
+const mic_1 = __importDefault(require("mic"));
 const SAMPLE_RATE = 16000;
 // retrieve gladia key
 const gladiaKey = process.argv[2];
 if (!gladiaKey) {
     console.error("You must provide a gladia key. Go to app.gladia.io");
-    exit(1);
+    (0, process_1.exit)(1);
 }
 else {
     console.log("using the gladia key : " + gladiaKey);
 }
 const gladiaUrl = "wss://api.gladia.io/audio/text/audio-transcription";
 // connect to api websocket
-const socket = new WebSocket(gladiaUrl);
+const socket = new ws_1.default(gladiaUrl);
 // get ready to receive transcriptions
 socket.on("message", (event) => {
     if (!event)
@@ -50,14 +55,14 @@ socket.on("open", async () => {
     };
     socket.send(JSON.stringify(configuration));
     // create microphone instance
-    const microphone = mic({
+    const microphone = (0, mic_1.default)({
         rate: SAMPLE_RATE,
         channels: 1,
     });
     const microphoneInputStream = microphone.getAudioStream();
     microphoneInputStream.on("data", function (data) {
         const base64 = data.toString("base64");
-        if (socket.readyState === WebSocket.OPEN) {
+        if (socket.readyState === ws_1.default.OPEN) {
             socket.send(JSON.stringify({ frames: base64 }));
         }
         else {

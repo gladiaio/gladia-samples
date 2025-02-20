@@ -1,6 +1,11 @@
-import { exit } from "process";
-import mic from "mic";
-import { WebSocketClient } from "./websocket-client.js";
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const process_1 = require("process");
+const mic_1 = __importDefault(require("mic"));
+const websocket_client_js_1 = require("./websocket-client.js");
 const TYPE_KEY = "type";
 const TRANSCRIPTION_KEY = "transcription";
 const LANGUAGE_KEY = "language";
@@ -9,7 +14,7 @@ const SAMPLE_RATE = 16000;
 const gladiaKey = process.argv[2];
 if (!gladiaKey) {
     console.error("You must provide a gladia key. Go to app.gladia.io");
-    exit(1);
+    (0, process_1.exit)(1);
 }
 else {
     console.log("using the gladia key : " + gladiaKey);
@@ -18,7 +23,7 @@ else {
 const gladiaUrl = "wss://api.gladia.io/audio/text/audio-transcription";
 async function start() {
     // connect to api websocket
-    const socket = new WebSocketClient(gladiaUrl, {
+    const socket = new websocket_client_js_1.WebSocketClient(gladiaUrl, {
         x_gladia_key: gladiaKey,
         language_behaviour: "automatic single language",
         sample_rate: SAMPLE_RATE,
@@ -32,7 +37,7 @@ async function start() {
         onError(error) {
             if (error.closed) {
                 console.error(`Connection lost to the server, can't recover`, error);
-                exit(1);
+                (0, process_1.exit)(1);
             }
             else {
                 console.error(error);
@@ -41,7 +46,7 @@ async function start() {
     });
     await socket.ready();
     // create microphone instance
-    const microphone = mic({
+    const microphone = (0, mic_1.default)({
         rate: SAMPLE_RATE,
         channels: 1,
     });

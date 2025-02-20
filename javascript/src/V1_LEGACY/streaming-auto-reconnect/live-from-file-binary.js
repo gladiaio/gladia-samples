@@ -1,7 +1,12 @@
-import fs from "fs";
-import { resolve } from "path";
-import { exit } from "process";
-import { WebSocketClient } from "./websocket-client.js";
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const fs_1 = __importDefault(require("fs"));
+const path_1 = require("path");
+const process_1 = require("process");
+const websocket_client_js_1 = require("./websocket-client.js");
 const TYPE_KEY = "type";
 const TRANSCRIPTION_KEY = "transcription";
 const LANGUAGE_KEY = "language";
@@ -10,7 +15,7 @@ const sleep = (delay) => new Promise((f) => setTimeout(f, delay));
 const gladiaKey = process.argv[2];
 if (!gladiaKey) {
     console.error("You must provide a gladia key. Go to app.gladia.io");
-    exit(1);
+    (0, process_1.exit)(1);
 }
 else {
     console.log("Using the gladia key : " + gladiaKey);
@@ -18,7 +23,7 @@ else {
 const gladiaUrl = "wss://api.gladia.io/audio/text/audio-transcription";
 async function start() {
     // connect to api websocket
-    const socket = new WebSocketClient(gladiaUrl, {
+    const socket = new websocket_client_js_1.WebSocketClient(gladiaUrl, {
         x_gladia_key: gladiaKey,
         language_behaviour: "automatic multiple languages",
         frames_format: "bytes",
@@ -32,7 +37,7 @@ async function start() {
         onError(error) {
             if (error.closed) {
                 console.error(`Connection lost to the server, can't recover`, error);
-                exit(1);
+                (0, process_1.exit)(1);
             }
             else {
                 console.error(error);
@@ -41,8 +46,8 @@ async function start() {
     });
     await socket.ready();
     // Once the initial message is sent, send audio data
-    const file = resolve("../data/anna-and-sasha-16000.wav");
-    const fileSync = fs.readFileSync(file);
+    const file = (0, path_1.resolve)("../data/anna-and-sasha-16000.wav");
+    const fileSync = fs_1.default.readFileSync(file);
     const newBuffers = Buffer.from(fileSync);
     const segment = newBuffers.slice(44, newBuffers.byteLength);
     const partSize = 20000; // The size of each part

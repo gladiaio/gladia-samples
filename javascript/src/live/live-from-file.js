@@ -1,7 +1,12 @@
-import WebSocket from "ws";
-import { getAudioFileFormat, initFileRecorder, printMessage, readGladiaKey, } from "./helpers";
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const ws_1 = __importDefault(require("ws"));
+const helpers_1 = require("./helpers");
 const gladiaApiUrl = "https://api.gladia.io";
-const gladiaKey = readGladiaKey();
+const gladiaKey = (0, helpers_1.readGladiaKey)();
 const filepath = "../data/anna-and-sasha-16000.wav";
 const config = {
     language_config: {
@@ -16,7 +21,7 @@ async function initLiveSession() {
             "Content-Type": "application/json",
             "X-GLADIA-KEY": gladiaKey,
         },
-        body: JSON.stringify({ ...getAudioFileFormat(filepath), ...config }),
+        body: JSON.stringify({ ...(0, helpers_1.getAudioFileFormat)(filepath), ...config }),
     });
     if (!response.ok) {
         console.error(`${response.status}: ${(await response.text()) || response.statusText}`);
@@ -25,7 +30,7 @@ async function initLiveSession() {
     return await response.json();
 }
 function initWebSocket({ url }, onOpen) {
-    const socket = new WebSocket(url);
+    const socket = new ws_1.default(url);
     socket.addEventListener("open", function () {
         onOpen();
     });
@@ -45,14 +50,14 @@ function initWebSocket({ url }, onOpen) {
     socket.addEventListener("message", function (event) {
         // All the messages we are sending are in JSON format
         const message = JSON.parse(event.data.toString());
-        printMessage(message);
+        (0, helpers_1.printMessage)(message);
     });
     return socket;
 }
 async function start() {
     const initiateResponse = await initLiveSession();
     let socket = null;
-    const recorder = initFileRecorder(
+    const recorder = (0, helpers_1.initFileRecorder)(
     // Send every chunk from recorder to the socket
     (chunk) => socket?.send(chunk), 
     // When the recording is stopped, we send a message to tell the server
