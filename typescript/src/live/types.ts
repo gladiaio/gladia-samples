@@ -6,6 +6,10 @@ export type StreamingAudioFormat = {
 };
 
 export type StreamingConfig = {
+  model?: 'fast' | 'accurate';
+  endpointing?: number;
+  maximum_duration_without_endpointing?: number;
+
   custom_metadata?: Record<string, any>;
 
   language_config?: {
@@ -15,13 +19,15 @@ export type StreamingConfig = {
 
   pre_processing?: {
     audio_enhancer?: boolean;
+    speech_threshold?: number;
   };
 
   realtime_processing?: {
     words_accurate_timestamps?: boolean;
     custom_vocabulary?: boolean;
     custom_vocabulary_config?: {
-      vocabulary: string[];
+      vocabulary: (Vocab | string)[];
+      default_intensity?: number;
     };
     named_entity_recognition?: boolean;
     sentiment_analysis?: boolean;
@@ -34,7 +40,19 @@ export type StreamingConfig = {
     };
     chapterization?: boolean;
   };
+
+  callback?: boolean;
+  callback_config?: {
+    url: string;
+  };
 };
+
+export type Vocab = {
+  value: string;
+  intensity?: number;
+  pronunciations?: string[];
+  language?: string;
+}
 
 export type Recorder = {
   start(): void;
