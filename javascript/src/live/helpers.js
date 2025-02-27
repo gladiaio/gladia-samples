@@ -11,8 +11,8 @@ export function readGladiaKey() {
 }
 export function printMessage(message) {
     if (message.type === "transcript" && message.data.is_final) {
-        const { text, start, end } = message.data.utterance;
-        console.log(`${formatSeconds(start)} --> ${formatSeconds(end)} | ${text.trim()}`);
+        const { text, start, end, language } = message.data.utterance;
+        console.log(`${formatSeconds(start)} --> ${formatSeconds(end)} | ${language} | ${text.trim()}`);
     }
     else if (message.type === "post_final_transcript") {
         console.log();

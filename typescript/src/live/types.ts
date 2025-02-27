@@ -6,7 +6,7 @@ export type StreamingAudioFormat = {
 };
 
 export type StreamingConfig = {
-  model?: 'fast' | 'accurate';
+  model?: "fast" | "accurate";
   endpointing?: number;
   maximum_duration_without_endpointing?: number;
 
@@ -28,6 +28,12 @@ export type StreamingConfig = {
     custom_vocabulary_config?: {
       vocabulary: (Vocab | string)[];
       default_intensity?: number;
+    };
+    translation?: boolean;
+    translation_config?: {
+      target_languages: string[];
+      model?: "base" | "enhanced";
+      match_original_utterances?: boolean;
     };
     named_entity_recognition?: boolean;
     sentiment_analysis?: boolean;
