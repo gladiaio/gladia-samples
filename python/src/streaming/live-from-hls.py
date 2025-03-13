@@ -1,19 +1,21 @@
 import asyncio
 import json
 import subprocess
+from datetime import time
 from typing import Literal, TypedDict
-from datetime import timedelta
-
-import requests
+import sys
+import signal
 from websockets.asyncio.client import ClientConnection, connect
 from websockets.exceptions import ConnectionClosedOK
+import requests
 
-# Constants
-GLADIA_API_KEY = "key"  # Replace with your Gladia API key
-HLS_STREAM_URL = "https://wl.tvrain.tv/transcode/ses_1080p/playlist.m3u8"  # HLS stream URL
+## Constants
 GLADIA_API_URL = "https://api.gladia.io"
 
-# Type definitions
+# Example HLS stream URL - replace with your own
+EXAMPLE_HLS_STREAM_URL = "https://wl.tvrain.tv/transcode/ses_1080p/playlist.m3u8"
+
+## Type definitions
 class InitiateResponse(TypedDict):
     id: str
     url: str
@@ -25,6 +27,8 @@ class LanguageConfiguration(TypedDict):
 
 
 class StreamingConfiguration(TypedDict):
+    # This is a reduced set of options. For a full list, see the API documentation.
+    # https://docs.gladia.io/api-reference/v2/live/init
     encoding: Literal["wav/pcm", "wav/alaw", "wav/ulaw"]
     bit_depth: Literal[8, 16, 24, 32]
     sample_rate: Literal[8_000, 16_000, 32_000, 44_100, 48_000]
@@ -33,110 +37,70 @@ class StreamingConfiguration(TypedDict):
     realtime_processing: dict[str, dict[str, list[str]]] | None
 
 
+## Example configuration
 STREAMING_CONFIGURATION: StreamingConfiguration = {
     "encoding": "wav/pcm",
     "sample_rate": 16_000,
     "bit_depth": 16,
     "channels": 1,
     "language_config": {
-        "languages": ["ru"],  # Default to Russian transcription
+        "languages": ["ru"],  # Example language - modify as needed
         "code_switching": False,
     },
+    # Example custom vocabulary configuration
     "realtime_processing": {
+        "words_accurate_timestamps": True,
         "custom_vocabulary": True,
         "custom_vocabulary_config": {
             "vocabulary": [
-                # Opposition Figures
-                "Навальный", "Яшин", "Соболь", "Ходорковский", "Чичваркин", "Касьянов", "Пономарев", "Каспаров", "Волков",
-
-                # Political Leaders
-                "Путин", "Медведев", "Шойгу", "Лавров", "Зеленский", "Байден", "Эрдоган", "Лукашенко", "Кадыров", "Греф",
-
-                # Government Entities
-                "Кремль", "ФСБ", "МВД", "Минобороны", "Скобеева", "Соловьев", "Роскомнадзор", "Центробанк", "Газпром",
-
-                # Opposition Movements and Organizations
-                "ФБК", "Мемориал", "ОВД-Инфо", "Диссернет", "Голос", "Свобода слова", "Марш несогласных",
-
-                # Protests and Civil Rights
-                "митинги", "протесты", "пикеты", "политзаключенные", "репрессии", "свобода собраний", "расследования",
-
-                # Media and Journalists
-                "Эхо Москвы", "Медуза", "Новая газета", "Дождь", "Собеседник", "Шнуров", "Гусева", "Кац",
-
-                # Key Terms in International Politics
-                "санкции", "НАТО", "ОБСЕ", "ООН", "Евросоюз", "Гаага", "Крым", "Донбасс", "Луганск", "Тбилиси", "Грузия",
-
-                # Military and War
-                "мобилизация", "ВСУ", "дроны", "война", "оккупация", "авиаудары", "перемирие", "пленные", "Сирия", "ЧВК",
-
-                # Regions and Locations
-                "Москва", "Санкт-Петербург", "Алтай", "Краснодар", "Ростов-на-Дону", "Вологда", "Калининград", "Татарстан",
-
-                # Corruption and Economy
-                "коррупция", "олигархи", "кризис", "инфляция", "ключевая ставка", "Сбербанк", "ВТБ", "Роснефть",
-
-                # Key International Figures
-                "Трамп", "Меркель", "Макрон", "Шольц", "Си Цзиньпин", "Трюдо", "Джонсон", "Нетаньяху", "Орбан", "Санду",
-
-                # Russian History and Legacy
-                "Сталин", "Горбачев", "Ельцин", "Брежнев", "царская Россия", "Распутин", "революция", "1917 год",
-
-                # Technology and Media Platforms
-                "ВКонтакте", "Телеграм", "WhatsApp", "Facebook", "Twitter", "YouTube", "TikTok", "Рутуб", "Инстаграм",
-
-                # Cultural Figures and Celebrities
-                "Пугачева", "Галкин", "Шнуров", "Дудь", "Шевчук", "Оксимирон", "Ройзман", "Панфилов", "Хаматова",
-
-                # Environmental Issues
-                "экология", "климат", "Черное море", "Байкал", "реки", "лесные пожары", "углеродный след", "Грета Тунберг",
-
-                # Legal and Judicial Terms
-                "уголовное дело", "аресты", "адвокаты", "правозащитники", "суды", "приговоры", "амнистия",
-
-                # General Political Terms
-                "демократия", "авторитаризм", "либералы", "оппозиция", "голосование", "выборы", "конституция",
-
-                # Science, Space, and Technology
-                "Роскосмос", "наука", "исследования", "Курчатов", "Сколково", "ИИ", "космос", "Гагарин", "Байконур",
-
-                # Economy and Business
-                "Газпром", "нефть", "газ", "экспорт", "импорт", "валюта", "рубль", "Центробанк", "офшоры", "инвестиции",
-
-                # Geopolitical Flashpoints
-                "Курилы", "Армения", "Азербайджан", "Карабах", "Афганистан", "Кабул", "Средняя Азия", "Дальний Восток",
-
-                # Miscellaneous Relevant Terms
-                "цензура", "пропаганда", "интернет", "свобода слова", "фейки", "дезинформация", "кибербезопасность"
+                "Example", "Custom", "Words"  # Replace with your vocabulary
             ]
         }
     }
 }
 
 
-def init_live_session(config: StreamingConfiguration) -> InitiateResponse:
-    """Initialize a live transcription session."""
-    if not GLADIA_API_KEY:
-        raise ValueError("GLADIA_API_KEY is not set.")
+## Helpers
+def get_gladia_key() -> str:
+    if len(sys.argv) != 2 or not sys.argv[1]:
+        print("You must provide a Gladia key as the first argument.")
+        exit(1)
+    return sys.argv[1]
 
+
+def init_live_session(config: StreamingConfiguration) -> InitiateResponse:
+    """Initialize a live transcription session with Gladia API."""
+    gladia_key = get_gladia_key()
     response = requests.post(
         f"{GLADIA_API_URL}/v2/live",
-        headers={"X-Gladia-Key": GLADIA_API_KEY},
+        headers={"X-Gladia-Key": gladia_key},
         json=config,
-        timeout=15,
+        timeout=3,
     )
     if not response.ok:
-        raise ValueError(f"API Error: {response.status_code}: {response.text}")
+        print(f"{response.status_code}: {response.text or response.reason}")
+        exit(response.status_code)
     return response.json()
 
 
+def format_duration(seconds: float) -> str:
+    """Format duration in seconds to HH:MM:SS.mmm format."""
+    milliseconds = int(seconds * 1_000)
+    return time(
+        hour=milliseconds // 3_600_000,
+        minute=(milliseconds // 60_000) % 60,
+        second=(milliseconds // 1_000) % 60,
+        microsecond=milliseconds % 1_000 * 1_000,
+    ).isoformat(timespec="milliseconds")
+
+
 async def stream_audio_from_hls(socket: ClientConnection, hls_url: str) -> None:
-    """Stream audio from HLS stream to the WebSocket."""
+    """Stream audio from an HLS stream to the WebSocket."""
     ffmpeg_command = [
         "ffmpeg", "-re",
         "-i", hls_url,
-        "-ar", "16000",
-        "-ac", "1",
+        "-ar", str(STREAMING_CONFIGURATION["sample_rate"]),
+        "-ac", str(STREAMING_CONFIGURATION["channels"]),
         "-f", "wav",
         "-bufsize", "16K",
         "pipe:1",
@@ -155,7 +119,7 @@ async def stream_audio_from_hls(socket: ClientConnection, hls_url: str) -> None:
         STREAMING_CONFIGURATION["sample_rate"]
         * (STREAMING_CONFIGURATION["bit_depth"] / 8)
         * STREAMING_CONFIGURATION["channels"]
-        * 0.1
+        * 0.1  # 100ms chunks
     )
 
     while True:
@@ -172,15 +136,7 @@ async def stream_audio_from_hls(socket: ClientConnection, hls_url: str) -> None:
 
     print("Finished sending audio data")
     await stop_recording(socket)
-
     ffmpeg_process.terminate()
-
-
-async def stop_recording(websocket: ClientConnection) -> None:
-    """Send a stop recording signal."""
-    print("Ending the recording session...")
-    await websocket.send(json.dumps({"type": "stop_recording"}))
-    await asyncio.sleep(0)
 
 
 async def print_messages_from_socket(socket: ClientConnection) -> None:
@@ -192,42 +148,45 @@ async def print_messages_from_socket(socket: ClientConnection) -> None:
             end = format_duration(content["data"]["utterance"]["end"])
             text = content["data"]["utterance"]["text"].strip()
             print(f"{start} --> {end} | {text}")
-
         if content["type"] == "post_final_transcript":
             print("\n################ End of session ################\n")
             print(json.dumps(content, indent=2, ensure_ascii=False))
 
 
-def format_duration(seconds: float) -> str:
-    """Format a duration in seconds into HH:MM:SS.mmm."""
-    td = timedelta(seconds=seconds)
-    return str(td).split('.')[0] + f".{td.microseconds // 1000:03d}"
+async def stop_recording(websocket: ClientConnection) -> None:
+    """Send a stop recording signal to the WebSocket."""
+    print(">>>>> Ending the recording...")
+    await websocket.send(json.dumps({"type": "stop_recording"}))
+    await asyncio.sleep(0)
 
 
 async def main():
     """Main function to transcribe an HLS stream."""
-    transcription_language = input("Enter transcription language (ru, en, nl): ").strip()
-    STREAMING_CONFIGURATION["language_config"]["languages"] = [transcription_language]
+    print("\nThis script demonstrates how to transcribe audio from an HLS stream.")
+    print("Requirements:")
+    print("- FFmpeg installed on your system")
+    print("- A valid HLS stream URL")
+    print("\nExample usage: python live-from-hls.py YOUR_GLADIA_API_KEY\n")
 
-    # Allow dynamic input for custom vocabulary
-    custom_vocab_input = input("Enter custom vocabulary (comma-separated, or press Enter to use default): ").strip()
-    if custom_vocab_input:
-        STREAMING_CONFIGURATION["realtime_processing"] = {
-            "custom_vocabulary": True,
-            "custom_vocabulary_config": {
-                "vocabulary": [word.strip() for word in custom_vocab_input.split(",")[:100]]  # Limit to 100 entries
-            }
-        }
-
-    print("Initializing live transcription session...")
+    # Initialize session
     response = init_live_session(STREAMING_CONFIGURATION)
-    print(f"WebSocket URL: {response['url']}")
-
+    
     async with connect(response["url"]) as websocket:
-        print("Connected to WebSocket")
+        print("\n################ Begin session ################\n")
+        
+        # Setup signal handler for graceful shutdown
+        loop = asyncio.get_running_loop()
+        loop.add_signal_handler(
+            signal.SIGINT,
+            loop.create_task,
+            stop_recording(websocket),
+        )
+
         try:
             tasks = [
-                asyncio.create_task(stream_audio_from_hls(websocket, HLS_STREAM_URL)),
+                asyncio.create_task(
+                    stream_audio_from_hls(websocket, EXAMPLE_HLS_STREAM_URL)
+                ),
                 asyncio.create_task(print_messages_from_socket(websocket)),
             ]
             await asyncio.wait(tasks)
