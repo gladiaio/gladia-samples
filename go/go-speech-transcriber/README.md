@@ -101,7 +101,7 @@ Or pass it as a command-line argument (see Usage section).
 ./speech-transcriber -max_time=60
 
 # Specify supported languages
-./speech-transcriber -language=en-US -language=fr-FR
+./speech-transcriber -language=en -language=fr
 
 # Provide Gladia API key via command line
 ./speech-transcriber -gladia_api_key=your_api_key
