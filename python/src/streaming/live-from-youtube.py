@@ -142,6 +142,7 @@ async def stream_audio_from_youtube(socket: ClientConnection, youtube_url: str) 
     while True:
         audio_chunk = ffmpeg_process.stdout.read(chunk_size)
         if not audio_chunk:
+            # Optionally, check yt_dlp_process.stderr for relevant errors
             break
 
         try:
@@ -156,7 +157,6 @@ async def stream_audio_from_youtube(socket: ClientConnection, youtube_url: str) 
 
     yt_dlp_process.terminate()
     ffmpeg_process.terminate()
-
 
 async def print_messages_from_socket(socket: ClientConnection) -> None:
     """Print transcription messages received from the WebSocket."""
