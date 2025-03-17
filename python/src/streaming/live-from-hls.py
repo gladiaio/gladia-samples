@@ -125,6 +125,7 @@ async def stream_audio_from_hls(socket: ClientConnection, hls_url: str) -> None:
     while True:
         audio_chunk = ffmpeg_process.stdout.read(chunk_size)
         if not audio_chunk:
+            # Optionally, check if ffmpeg_process is still running, or log stderr output
             break
 
         try:
@@ -137,7 +138,6 @@ async def stream_audio_from_hls(socket: ClientConnection, hls_url: str) -> None:
     print("Finished sending audio data")
     await stop_recording(socket)
     ffmpeg_process.terminate()
-
 
 async def print_messages_from_socket(socket: ClientConnection) -> None:
     """Print transcription messages received from the WebSocket."""
