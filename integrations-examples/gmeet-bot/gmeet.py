@@ -399,7 +399,7 @@ async def join_meet():
 
     print("- Sending request to Gladia API...")
     post_response = make_request(
-        "https://api.gladia.io/v2/transcription/", headers, "POST", data=data
+        "https://api.gladia.io/v2/pre-recorded/", headers, "POST", data=data
     )
 
     print("Post response with Transcription ID:", post_response)
