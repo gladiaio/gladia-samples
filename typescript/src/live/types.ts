@@ -6,7 +6,7 @@ export type StreamingAudioFormat = {
 };
 
 export type StreamingConfig = {
-  model?: "fast" | "accurate";
+  model?: "solaria-1";
   endpointing?: number;
   maximum_duration_without_endpointing?: number;
 
