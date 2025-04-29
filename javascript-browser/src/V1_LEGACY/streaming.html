@@ -75,7 +75,7 @@
     </div>
 
     <script>
-      const SAMPLE_RATE = 48000;
+      const SAMPLE_RATE = 16000;
 
       /**
        * @returns {{promise: Promise<any>; resolve(value: any): void; reject(err: any): void;}}
@@ -262,7 +262,6 @@
               const modifiedBuffer = buffer.slice(44);
               socket?.send(modifiedBuffer);
             },
-            sampleRate: SAMPLE_RATE,
             desiredSampRate: SAMPLE_RATE,
             numberOfAudioChannels: 1
           });
