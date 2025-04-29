@@ -45,7 +45,7 @@
     <div id="result"></div>
 
     <script>
-      const SAMPLE_RATE = 48000;
+      const SAMPLE_RATE = 16000;
 
       /** We try to (re)connect to the WS during 5 min before giving up */
       const MAX_CONNECTION_DURATION = 5 * 60 * 1000;
@@ -270,7 +270,6 @@
               const modifiedBuffer = buffer.slice(44);
               socket?.sendMessage(modifiedBuffer);
             },
-            sampleRate: SAMPLE_RATE,
             desiredSampRate: SAMPLE_RATE,
             numberOfAudioChannels: 1,
             reinject_context: true,
