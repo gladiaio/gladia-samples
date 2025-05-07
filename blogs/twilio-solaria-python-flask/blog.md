@@ -59,6 +59,40 @@ def create_session():
 
 ---
 
+### System Architecture Flow
+
+Here's how data flows through the system:
+
+```mermaid
+sequenceDiagram
+  participant Caller
+  participant Twilio
+  participant Flask as Flask WebSocket Server
+  participant Gladia as Gladia API
+
+  Flask->>Gladia: Initialize session (POST /v2/live)
+  Gladia-->>Flask: Return WebSocket URL
+  
+  Caller->>Twilio: Make phone call
+  Twilio->>Flask: Connect to WebSocket (/media)
+  
+  loop Audio Streaming
+    Twilio->>Flask: Send audio chunks (base64 μ-law)
+    Flask->>Flask: Decode base64
+    Flask->>Gladia: Forward raw μ-law bytes
+    Gladia->>Gladia: Process speech
+    Gladia-->>Flask: Return partial transcripts
+    Gladia-->>Flask: Return final transcripts
+    Flask->>Flask: Log/process transcripts
+  end
+  
+  Caller->>Twilio: End call
+  Twilio->>Flask: Close WebSocket
+  Flask->>Gladia: Close WebSocket
+```
+
+---
+
 ### 2 — Build the Python WebSocket proxy
 
 The proxy now does **three** things:
