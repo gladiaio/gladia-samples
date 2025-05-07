@@ -12,7 +12,7 @@ Gladia's `/v2/live` endpoint lets you specify **`encoding: "wav/ulaw"`** with **
 | ----------------------------------------- | -------------------------------------------------------------------- |
 | **Gladia API key**                        | Sign up & copy from the dashboard.                                   |
 | **Twilio account + voice-enabled number** | To receive / place calls.                                            |
-| **Python 3.8+**                           | We'll use `flask`, `flask-sock`, `websockets`, and `requests`.       |
+| **Python 3.12+**                           | We'll use `flask`, `flask-sock`, `websockets`, and `requests`.       |
 | **Public URL**                            | Expose a WebSocket endpoint with ngrok or a cloud VM.                |
 | **8 kHz, 8-bit μ-law audio**              | Exactly what Twilio streams – and what Gladia now consumes natively. |
 
