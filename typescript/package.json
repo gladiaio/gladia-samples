@@ -3,9 +3,17 @@
   "version": "1.0.0",
   "license": "MIT",
   "dependencies": {
+    "ansi-escapes": "^7.0.0",
     "axios": "^1.4.0",
+    "chalk": "^4.1.2",
+    "cli-progress": "^3.12.0",
+    "commander": "^11.1.0",
     "form-data": "^4.0.0",
+    "get-cursor-position": "^2.0.0",
+    "log-update": "^6.1.0",
+    "log-update-async-hook": "^2.0.7",
     "mic": "^2.1.2",
+    "ora": "^5.4.1",
     "ws": "^8.14.2"
   },
   "devDependencies": {
@@ -22,6 +30,7 @@
     "pre-recorded-file": "tsx src/pre-recorded/pre-recorded-file.ts",
     "pre-recorded-url": "tsx src/pre-recorded/pre-recorded-url.ts",
     "to-js": "tsc && sed 's/# TypeScript/# JavaScript/' ./README.md > ../javascript/README.md",
-    "live-file-v1": "tsx src/V1_LEGACY/streaming-basic/live-from-file.ts"
+    "live-file-v1": "tsx src/V1_LEGACY/streaming-basic/live-from-file.ts",
+    "cli": "tsx src/cli-tool/index.ts"
   }
 }

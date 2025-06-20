@@ -1,0 +1,31 @@
+{
+  "command": "pre-recorded",
+  "Pre-processing": {
+    "normalisation": false,
+    "format": "default"
+  },
+  "Segmentation": {
+    "MAXIMUM_SEGMENT_DURATION": 30
+  },
+  "VAD (voice activity detection)": {
+    "bypassVAD": false,
+    "silero": {
+      "TS": true,
+      "version": "v4",
+      "compacted_audio": true
+    },
+    "SILERO_UTTERANCE_MODULO": 2,
+    "MINIMUM_SILENCE_DURATION_DEFAULT": 32,
+    "BATCH_SPEECH_THRESHOLD": 0.3
+  },
+  "Silence padding": {
+    "BEGINNING_SILENCE": 0.1,
+    "MAX_SILENCE_BETWEEN_UTTERANCES": 0.2,
+    "SILENCE_TO_KEEP": 0.1
+  },
+  "enhancer": "current",
+  "upsampling_method": "default",
+  "segment/compacted": "default",
+  "model": "default",
+  "Triton-Server": {}
+}
