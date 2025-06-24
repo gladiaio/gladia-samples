@@ -23,7 +23,6 @@ export type StreamingConfig = {
   };
 
   realtime_processing?: {
-    words_accurate_timestamps?: boolean;
     custom_vocabulary?: boolean;
     custom_vocabulary_config?: {
       vocabulary: (Vocab | string)[];
