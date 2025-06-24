@@ -62,7 +62,7 @@ async function main() {
   if (options.concurrent_run) {
     results = await Promise.all(processes.map(async (processor) => {
       const result = await processor?.process();
-      if (result) {
+      if (result && result.data) {
         const metadataPath = path.resolve('./conf/output-metadata.json');
         if (fs.existsSync(metadataPath)) {
           result.data["output_metadata"] = JSON.parse(fs.readFileSync(metadataPath, 'utf8'));
@@ -73,7 +73,7 @@ async function main() {
   } else {
     for (const processor of processes) {
       const result = await processor?.process();
-      if (result) {
+      if (result && result.data) {
         const metadataPath = path.resolve('./conf/output-metadata.json');
         if (fs.existsSync(metadataPath)) {
           result.data["output_metadata"] = JSON.parse(fs.readFileSync(metadataPath, 'utf8'));

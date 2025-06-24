@@ -10,8 +10,8 @@
   "VAD (voice activity detection)": {
     "bypassVAD": false,
     "silero": {
-      "TS": true,
-      "version": "v4",
+      "TS": false,
+      "version": "v5",
       "compacted_audio": true
     },
     "SILERO_UTTERANCE_MODULO": 2,

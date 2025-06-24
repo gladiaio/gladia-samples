@@ -127,7 +127,7 @@ export function initMicrophoneRecorder(
   return recorder;
 }
 
-function parseAudioFile(
+export function parseAudioFile(
   filePath: string
 ): StreamingAudioFormat & { startDataChunk: number; buffer: Buffer } {
   const textDecoder = new TextDecoder();

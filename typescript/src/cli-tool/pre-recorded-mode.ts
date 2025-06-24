@@ -86,10 +86,8 @@ export class PreRecordedProcessor extends BaseProcessor {
         await axios.post(`${this.uri}/v2/upload/`, form, {
           headers: { ...form.getHeaders(), ...headers },
           onUploadProgress: (progressEvent) => {
-            if (progressEvent.total) {
-              const percentCompleted = Math.round((progressEvent.loaded / progressEvent.total) * 100);
-              this.updateState({ statusTitle: `Uploading file: ${percentCompleted}% complete` });
-            }
+            // Update status without percentage
+            this.updateState({ statusTitle: `Uploading file...` });
           },
         })
       ).data;

@@ -47,9 +47,28 @@ export type StreamingConfig = {
     chapterization?: boolean;
   };
 
+  messages_config?: {
+    receive_final_transcripts?: boolean;
+    receive_speech_events?: boolean;
+    receive_pre_processing_events?: boolean;
+    receive_realtime_processing_events?: boolean;
+    receive_post_processing_events?: boolean;
+    receive_acknowledgments?: boolean;
+    receive_errors?: boolean;
+    receive_lifecycle_events?: boolean;
+  };
+
   callback?: boolean;
   callback_config?: {
     url: string;
+    receive_final_transcripts?: boolean;
+    receive_speech_events?: boolean;
+    receive_pre_processing_events?: boolean;
+    receive_realtime_processing_events?: boolean;
+    receive_post_processing_events?: boolean;
+    receive_acknowledgments?: boolean;
+    receive_errors?: boolean;
+    receive_lifecycle_events?: boolean;
   };
 };
 
