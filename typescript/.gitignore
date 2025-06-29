@@ -1,0 +1,5 @@
+conf/*
+!conf/live-config.json
+!conf/pre-recorded-config.json
+!conf/output-metadata.json
+results/*

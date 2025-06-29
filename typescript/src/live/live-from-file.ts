@@ -7,7 +7,7 @@ import {
 } from "./helpers";
 import { InitiateResponse, StreamingConfig } from "./types";
 
-const gladiaApiUrl = "https://api.gladia.io";
+const gladiaApiUrl = "http://localhost:3000";
 const gladiaKey = readGladiaKey();
 
 const filepath = "../data/anna-and-sasha-16000.wav";

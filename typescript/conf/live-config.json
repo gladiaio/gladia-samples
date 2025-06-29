@@ -1,0 +1,95 @@
+{
+  "encoding": "wav/pcm",
+  "bit_depth": 16,
+  "sample_rate": 16000,
+  "channels": 1,
+  "custom_metadata": {
+    "user": "John Doe"
+  },
+  "model": "solaria-1",
+  "endpointing": 0.05,
+  "maximum_duration_without_endpointing": 5,
+  "language_config": {
+    "languages": [],
+    "code_switching": false
+  },
+  "pre_processing": {
+    "audio_enhancer": false,
+    "speech_threshold": 0.6
+  },
+  "realtime_processing": {
+    "words_accurate_timestamps": false,
+    "custom_vocabulary": false,
+    "custom_vocabulary_config": {
+      "vocabulary": [
+        "Westeros",
+        {
+          "value": "Stark"
+        },
+        {
+          "value": "Night's Watch",
+          "pronunciations": [
+            "Nightz Watch"
+          ],
+          "intensity": 0.4,
+          "language": "en"
+        }
+      ],
+      "default_intensity": 0.5
+    },
+    "custom_spelling": false,
+    "custom_spelling_config": {
+      "spelling_dictionary": {
+        "Gettleman": [
+          "gettleman"
+        ],
+        "SQL": [
+          "Sequel"
+        ]
+      }
+    },
+    "translation": false,
+    "translation_config": {
+      "target_languages": [
+        "en"
+      ],
+      "model": "base",
+      "match_original_utterances": true,
+      "lipsync": true,
+      "context_adaptation": true,
+      "context": "string",
+      "informal": false
+    },
+    "named_entity_recognition": false,
+    "sentiment_analysis": false
+  },
+  "post_processing": {
+    "summarization": false,
+    "summarization_config": {
+      "type": "general"
+    },
+    "chapterization": false
+  },
+  "messages_config": {
+    "receive_final_transcripts": true,
+    "receive_speech_events": true,
+    "receive_pre_processing_events": true,
+    "receive_realtime_processing_events": true,
+    "receive_post_processing_events": true,
+    "receive_acknowledgments": true,
+    "receive_errors": true,
+    "receive_lifecycle_events": false
+  },
+  "callback": false,
+  "callback_config": {
+    "url": "https://callback.example",
+    "receive_final_transcripts": true,
+    "receive_speech_events": false,
+    "receive_pre_processing_events": true,
+    "receive_realtime_processing_events": true,
+    "receive_post_processing_events": true,
+    "receive_acknowledgments": false,
+    "receive_errors": false,
+    "receive_lifecycle_events": true
+  }
+}
