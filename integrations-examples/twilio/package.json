@@ -9,13 +9,13 @@
   "author": "Gladia",
   "license": "MIT",
   "dependencies": {
-    "body-parser": "^1.20.2",
+    "body-parser": "^2.2.0",
     "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
-    "express": "^4.18.2",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
     "ngrok": "^5.0.0-beta.2",
-    "twilio": "^4.17.0",
+    "twilio": "^5.8.0",
     "wavefile": "^11.0.0",
-    "ws": "^8.14.0"
+    "ws": "^8.18.3"
   }
 }

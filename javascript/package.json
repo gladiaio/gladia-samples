@@ -4,10 +4,10 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
-    "axios": "^1.4.0",
-    "form-data": "^4.0.0",
+    "axios": "^1.11.0",
+    "form-data": "^4.0.4",
     "mic": "^2.1.2",
-    "ws": "^8.14.2"
+    "ws": "^8.18.3"
   },
   "scripts": {
     "live-file": "node src/live/live-from-file.js",

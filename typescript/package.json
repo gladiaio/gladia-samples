@@ -3,16 +3,16 @@
   "version": "1.0.0",
   "license": "MIT",
   "dependencies": {
-    "axios": "^1.4.0",
-    "form-data": "^4.0.0",
+    "axios": "^1.11.0",
+    "form-data": "^4.0.4",
     "mic": "^2.1.2",
-    "ws": "^8.14.2"
+    "ws": "^8.18.3"
   },
   "devDependencies": {
-    "@types/node": "^20.3.1",
-    "@types/ws": "^8.5.6",
-    "tsx": "^3.12.7",
-    "typescript": "^5.2.2"
+    "@types/node": "^24.2.0",
+    "@types/ws": "^8.18.1",
+    "tsx": "^4.20.3",
+    "typescript": "^5.9.2"
   },
   "scripts": {
     "live-file": "tsx src/live/live-from-file.ts",
@@ -21,7 +21,6 @@
     "live-microphone-with-resume": "tsx src/live/live-from-microphone-with-resume.ts",
     "pre-recorded-file": "tsx src/pre-recorded/pre-recorded-file.ts",
     "pre-recorded-url": "tsx src/pre-recorded/pre-recorded-url.ts",
-    "to-js": "tsc && sed 's/# TypeScript/# JavaScript/' ./README.md > ../javascript/README.md",
-    "live-file-v1": "tsx src/V1_LEGACY/streaming-basic/live-from-file.ts"
+    "to-js": "tsc && sed 's/# TypeScript/# JavaScript/' ./README.md > ../javascript/README.md"
   }
 }
