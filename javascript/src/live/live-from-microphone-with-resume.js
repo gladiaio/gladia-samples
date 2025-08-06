@@ -110,6 +110,6 @@ async function start() {
     recorder.start();
     closeInterval = setInterval(() => {
         client.forceClose();
-    }, 10000);
+    }, 10_000);
 }
 start();
