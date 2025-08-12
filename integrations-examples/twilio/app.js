@@ -18,7 +18,7 @@ if (!gladiaApiKey) {
 
 const port = process.env.PORT || 8080;
 
-let fisrtGladiaMessage = false;
+let firstGladiaMessage = false;
 
 const corsOptions = {
   origin: "http://localhost:3000",
@@ -52,9 +52,9 @@ app.post("/", async (req, res) => {
 
   gladiaSocket.on("message", async (event) => {
     const gladiaMsg = JSON.parse(event.toString());
-    if (!fisrtGladiaMessage) {
+    if (!firstGladiaMessage) {
       console.log(`Gladia web socket connection id: ${gladiaMsg.request_id}`);
-      fisrtGladiaMessage = true;
+      firstGladiaMessage = true;
     } else if (
       gladiaMsg.hasOwnProperty("transcription") &&
       gladiaMsg.type === "final"

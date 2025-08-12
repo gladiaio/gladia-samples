@@ -57,7 +57,7 @@ export function getMicrophoneAudioFormat() {
     return {
         encoding: "wav/pcm",
         bit_depth: 16,
-        sample_rate: 16000,
+        sample_rate: 16_000,
         channels: 1,
     };
 }
