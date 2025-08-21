@@ -9,7 +9,7 @@ If you don't have a LiveKit Server yet, please follow the instructions in the [p
 ### Create your environment file
 
 ```bash
-cp env.example .env
+cp .env.example .env
 ```
 
 Open the .env file in your text editor and add your API keys:

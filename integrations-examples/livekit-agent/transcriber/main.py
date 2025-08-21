@@ -25,11 +25,16 @@ logger = logging.getLogger("transcriber")
 
 class Transcriber(Agent):
     def __init__(self):
+        api_key = os.getenv("GLADIA_API_KEY")
+        if not api_key:
+            raise RuntimeError(
+                "GLADIA_API_KEY is not set. Please create a .env from .env.example and set it, or export it in your shell."
+            )   
         super().__init__(
             instructions="not-needed",
             stt=GladiaSTT(
-                api_key=os.getenv("GLADIA_API_KEY"),
-                interim_results=True
+                api_key=api_key,
+                interim_results=True,
             ),
         )
 
@@ -40,7 +45,7 @@ class Transcriber(Agent):
         raise StopResponse()
     
 async def entrypoint(ctx: JobContext):
-    logger.info(f"Starting transcriber (speech to text) in room: ${ctx.room.name}")
+    logger.info(f"Starting transcriber (speech to text) in room: {ctx.room.name}")
     await ctx.connect(auto_subscribe=AutoSubscribe.AUDIO_ONLY)
 
     session = AgentSession()
