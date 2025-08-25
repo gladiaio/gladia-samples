@@ -8,11 +8,18 @@ from pipecat.pipeline.pipeline import Pipeline
 from pipecat.pipeline.runner import PipelineRunner
 from pipecat.pipeline.task import PipelineParams, PipelineTask
 from pipecat.processors.frame_processor import FrameDirection, FrameProcessor
-from pipecat.processors.frameworks.rtvi import RTVIConfig, RTVIObserver, RTVIProcessor
+from pipecat.processors.frameworks.rtvi import (
+    RTVIConfig,
+    RTVIObserver,
+    RTVIProcessor,
+    RTVIObserverParams,
+)
 from pipecat.runner.types import RunnerArguments
+from pipecat.services.gladia.config import GladiaInputParams, MessagesConfig
 from pipecat.services.gladia.stt import GladiaSTTService
 from pipecat.transports.base_transport import BaseTransport, TransportParams
 from pipecat.transports.network.small_webrtc import SmallWebRTCTransport
+
 
 load_dotenv()
 
@@ -31,7 +38,14 @@ async def run_bot(transport: BaseTransport, runner_args: RunnerArguments):
 
     rtvi = RTVIProcessor(config=RTVIConfig(config=[]))
 
-    stt = GladiaSTTService(api_key=os.getenv("GLADIA_API_KEY"))
+    stt = GladiaSTTService(
+        api_key=os.getenv("GLADIA_API_KEY"),
+        params=GladiaInputParams(
+            messages_config=MessagesConfig(
+                receive_partial_transwqcripts=True,
+            ),
+        ),
+    )
 
     tl = TranscriptionLogger()
 
@@ -41,7 +55,7 @@ async def run_bot(transport: BaseTransport, runner_args: RunnerArguments):
             rtvi,
             stt,
             tl,
-            # transport.output(),
+            transport.output(),
         ]
     )
 
