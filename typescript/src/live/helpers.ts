@@ -33,6 +33,34 @@ export function printMessage(message: {
   }
 }
 
+export function printMessagePartial(message: {
+  type: "transcript" | "post_final_transcript";
+  data: any;
+}) {
+  if (message.type === "transcript") {
+    const is_final = message.data.is_final;
+    const { text, start, end, language } = message.data.utterance;
+    if (is_final) {
+      process.stdout.write(
+        `\r${formatSeconds(start)} --> ${formatSeconds(
+          end
+        )} | ${language} | ${text.trim()}`
+      );
+    } else {
+      process.stdout.write(
+        `\r${formatSeconds(start)} --> ${formatSeconds(
+          end
+        )} | ${language} | ${text.trim()}`
+      );
+    }
+  } else if (message.type === "post_final_transcript") {
+    console.log();
+    console.log("################ End of session ################");
+    console.log();
+    console.log(JSON.stringify(message.data, null, 2));
+  }
+}
+
 function extractDurationFromDurationInMs(durationInMs: number) {
   if (!Number.isFinite(durationInMs) || durationInMs < 0) {
     throw new Error(`${durationInMs} isn't a valid duration`);
