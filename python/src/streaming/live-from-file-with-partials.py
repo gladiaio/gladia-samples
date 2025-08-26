@@ -76,13 +76,9 @@ async def print_messages_from_socket(socket: ClientConnection) -> None:
             text = content["data"]["utterance"]["text"].strip()
             
             if is_final:
-                # For final results, clear the current line and go to a new line
                 print(f"\r{start} --> {end} | {text}")
-                #print(f"{start} --> {end} | FINAL {text}")
             else:
-                # For partial results, clear the current line and print
                 print(f"\r{start} --> {end} | {text}", end="", flush=True)
-                #print(f"{start} --> {end} | PARTIAL | {text}")
         if content["type"] == "post_final_transcript":
             print("\n################ End of session ################\n")
             print(json.dumps(content, indent=2, ensure_ascii=False))
