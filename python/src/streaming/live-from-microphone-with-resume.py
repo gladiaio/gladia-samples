@@ -15,7 +15,7 @@ from websockets.exceptions import (
 
 ## Constants
 GLADIA_API_URL = "https://api.gladia.io"
-
+REGION = "us-west" # "eu-west"
 
 ## Type definitions
 class InitiateResponse(TypedDict):
@@ -49,7 +49,7 @@ def get_gladia_key() -> str:
 def init_live_session(config: StreamingConfiguration) -> InitiateResponse:
     gladia_key = get_gladia_key()
     response = requests.post(
-        f"{GLADIA_API_URL}/v2/live",
+        f"{GLADIA_API_URL}/v2/live?region={REGION}",
         headers={"X-Gladia-Key": gladia_key},
         json=config,
         timeout=3,
