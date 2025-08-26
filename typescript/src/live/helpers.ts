@@ -40,18 +40,15 @@ export function printMessagePartial(message: {
   if (message.type === "transcript") {
     const is_final = message.data.is_final;
     const { text, start, end, language } = message.data.utterance;
+    const line = `${formatSeconds(start)} --> ${formatSeconds(end)} | ${language} | ${text.trim()}`;
+    if (process.stdout.isTTY) {
+      process.stdout.clearLine(0);
+      process.stdout.cursorTo(0);
+    }
     if (is_final) {
-      process.stdout.write(
-        `\r${formatSeconds(start)} --> ${formatSeconds(
-          end
-        )} | ${language} | ${text.trim()}`
-      );
+      console.log(line);
     } else {
-      process.stdout.write(
-        `\r${formatSeconds(start)} --> ${formatSeconds(
-          end
-        )} | ${language} | ${text.trim()}`
-      );
+      process.stdout.write(line);
     }
   } else if (message.type === "post_final_transcript") {
     console.log();
