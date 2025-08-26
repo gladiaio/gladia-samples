@@ -47,7 +47,8 @@ def get_gladia_key() -> str:
 def init_live_session(config: StreamingConfiguration) -> InitiateResponse:
     gladia_key = get_gladia_key()
     response = requests.post(
-        f"{GLADIA_API_URL}/v2/live?region={REGION}",
+        f"{GLADIA_API_URL}/v2/live",
+        params={"region": REGION},
         headers={"X-Gladia-Key": gladia_key},
         json=config,
         timeout=3,
