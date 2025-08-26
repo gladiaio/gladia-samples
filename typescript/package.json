@@ -19,6 +19,7 @@
     "live-microphone": "tsx src/live/live-from-microphone.ts",
     "live-file-with-resume": "tsx src/live/live-from-file-with-resume.ts",
     "live-microphone-with-resume": "tsx src/live/live-from-microphone-with-resume.ts",
+    "live-file-with-partials": "tsx src/live/live-from-file-with-partials.ts",
     "pre-recorded-file": "tsx src/pre-recorded/pre-recorded-file.ts",
     "pre-recorded-url": "tsx src/pre-recorded/pre-recorded-url.ts",
     "to-js": "tsc && sed 's/# TypeScript/# JavaScript/' ./README.md > ../javascript/README.md"
