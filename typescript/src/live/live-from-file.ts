@@ -8,7 +8,7 @@ import {
 import { InitiateResponse, StreamingConfig } from "./types";
 
 const gladiaApiUrl = "https://api.gladia.io";
-const region = "us-west" // eu-west
+const region = "eu-west" // us-west
 const gladiaKey = readGladiaKey();
 
 const filepath = "../data/anna-and-sasha-16000.wav";

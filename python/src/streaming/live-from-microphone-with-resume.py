@@ -15,7 +15,7 @@ from websockets.exceptions import (
 
 ## Constants
 GLADIA_API_URL = "https://api.gladia.io"
-REGION = "us-west" # "eu-west"
+REGION = "eu-west" # "us-west"
 
 ## Type definitions
 class InitiateResponse(TypedDict):
