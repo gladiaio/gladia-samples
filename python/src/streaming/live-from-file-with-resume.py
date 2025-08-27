@@ -5,7 +5,7 @@ import os
 import requests
 from websockets.asyncio.client import ClientConnection, connect
 from websockets.exceptions import ConnectionClosed, ConnectionClosedError
-from helper import InitiateResponse, StreamingConfiguration, format_duration, get_gladia_key, format_duration
+from helper import InitiateResponse, StreamingConfiguration, format_duration, get_gladia_key
 
 ## Constants
 GLADIA_API_URL = "https://api.gladia.io"
