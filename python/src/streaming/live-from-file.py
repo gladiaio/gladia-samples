@@ -47,7 +47,7 @@ STREAMING_CONFIGURATION: StreamingConfiguration = {
         "code_switching": True,
     },
     "messages_config": {
-        "receive_partial_transcripts": True, # Set to True to receive partial/intermediate transcript
+        "receive_partial_transcripts": False, # Set to True to receive partial/intermediate transcript
         "receive_final_transcripts": True
     }
 }
