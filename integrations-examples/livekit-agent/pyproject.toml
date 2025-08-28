@@ -1,0 +1,9 @@
+[project]
+name = "livekit-example-transcriber"
+version = "0.1.0"
+description = "Simple Gladia transcriber example using LiveKit Cloud and LiveKit Agents Playground"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "livekit-agents[gladia]>=1.2.6",
+]
