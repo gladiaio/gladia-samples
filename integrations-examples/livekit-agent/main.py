@@ -1,8 +1,6 @@
 import logging
 import os
 
-from dotenv import load_dotenv
-
 from livekit.agents import (
     Agent,
     AgentSession,
@@ -19,8 +17,6 @@ from livekit.agents import (
 
 from livekit.plugins.gladia.stt import STT as GladiaSTT
 
-load_dotenv()
-
 logger = logging.getLogger("transcriber")
 
 class Transcriber(Agent):
@@ -31,10 +27,8 @@ class Transcriber(Agent):
                 "GLADIA_API_KEY is not set. Please create a .env from .env.example and set it, or export it in your shell."
             )   
         super().__init__(
-            instructions="not-needed",
             stt=GladiaSTT(
                 api_key=api_key,
-                interim_results=True,
             ),
         )
 
