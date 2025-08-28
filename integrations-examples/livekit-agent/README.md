@@ -90,7 +90,7 @@ Go back to the [agent playground](https://agents-playground.livekit.io/), it sho
 
 2. To start the agent in development mode, run:
 ```bash
-uv run main.py dev
+uv run --env-file=.env main.py dev
 ```
 
 3. In the right column, you'll see that the agent is now connected. \
