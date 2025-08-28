@@ -37,7 +37,7 @@ For quick testing, use the **LiveKit Agents Playground**, an interactive app to 
 1. Go to [agents-playground.livekit.io](https://agents-playground.livekit.io/), select the project you've just created, and click the **Connect to ...** button. \
 &emsp; ![Playground connection page](img/playground-connection.png)
   
-2. Once connected, you'll be redirected to the playground. Keep this page open—it will be used later to display the transcription. \
+2. Once connected, you'll be redirected to the playground. Keep this page open — it will be used later to display the transcription. \
 &emsp; ![Playground](img/playground.png)
 
 ---
