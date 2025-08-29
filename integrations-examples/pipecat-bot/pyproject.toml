@@ -1,7 +1,7 @@
 [project]
 name = "pipecat-bot"
 version = "0.1.0"
-description = "Add your description here"
+description = "Simple Gladia transcriber example using Pipecat"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
