@@ -10,14 +10,12 @@ from pipecat.processors.frameworks.rtvi import (
     RTVIConfig,
     RTVIObserver,
     RTVIProcessor,
-    RTVIObserverParams,
 )
 from pipecat.runner.types import RunnerArguments
 from pipecat.runner.utils import create_transport
 from pipecat.services.gladia.config import GladiaInputParams, MessagesConfig
 from pipecat.services.gladia.stt import GladiaSTTService
 from pipecat.transports.base_transport import BaseTransport, TransportParams
-from pipecat.transports.network.small_webrtc import SmallWebRTCTransport
 from pipecat.audio.vad.silero import SileroVADAnalyzer
 
 logger = logging.getLogger("transcriber")
