@@ -45,10 +45,16 @@ class TranscriptionLogger(FrameProcessor):
 async def run_bot(transport: BaseTransport, runner_args: RunnerArguments):
     logger.info(f"Starting bot {runner_args}")
 
+    api_key = os.getenv("GLADIA_API_KEY")
+    if not api_key:
+        raise RuntimeError(
+            "GLADIA_API_KEY is not set. Please create a .env from .env.example and set it, or export it in your shell."
+        )   
+
     rtvi = RTVIProcessor(config=RTVIConfig(config=[]))
 
     stt = GladiaSTTService(
-        api_key=os.getenv("GLADIA_API_KEY"),
+        api_key=api_key,
         params=GladiaInputParams(
             messages_config=MessagesConfig(
                 receive_partial_transcripts=True,
