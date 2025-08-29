@@ -1,8 +1,6 @@
 import logging
 import os
 
-from dotenv import load_dotenv
-
 from pipecat.frames.frames import Frame, TranscriptionFrame, InterimTranscriptionFrame
 from pipecat.pipeline.pipeline import Pipeline
 from pipecat.pipeline.runner import PipelineRunner
@@ -21,8 +19,6 @@ from pipecat.services.gladia.stt import GladiaSTTService
 from pipecat.transports.base_transport import BaseTransport, TransportParams
 from pipecat.transports.network.small_webrtc import SmallWebRTCTransport
 from pipecat.audio.vad.silero import SileroVADAnalyzer
-
-load_dotenv()
 
 logger = logging.getLogger("transcriber")
 
