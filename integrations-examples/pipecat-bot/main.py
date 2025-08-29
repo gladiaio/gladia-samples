@@ -93,6 +93,11 @@ async def run_bot(transport: BaseTransport, runner_args: RunnerArguments):
         logger.info("Client disconnected")
         await task.cancel()
 
+    @rtvi.event_handler("on_client_ready")
+    async def on_client_ready(rtvi):
+        # Handle client ready state
+        await rtvi.set_bot_ready()
+
     runner = PipelineRunner(handle_sigint=runner_args.handle_sigint)
 
     await runner.run(task)

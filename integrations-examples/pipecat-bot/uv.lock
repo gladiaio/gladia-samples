@@ -1050,7 +1050,7 @@ dependencies = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "pipecat-ai", extras = ["webrtc", "gladia", "runner", "silero"], specifier = ">=0.0.82" }]
+requires-dist = [{ name = "pipecat-ai", extras = ["webrtc", "gladia", "runner", "silero"], specifier = ">=0.0.82,<0.1.0" }]
 
 [[package]]
 name = "propcache"
