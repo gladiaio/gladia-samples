@@ -41,7 +41,7 @@ GLADIA_API_KEY=your_gladia_api_key
 Start the bot with:
 
 ```bash
-uv run main.py
+uv run --env-file=.env main.py
 ```
 
 Open http://localhost:7860/client in your browser, and click on "Connect" in the upper-right corner.

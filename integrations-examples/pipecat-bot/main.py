@@ -40,9 +40,10 @@ class TranscriptionLogger(FrameProcessor):
 
         if isinstance(frame, TranscriptionFrame):
             print(f"Transcription: {frame.text}")
-
-        if isinstance(frame, InterimTranscriptionFrame):
+        elif isinstance(frame, InterimTranscriptionFrame):
             print(f"Partial transcription: {frame.text}")
+
+        await self.push_frame(frame, direction)
 
 
 async def run_bot(transport: BaseTransport, runner_args: RunnerArguments):

@@ -990,7 +990,7 @@ wheels = [
 
 [[package]]
 name = "pipecat-ai"
-version = "0.0.81"
+version = "0.0.82"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
@@ -1009,9 +1009,9 @@ dependencies = [
     { name = "resampy" },
     { name = "soxr" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/dc/d8/0bc2854b07562b921ce83a063d0c2d564c62b67d8c1ea5ae941f0b6a8c08/pipecat_ai-0.0.81.tar.gz", hash = "sha256:8e3fe130933de9884c6fcfedddeadc853b08ca931a896cf2a279281595fa08d6", size = 2967156, upload-time = "2025-08-25T16:29:54.193Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/5b/d7/afaf75b3ab4f5f977d501622678a5da1d483da4140cd8af0bcc314ab5ddf/pipecat_ai-0.0.82.tar.gz", hash = "sha256:b44a20ca292fd91ff1687beb68be62dbf94c3aef0ce21081b5c29a5a8864d044", size = 2990742, upload-time = "2025-08-28T20:07:11.787Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a0/b4/327bd98b5a37486b81abfdfcb3b815259cd3e4fc2e0b4a3d29860ccd543f/pipecat_ai-0.0.81-py3-none-any.whl", hash = "sha256:5f974b689b2ff2f471f91abe0c9fe624bc49573205d4aa72767fb6f4960d17d2", size = 2641374, upload-time = "2025-08-25T16:29:51.591Z" },
+    { url = "https://files.pythonhosted.org/packages/fe/da/c7233c55f985f77a50d828e73e5e09f171a9632c3d01d0db7ded090fed03/pipecat_ai-0.0.82-py3-none-any.whl", hash = "sha256:2fc2bb8b5282939ec36d1fc80bc952b43128ba2de4191425d4261cf0a6f0c083", size = 2669642, upload-time = "2025-08-28T20:07:09.386Z" },
 ]
 
 [package.optional-dependencies]
@@ -1047,14 +1047,10 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "pipecat-ai", extra = ["gladia", "runner", "silero", "webrtc"] },
-    { name = "python-dotenv" },
 ]
 
 [package.metadata]
-requires-dist = [
-    { name = "pipecat-ai", extras = ["webrtc", "gladia", "runner", "silero"], specifier = ">=0.0.81" },
-    { name = "python-dotenv", specifier = ">=1.1.1" },
-]
+requires-dist = [{ name = "pipecat-ai", extras = ["webrtc", "gladia", "runner", "silero"], specifier = ">=0.0.82" }]
 
 [[package]]
 name = "propcache"
