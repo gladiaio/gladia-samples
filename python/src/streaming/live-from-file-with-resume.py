@@ -5,7 +5,7 @@ import os
 import requests
 from websockets.asyncio.client import ClientConnection, connect
 from websockets.exceptions import ConnectionClosed, ConnectionClosedError
-from helper import InitiateResponse, StreamingConfiguration, format_duration, get_gladia_key
+from helper import InitiateResponse, StreamingConfiguration, get_gladia_key, print_transcript
 
 ## Constants
 GLADIA_API_URL = "https://api.gladia.io"
@@ -41,6 +41,10 @@ STREAMING_CONFIGURATION: StreamingConfiguration = {
         "languages": ["es", "ru", "en", "fr"],
         "code_switching": True,
     },
+    "messages_config": {
+        "receive_partial_transcripts": False, # Set to True to receive partial/intermediate transcript
+        "receive_final_transcripts": True
+    }
 }
 
 BUFFER = {"data": b"", "bytes_sent": 0}
@@ -85,12 +89,9 @@ async def receive_messages_from_socket(socket: ClientConnection) -> None:
                     content["data"]["byte_range"][1] - BUFFER["bytes_sent"] :
                 ]
                 BUFFER["bytes_sent"] = content["data"]["byte_range"][1]
-            if content["type"] == "transcript" and content["data"]["is_final"]:
-                start = format_duration(content["data"]["utterance"]["start"])
-                end = format_duration(content["data"]["utterance"]["end"])
-                text = content["data"]["utterance"]["text"].strip()
-                print(f"{start} --> {end} | {text}")
-            if content["type"] == "post_final_transcript":
+            elif content["type"] == "transcript":
+                print_transcript(content)
+            elif content["type"] == "post_final_transcript":
                 print("\n################ End of session ################\n")
                 print(json.dumps(content, indent=2, ensure_ascii=False))
     except ConnectionClosedError:
