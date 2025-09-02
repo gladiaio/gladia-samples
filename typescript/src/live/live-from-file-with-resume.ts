@@ -8,6 +8,7 @@ import {
 import { InitiateResponse, StreamingConfig } from "./types";
 
 const gladiaApiUrl = "https://api.gladia.io";
+const region = "eu-west" // us-west
 const gladiaKey = readGladiaKey();
 
 const filepath = "../data/anna-and-sasha-16000.wav";
@@ -19,7 +20,7 @@ const config: StreamingConfig = {
 };
 
 async function initLiveSession(): Promise<InitiateResponse> {
-  const response = await fetch(`${gladiaApiUrl}/v2/live`, {
+  const response = await fetch(`${gladiaApiUrl}/v2/live?region=${region}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
