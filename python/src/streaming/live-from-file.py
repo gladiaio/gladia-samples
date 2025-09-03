@@ -6,7 +6,7 @@ import requests
 from websockets.asyncio.client import ClientConnection, connect
 from websockets.exceptions import ConnectionClosedOK
 from helper import (
-    print_messages_from_socket, 
+    print_message,
     InitiateResponse, 
     StreamingConfiguration, 
     get_gladia_key
@@ -81,6 +81,10 @@ async def send_audio(socket: ClientConnection) -> None:
     print(">>>>> Sent all audio data")
     await stop_recording(socket)
 
+async def receive_messages_from_socket(socket: ClientConnection) -> None:
+    async for message in socket:
+        content = json.loads(message)
+        print_message(content)
 
 async def main():
     response = init_live_session(STREAMING_CONFIGURATION)
@@ -89,14 +93,14 @@ async def main():
             print("\n################ Begin session ################\n")
             tasks = []
             tasks.append(asyncio.create_task(send_audio(websocket)))
-            tasks.append(asyncio.create_task(print_messages_from_socket(websocket)))
+            tasks.append(asyncio.create_task(receive_messages_from_socket(websocket)))
 
             await asyncio.wait(tasks)
         except asyncio.exceptions.CancelledError:
             for task in tasks:
                 task.cancel()
             await stop_recording(websocket)
-            await print_messages_from_socket(websocket)
+            await receive_messages_from_socket(websocket)
 
 
 if __name__ == "__main__":

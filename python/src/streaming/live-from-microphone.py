@@ -7,7 +7,12 @@ import pyaudio
 import requests
 from websockets.asyncio.client import ClientConnection, connect
 from websockets.exceptions import ConnectionClosedOK
-from helper import print_messages_from_socket, InitiateResponse, StreamingConfiguration, get_gladia_key
+from helper import (
+    print_message,
+    InitiateResponse, 
+    StreamingConfiguration, 
+    get_gladia_key
+)
 
 ## Constants
 GLADIA_API_URL = "https://api.gladia.io"
@@ -78,6 +83,11 @@ async def send_audio(socket: ClientConnection) -> None:
             return
 
 
+async def receive_messages_from_socket(socket: ClientConnection) -> None:
+    async for message in socket:
+        content = json.loads(message)
+        print_message(content)
+
 async def main():
     response = init_live_session(STREAMING_CONFIGURATION)
     async with connect(response["url"]) as websocket:
@@ -90,7 +100,7 @@ async def main():
         )
 
         send_audio_task = asyncio.create_task(send_audio(websocket))
-        print_messages_task = asyncio.create_task(print_messages_from_socket(websocket))
+        print_messages_task = asyncio.create_task(receive_messages_from_socket(websocket))
         await asyncio.wait(
             [send_audio_task, print_messages_task],
         )

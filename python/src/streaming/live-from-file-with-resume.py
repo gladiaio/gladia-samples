@@ -5,7 +5,12 @@ import os
 import requests
 from websockets.asyncio.client import ClientConnection, connect
 from websockets.exceptions import ConnectionClosed, ConnectionClosedError
-from helper import InitiateResponse, StreamingConfiguration, get_gladia_key, print_transcript
+from helper import (
+    print_message,
+    InitiateResponse, 
+    StreamingConfiguration, 
+    get_gladia_key
+)
 
 ## Constants
 GLADIA_API_URL = "https://api.gladia.io"
@@ -85,17 +90,14 @@ async def receive_messages_from_socket(socket: ClientConnection) -> None:
     try:
         async for message in socket:
             content = json.loads(message)
+            print_message(content)
             if content["type"] == "audio_chunk" and content["acknowledged"]:
                 # Use acknowledgement to know when to send the next chunk
                 BUFFER["data"] = BUFFER["data"][
                     content["data"]["byte_range"][1] - BUFFER["bytes_sent"] :
                 ]
                 BUFFER["bytes_sent"] = content["data"]["byte_range"][1]
-            elif content["type"] == "transcript":
-                print_transcript(content)
-            elif content["type"] == "post_final_transcript":
-                print("\n################ End of session ################\n")
-                print(json.dumps(content, indent=2, ensure_ascii=False))
+                
     except ConnectionClosedError:
         return
 

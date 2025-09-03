@@ -46,20 +46,15 @@ def format_duration(seconds: float) -> str:
     ).isoformat(timespec="milliseconds")
 
 
-async def print_messages_from_socket(socket: ClientConnection) -> None:
-    async for message in socket:
-        content = json.loads(message)
-        if content["type"] == "transcript":
-            print_transcript(content)
-
-def print_transcript(content: dict) -> None:
-    start = format_duration(content["data"]["utterance"]["start"])
-    end = format_duration(content["data"]["utterance"]["end"])
-    is_final = content["data"]["is_final"]
-    text = content["data"]["utterance"]["text"].strip()
-    
-    if is_final:
-        print(f"\r{start} --> {end} | {text}")
-    else:
-        print(f"\r{start} --> {end} | {text}", end="", flush=True)
+def print_message(content: dict) -> None:
+    if content["type"] == "transcript":
+        start = format_duration(content["data"]["utterance"]["start"])
+        end = format_duration(content["data"]["utterance"]["end"])
+        is_final = content["data"]["is_final"]
+        text = content["data"]["utterance"]["text"].strip()
+        
+        if is_final:
+            print(f"\r{start} --> {end} | {text}")
+        else:
+            print(f"\r{start} --> {end} | {text}", end="", flush=True)
 

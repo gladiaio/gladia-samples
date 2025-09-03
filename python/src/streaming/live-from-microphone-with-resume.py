@@ -1,9 +1,6 @@
 import asyncio
 import base64
 import json
-import sys
-from datetime import time
-from typing import Literal, TypedDict
 
 import pyaudio
 import requests
@@ -12,8 +9,12 @@ from websockets.exceptions import (
     ConnectionClosed,
     ConnectionClosedError,
 )
-from helper import InitiateResponse, StreamingConfiguration, get_gladia_key, print_transcript
-
+from helper import (
+    print_message,
+    InitiateResponse, 
+    StreamingConfiguration, 
+    get_gladia_key
+)
 
 ## Constants
 GLADIA_API_URL = "https://api.gladia.io"
@@ -88,11 +89,8 @@ async def receive_messages_from_socket(socket: ClientConnection) -> None:
                     content["data"]["byte_range"][1] - BUFFER["bytes_sent"] :
                 ]
                 BUFFER["bytes_sent"] = content["data"]["byte_range"][1]
-            if content["type"] == "transcript":
-                print_transcript(content)
-            if content["type"] == "post_final_transcript":
-                print("\n################ End of session ################\n")
-                print(json.dumps(content, indent=2, ensure_ascii=False))
+            print_message(content)
+            
     except ConnectionClosedError:
         return
 
