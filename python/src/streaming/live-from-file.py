@@ -1,46 +1,20 @@
 import asyncio
 import json
 import os
-import sys
-from datetime import time
-from typing import Literal, TypedDict
 
 import requests
 from websockets.asyncio.client import ClientConnection, connect
 from websockets.exceptions import ConnectionClosedOK
+from helper import (
+    print_message,
+    InitiateResponse, 
+    StreamingConfiguration, 
+    get_gladia_key
+)
 
 ## Constants
 GLADIA_API_URL = "https://api.gladia.io"
 REGION = "eu-west" # "us-west"
-
-## Type definitions
-class InitiateResponse(TypedDict):
-    id: str
-    url: str
-
-
-class LanguageConfiguration(TypedDict):
-    languages: list[str] | None
-    code_switching: bool | None
-
-
-class StreamingConfiguration(TypedDict):
-    # This is a reduced set of options. For a full list, see the API documentation.
-    # https://docs.gladia.io/api-reference/v2/live/init
-    encoding: Literal["wav/pcm", "wav/alaw", "wav/ulaw"]
-    bit_depth: Literal[8, 16, 24, 32]
-    sample_rate: Literal[8_000, 16_000, 32_000, 44_100, 48_000]
-    channels: int
-    language_config: LanguageConfiguration | None
-
-
-## Helpers
-def get_gladia_key() -> str:
-    if len(sys.argv) != 2 or not sys.argv[1]:
-        print("You must provide a Gladia key as the first argument.")
-        exit(1)
-    return sys.argv[1]
-
 
 def init_live_session(config: StreamingConfiguration) -> InitiateResponse:
     gladia_key = get_gladia_key()
@@ -55,29 +29,6 @@ def init_live_session(config: StreamingConfiguration) -> InitiateResponse:
         print(f"{response.status_code}: {response.text or response.reason}")
         exit(response.status_code)
     return response.json()
-
-
-def format_duration(seconds: float) -> str:
-    milliseconds = int(seconds * 1_000)
-    return time(
-        hour=milliseconds // 3_600_000,
-        minute=(milliseconds // 60_000) % 60,
-        second=(milliseconds // 1_000) % 60,
-        microsecond=milliseconds % 1_000 * 1_000,
-    ).isoformat(timespec="milliseconds")
-
-
-async def print_messages_from_socket(socket: ClientConnection) -> None:
-    async for message in socket:
-        content = json.loads(message)
-        if content["type"] == "transcript" and content["data"]["is_final"]:
-            start = format_duration(content["data"]["utterance"]["start"])
-            end = format_duration(content["data"]["utterance"]["end"])
-            text = content["data"]["utterance"]["text"].strip()
-            print(f"{start} --> {end} | {text}")
-        if content["type"] == "post_final_transcript":
-            print("\n################ End of session ################\n")
-            print(json.dumps(content, indent=2, ensure_ascii=False))
 
 
 async def stop_recording(websocket: ClientConnection) -> None:
@@ -97,6 +48,10 @@ STREAMING_CONFIGURATION: StreamingConfiguration = {
         "languages": ["es", "ru", "en", "fr"],
         "code_switching": True,
     },
+    "messages_config": {
+        "receive_partial_transcripts": False, # Set to True to receive partial/intermediate transcript
+        "receive_final_transcripts": True
+    }
 }
 
 
@@ -126,6 +81,10 @@ async def send_audio(socket: ClientConnection) -> None:
     print(">>>>> Sent all audio data")
     await stop_recording(socket)
 
+async def receive_messages_from_socket(socket: ClientConnection) -> None:
+    async for message in socket:
+        content = json.loads(message)
+        print_message(content)
 
 async def main():
     response = init_live_session(STREAMING_CONFIGURATION)
@@ -134,14 +93,14 @@ async def main():
             print("\n################ Begin session ################\n")
             tasks = []
             tasks.append(asyncio.create_task(send_audio(websocket)))
-            tasks.append(asyncio.create_task(print_messages_from_socket(websocket)))
+            tasks.append(asyncio.create_task(receive_messages_from_socket(websocket)))
 
             await asyncio.wait(tasks)
         except asyncio.exceptions.CancelledError:
             for task in tasks:
                 task.cancel()
             await stop_recording(websocket)
-            await print_messages_from_socket(websocket)
+            await receive_messages_from_socket(websocket)
 
 
 if __name__ == "__main__":

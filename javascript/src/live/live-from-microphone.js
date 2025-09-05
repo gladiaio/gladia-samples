@@ -1,15 +1,20 @@
 import WebSocket from "ws";
 import { getMicrophoneAudioFormat, initMicrophoneRecorder, printMessage, readGladiaKey, } from "./helpers";
 const gladiaApiUrl = "https://api.gladia.io";
+const region = "eu-west"; // us-west
 const gladiaKey = readGladiaKey();
 const config = {
     language_config: {
         languages: [],
         code_switching: false,
     },
+    messages_config: {
+        receive_partial_transcripts: false, // Set to true to receive partial/intermediate transcript
+        receive_final_transcripts: true
+    }
 };
 async function initLiveSession() {
-    const response = await fetch(`${gladiaApiUrl}/v2/live`, {
+    const response = await fetch(`${gladiaApiUrl}/v2/live?region=${region}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

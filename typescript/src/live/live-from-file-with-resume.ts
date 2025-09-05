@@ -17,6 +17,10 @@ const config: StreamingConfig = {
     languages: ["es", "ru", "en", "fr"],
     code_switching: true,
   },
+  messages_config: {
+    receive_partial_transcripts: false, // Set to true to receive partial/intermediate transcript
+    receive_final_transcripts: true
+  }
 };
 
 async function initLiveSession(): Promise<InitiateResponse> {

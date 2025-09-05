@@ -18,18 +18,19 @@ export function printMessage(message: {
   type: "transcript" | "post_final_transcript";
   data: any;
 }) {
-  if (message.type === "transcript" && message.data.is_final) {
+  if (message.type === "transcript") {
+    const is_final = message.data.is_final;
     const { text, start, end, language } = message.data.utterance;
-    console.log(
-      `${formatSeconds(start)} --> ${formatSeconds(
-        end
-      )} | ${language} | ${text.trim()}`
-    );
-  } else if (message.type === "post_final_transcript") {
-    console.log();
-    console.log("################ End of session ################");
-    console.log();
-    console.log(JSON.stringify(message.data, null, 2));
+    const line = `${formatSeconds(start)} --> ${formatSeconds(end)} | ${language} | ${text.trim()}`;
+    if (process.stdout.isTTY) {
+      process.stdout.clearLine(0);
+      process.stdout.cursorTo(0);
+    }
+    if (is_final) {
+      console.log(line);
+    } else {
+      process.stdout.write(line);
+    }
   }
 }
 
