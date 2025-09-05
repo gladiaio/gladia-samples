@@ -1,6 +1,7 @@
 import WebSocket from "ws";
 import { getAudioFileFormat, initFileRecorder, printMessage, readGladiaKey, } from "./helpers";
 const gladiaApiUrl = "https://api.gladia.io";
+const region = "eu-west"; // us-west
 const gladiaKey = readGladiaKey();
 const filepath = "../data/anna-and-sasha-16000.wav";
 const config = {
@@ -8,9 +9,13 @@ const config = {
         languages: ["es", "ru", "en", "fr"],
         code_switching: true,
     },
+    messages_config: {
+        receive_partial_transcripts: false, // Set to True to receive partial/intermediate transcript
+        receive_final_transcripts: true
+    }
 };
 async function initLiveSession() {
-    const response = await fetch(`${gladiaApiUrl}/v2/live`, {
+    const response = await fetch(`${gladiaApiUrl}/v2/live?region=${region}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
