@@ -9,7 +9,7 @@ const config = {
         code_switching: false,
     },
     messages_config: {
-        receive_partial_transcripts: false, // Set to True to receive partial/intermediate transcript
+        receive_partial_transcripts: false, // Set to true to receive partial/intermediate transcript
         receive_final_transcripts: true
     }
 };
