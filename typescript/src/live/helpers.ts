@@ -1,24 +1,35 @@
-import { readFileSync } from "fs";
-import { Recorder, StreamingAudioFormat } from "./types";
-import mic from "mic";
-import { resolve } from "path";
+import { readFileSync } from 'fs';
+import Mic from 'node-mic';
+import { resolve } from 'path';
 
-export function readGladiaKey(): string {
-  const gladiaKey = process.argv[2];
-  if (!gladiaKey) {
+type StreamingAudioFormat = {
+  encoding: 'wav/pcm' | 'wav/alaw' | 'wav/ulaw';
+  bit_depth: 8 | 16 | 24 | 32;
+  sample_rate: 8_000 | 16_000 | 32_000 | 44_100 | 48_000;
+  channels: number;
+};
+
+type Recorder = {
+  start(): void;
+  stop(): void;
+};
+
+export function readGladiaApiKey(): string {
+  const gladiaApiKey = process.argv[2];
+  if (!gladiaApiKey) {
     console.error(
-      "You must provide a Gladia key. Go to https://app.gladia.io to get yours."
+      'You must provide a Gladia API key. Go to https://app.gladia.io to get yours.',
     );
     process.exit(1);
   }
-  return gladiaKey;
+  return gladiaApiKey;
 }
 
 export function printMessage(message: {
-  type: "transcript" | "post_final_transcript";
+  type: 'transcript' | 'post_final_transcript';
   data: any;
 }) {
-  if (message.type === "transcript") {
+  if (message.type === 'transcript') {
     const is_final = message.data.is_final;
     const { text, start, end, language } = message.data.utterance;
     const line = `${formatSeconds(start)} --> ${formatSeconds(end)} | ${language} | ${text.trim()}`;
@@ -61,21 +72,21 @@ function formatSeconds(duration: number | null | undefined) {
     Number.isNaN(duration) ||
     !Number.isFinite(duration)
   ) {
-    return "--:--.---";
+    return '--:--.---';
   }
   const { hours, minutes, seconds, milliseconds } =
     extractDurationFromDurationInMs(duration * 1000);
   const fractions: number[] = [minutes, seconds];
   if (hours) fractions.unshift(hours);
   return [
-    fractions.map((number) => number.toString().padStart(2, "0")).join(":"),
-    milliseconds.toString().padStart(3, "0"),
-  ].join(".");
+    fractions.map((number) => number.toString().padStart(2, '0')).join(':'),
+    milliseconds.toString().padStart(3, '0'),
+  ].join('.');
 }
 
 export function getMicrophoneAudioFormat(): StreamingAudioFormat {
   return {
-    encoding: "wav/pcm",
+    encoding: 'wav/pcm',
     bit_depth: 16,
     sample_rate: 16_000,
     channels: 1,
@@ -84,21 +95,22 @@ export function getMicrophoneAudioFormat(): StreamingAudioFormat {
 
 export function initMicrophoneRecorder(
   onAudioChunk: (chunk: Buffer) => void,
-  onEnd: () => void
+  onEnd: () => void,
 ): Recorder {
   const config = getMicrophoneAudioFormat();
-  const microphone = mic({
+  const microphone = new Mic({
     rate: config.sample_rate,
     channels: config.channels,
+    bitwidth: config.bit_depth,
   });
 
   const microphoneInputStream = microphone.getAudioStream();
-  microphoneInputStream.on("data", function (data) {
+  microphoneInputStream.on('data', function (data) {
     onAudioChunk(data);
   });
 
-  microphoneInputStream.on("error", function (err) {
-    console.error("Error in Input Stream:", err);
+  microphoneInputStream.on('error', function (err) {
+    console.error('Error in Input Stream:', err);
     process.exit(1);
   });
 
@@ -117,54 +129,54 @@ export function initMicrophoneRecorder(
       this.started = false;
       microphone.stop();
 
-      console.log(">>>>> Ending the recording…");
+      console.log('>>>>> Ending the recording…');
       onEnd();
     },
   };
 
   // When hitting CTRL+C, we want to stop the recording and get the final result
-  process.on("SIGINT", () => recorder.stop());
+  process.on('SIGINT', () => recorder.stop());
 
   return recorder;
 }
 
 function parseAudioFile(
-  filePath: string
+  filePath: string,
 ): StreamingAudioFormat & { startDataChunk: number; buffer: Buffer } {
   const textDecoder = new TextDecoder();
   const buffer = readFileSync(resolve(filePath));
   if (
-    textDecoder.decode(buffer.subarray(0, 4)) !== "RIFF" ||
-    textDecoder.decode(buffer.subarray(8, 12)) !== "WAVE" ||
-    textDecoder.decode(buffer.subarray(12, 16)) !== "fmt "
+    textDecoder.decode(buffer.subarray(0, 4)) !== 'RIFF' ||
+    textDecoder.decode(buffer.subarray(8, 12)) !== 'WAVE' ||
+    textDecoder.decode(buffer.subarray(12, 16)) !== 'fmt '
   ) {
-    throw new Error("Unsupported file format");
+    throw new Error('Unsupported file format');
   }
 
   const fmtSize = buffer.readUInt32LE(16);
-  let encoding: StreamingAudioFormat["encoding"];
+  let encoding: StreamingAudioFormat['encoding'];
   const format = buffer.readUInt16LE(20);
   if (format === 1) {
-    encoding = "wav/pcm";
+    encoding = 'wav/pcm';
   } else if (format === 6) {
-    encoding = "wav/alaw";
+    encoding = 'wav/alaw';
   } else if (format === 7) {
-    encoding = "wav/ulaw";
+    encoding = 'wav/ulaw';
   } else {
-    throw new Error("Unsupported encoding");
+    throw new Error('Unsupported encoding');
   }
   const channels = buffer.readUInt16LE(22);
   const sample_rate = buffer.readUInt32LE(
-    24
-  ) as StreamingAudioFormat["sample_rate"];
+    24,
+  ) as StreamingAudioFormat['sample_rate'];
   const bit_depth = buffer.readUInt16LE(
-    34
-  ) as StreamingAudioFormat["bit_depth"];
+    34,
+  ) as StreamingAudioFormat['bit_depth'];
 
   let nextSubChunk = 16 + 4 + fmtSize;
   while (
     textDecoder.decode(buffer.subarray(nextSubChunk, nextSubChunk + 4)) !==
-    "data"
+    'data'
   ) {
     nextSubChunk += 8 + buffer.readUInt32LE(nextSubChunk + 4);
   }
@@ -187,13 +199,13 @@ export function getAudioFileFormat(filePath: string): StreamingAudioFormat {
 export function initFileRecorder(
   onAudioChunk: (chunk: Buffer) => void,
   onEnd: () => void,
-  filePath: string
+  filePath: string,
 ): Recorder {
   const { startDataChunk, buffer, bit_depth, sample_rate, channels } =
     parseAudioFile(filePath);
   const audioData = buffer.subarray(
     startDataChunk + 8,
-    buffer.readUInt32LE(startDataChunk + 4)
+    buffer.readUInt32LE(startDataChunk + 4),
   );
 
   const chunkDuration = 0.1; // 100 ms
@@ -209,7 +221,7 @@ export function initFileRecorder(
         onAudioChunk(audioData.subarray(offset, (offset += chunkSize)));
 
         if (offset >= audioData.length) {
-          console.log(">>>>> Sent all audio data");
+          console.log('>>>>> Sent all audio data');
           this.stop();
         }
       }, chunkDuration * 1000);
@@ -222,13 +234,13 @@ export function initFileRecorder(
       clearInterval(this.interval);
       this.interval = null;
 
-      console.log(">>>>> Ending the recording…");
+      console.log('>>>>> Ending the recording…');
       onEnd();
     },
   };
 
   // When hitting CTRL+C, we want to stop the recording and get the final result
-  process.on("SIGINT", () => recorder.stop());
+  process.on('SIGINT', () => recorder.stop());
 
   return recorder;
 }

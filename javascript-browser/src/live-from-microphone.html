@@ -64,14 +64,14 @@
         ></select>
       </div>
       <button type="submit">Start recording</button>
-      <button type="button" style="color: white;" disabled>
+      <button type="button" style="color: white" disabled>
         Stop recording
       </button>
     </form>
 
-    <div id="result" style="display: none;">
+    <div id="result" style="display: none">
       <span id="finals"></span>
-      <span style="color: red;" id="partials"></span>
+      <span style="color: red" id="partials"></span>
     </div>
 
     <script>
@@ -93,7 +93,7 @@
       async function listAudioDevices() {
         /** @type {HTMLSelectElement} */
         const inputDeviceSelect = document.querySelector(
-          'select[name="input_device"]'
+          'select[name="input_device"]',
         );
 
         if (window.location.protocol === 'file:') {
@@ -105,23 +105,27 @@
             return;
           }
 
-          console.log('Cannot list audio input devices since you are running the file locally. We will use your default audio input.')
+          console.log(
+            'Cannot list audio input devices since you are running the file locally. We will use your default audio input.',
+          );
           const option = document.createElement('option');
           option.textContent = 'Default';
           option.value = '';
           inputDeviceSelect.appendChild(option);
           inputDeviceSelect.value = '';
-          return
+          return;
         }
 
         // Ask the permissions to the user
         const media = await navigator.mediaDevices.getUserMedia({
-          audio: true
+          audio: true,
         });
 
         const audioDevices = await navigator.mediaDevices
           .enumerateDevices()
-          .then((devices) => devices.filter((d) => d.kind === 'audioinput' && d.deviceId));
+          .then((devices) =>
+            devices.filter((d) => d.kind === 'audioinput' && d.deviceId),
+          );
 
         // Stop all the tracks now that we have the user permission
         media.getTracks().forEach((track) => track.stop());
@@ -145,20 +149,22 @@
 
       async function initiateSession(gladiaKey) {
         const response = await fetch(`https://api.gladia.io/v2/live`, {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
-            "X-GLADIA-KEY": gladiaKey,
+            'Content-Type': 'application/json',
+            'X-GLADIA-KEY': gladiaKey,
           },
           body: JSON.stringify({
             sample_rate: SAMPLE_RATE,
           }),
-        })
+        });
         if (!response.ok) {
-          const message = `${response.status}: ${(await response.text()) || response.statusText}`
-          throw new Error(message)
+          const message = `${response.status}: ${
+            (await response.text()) || response.statusText
+          }`;
+          throw new Error(message);
         }
-        return await response.json()
+        return await response.json();
       }
 
       /** @type {HTMLFormElement} */
@@ -218,7 +224,7 @@
         };
 
         try {
-          const {url} = await initiateSession(gladiaKey)
+          const { url } = await initiateSession(gladiaKey);
 
           const socketPromise = deferredPromise();
 
@@ -233,14 +239,14 @@
           socket.onclose = (event) => {
             socketPromise.reject(
               new Error(
-                `Server refuses the connection: [${event.code}] ${event.reason}`
-              )
+                `Server refuses the connection: [${event.code}] ${event.reason}`,
+              ),
             );
           };
 
           // Get the input stream
           audioStream = await navigator.mediaDevices.getUserMedia({
-            audio: inputDevice ? { deviceId: { exact: inputDevice } } : true
+            audio: inputDevice ? { deviceId: { exact: inputDevice } } : true,
           });
 
           // Initializes the recorder
@@ -256,13 +262,13 @@
               socket?.send(modifiedBuffer);
             },
             desiredSampRate: SAMPLE_RATE,
-            numberOfAudioChannels: 1
+            numberOfAudioChannels: 1,
           });
 
           await socketPromise.promise;
         } catch (err) {
           window.alert(
-            `Error during the initialization: ${err?.message || err}`
+            `Error during the initialization: ${err?.message || err}`,
           );
           console.error(err);
           stop();
