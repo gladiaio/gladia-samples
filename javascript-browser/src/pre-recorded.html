@@ -63,80 +63,74 @@
       </div>
       <div>
         <label for="audio">or upload your own audio or video file</label>
-        <input
-          id="audio"
-          name="audio"
-          type="file"
-        />
+        <input id="audio" name="audio" type="file" />
       </div>
       <button type="submit">Submit</button>
     </form>
-    <div id="result" style="display: none;"></div>
+    <div id="result" style="display: none"></div>
 
     <script>
       /** @type {HTMLFormElement} */
-      const form = document.querySelector("#form");
+      const form = document.querySelector('#form');
       /** @type {HTMLButtonElement} */
       const submitButton = document.querySelector('button[type="submit"]');
       /** @type {HTMLDivElement} */
-      const resultContainer = document.querySelector("#result");
+      const resultContainer = document.querySelector('#result');
 
-      const gladiaV2BaseUrl = "https://api.gladia.io/v2/";
+      const gladiaV2BaseUrl = 'https://api.gladia.io/v2/';
 
-      form.addEventListener("submit", async (evt) => {
+      form.addEventListener('submit', async (evt) => {
         evt.preventDefault();
 
         // Reset the download link
-        resultContainer.style.display = "none";
+        resultContainer.style.display = 'none';
 
         // Parse submitted data
         const formData = new FormData(form);
 
-        const gladiaKey = formData.get("gladia_key");
+        const gladiaKey = formData.get('gladia_key');
 
-        let audioUrl = formData.get("audio_url");
-        let audio = formData.get("audio");
+        let audioUrl = formData.get('audio_url');
+        let audio = formData.get('audio');
         if (!audio?.size) {
           audio = null;
         }
         if (!audioUrl && !audio) {
-          window.alert("One of url or file is required");
+          window.alert('One of url or file is required');
           return;
         }
 
         // Submitted data is valid, we are going to call the api
         // Update the button state to show a pending state to the user
-        submitButton.setAttribute("disabled", "true");
-        submitButton.textContent = "Submitting...";
+        submitButton.setAttribute('disabled', 'true');
+        submitButton.textContent = 'Submitting...';
 
         const newFormData = new FormData();
         if (audio) {
-          newFormData.set("audio", audio);
+          newFormData.set('audio', audio);
 
-          const uploadResponse = await fetch(
-            gladiaV2BaseUrl + "upload/",
-            {
-              method: "POST",
-              headers: {
-                "X-Gladia-Key": gladiaKey
-              },
-              body: newFormData
-            }
-          );
+          const uploadResponse = await fetch(gladiaV2BaseUrl + 'upload/', {
+            method: 'POST',
+            headers: {
+              'X-Gladia-Key': gladiaKey,
+            },
+            body: newFormData,
+          });
 
           if (!uploadResponse.ok) {
-            window.alert(`[${uploadResponse.status}] ${uploadResponse.statusText}`);
+            window.alert(
+              `[${uploadResponse.status}] ${uploadResponse.statusText}`,
+            );
             console.error(uploadResponse.status, await uploadResponse.text());
             return;
           }
 
           const uploadJson = await uploadResponse.json();
           console.log(uploadJson);
-          audioUrl = uploadJson.audio_url
-
+          audioUrl = uploadJson.audio_url;
         }
 
-        console.log("audioUrl:", audioUrl)
+        console.log('audioUrl:', audioUrl);
 
         const requestData = {
           audio_url: audioUrl,
@@ -145,63 +139,65 @@
           // diarization: true,
         };
 
-        console.log("body:", JSON.stringify(requestData))
-
+        console.log('body:', JSON.stringify(requestData));
 
         // We are using the audio endpoint even if audio_url or audio points to a video
         // Behind the scene, it's the same thing
         const postTranscriptionResponse = await fetch(
-          gladiaV2BaseUrl + "transcription/",
+          gladiaV2BaseUrl + 'transcription/',
           {
-            method: "POST",
+            method: 'POST',
             headers: {
-              "X-Gladia-Key": gladiaKey,
-              "Content-Type": "application/json"
+              'X-Gladia-Key': gladiaKey,
+              'Content-Type': 'application/json',
             },
-            body: JSON.stringify(requestData)
-          }
+            body: JSON.stringify(requestData),
+          },
         );
 
         if (!postTranscriptionResponse.ok) {
-          window.alert(`[${postTranscriptionResponse.status}] ${postTranscriptionResponse.statusText}`);
-          console.error(postTranscriptionResponse.status, await postTranscriptionResponse.text());
+          window.alert(
+            `[${postTranscriptionResponse.status}] ${postTranscriptionResponse.statusText}`,
+          );
+          console.error(
+            postTranscriptionResponse.status,
+            await postTranscriptionResponse.text(),
+          );
           return;
         }
 
         const postTranscriptionJson = await postTranscriptionResponse.json();
         console.log(postTranscriptionJson);
-        const resultUrl = postTranscriptionJson.result_url
+        const resultUrl = postTranscriptionJson.result_url;
 
         while (true) {
-          const pollResponse = await fetch(
-            resultUrl,
-            {
-              method: "GET",
-              headers: {
-                "X-Gladia-Key": gladiaKey,
-                "Content-Type": "application/json"
-              }            
-            }
-          );
+          const pollResponse = await fetch(resultUrl, {
+            method: 'GET',
+            headers: {
+              'X-Gladia-Key': gladiaKey,
+              'Content-Type': 'application/json',
+            },
+          });
 
           const json = await pollResponse.json();
 
-          if (json.status === "done") {
+          if (json.status === 'done') {
             // Re-enable the submit button
-            submitButton.removeAttribute("disabled");
-            submitButton.textContent = "Submit";
+            submitButton.removeAttribute('disabled');
+            submitButton.textContent = 'Submit';
 
             // Show the result
             console.log(json);
-            resultContainer.style.display = "block";
-            resultContainer.textContent = json.result.transcription.full_transcript
+            resultContainer.style.display = 'block';
+            resultContainer.textContent =
+              json.result.transcription.full_transcript;
             break;
-          } else if (json.status === "error") {
+          } else if (json.status === 'error') {
             window.alert(`Transcription status: ${json.status}`);
             console.error(pollResponse.status, await pollResponse.text());
             return;
           } else {
-            console.log("Transcription status: ", json.status);
+            console.log('Transcription status: ', json.status);
             await new Promise((resolve) => setTimeout(resolve, 1000));
           }
         }

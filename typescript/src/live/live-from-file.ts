@@ -1,34 +1,34 @@
-import WebSocket from "ws";
+import WebSocket from 'ws';
 import {
   getAudioFileFormat,
   initFileRecorder,
   printMessage,
-  readGladiaKey,
-} from "./helpers";
-import { InitiateResponse, StreamingConfig } from "./types";
+  readGladiaApiKey,
+} from './helpers.js';
+import { InitiateResponse, StreamingConfig } from './types.js';
 
-const gladiaApiUrl = "https://api.gladia.io";
-const region = "eu-west" // us-west
-const gladiaKey = readGladiaKey();
+const gladiaApiKey = readGladiaApiKey();
+const gladiaApiUrl = 'https://api.gladia.io';
+const region = 'eu-west'; // us-west
 
-const filepath = "../data/anna-and-sasha-16000.wav";
+const filepath = '../data/anna-and-sasha-16000.wav';
 const config: StreamingConfig = {
   language_config: {
-    languages: ["es", "ru", "en", "fr"],
+    languages: ['es', 'ru', 'en', 'fr'],
     code_switching: true,
   },
   messages_config: {
     receive_partial_transcripts: false, // Set to true to receive partial/intermediate transcript
-    receive_final_transcripts: true
-  }
+    receive_final_transcripts: true,
+  },
 };
 
 async function initLiveSession(): Promise<InitiateResponse> {
   const response = await fetch(`${gladiaApiUrl}/v2/live?region=${region}`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
-      "X-GLADIA-KEY": gladiaKey,
+      'Content-Type': 'application/json',
+      'X-GLADIA-KEY': gladiaApiKey,
     },
     body: JSON.stringify({ ...getAudioFileFormat(filepath), ...config }),
   });
@@ -48,16 +48,16 @@ function initWebSocket(
 ): WebSocket {
   const socket = new WebSocket(url);
 
-  socket.addEventListener("open", function () {
+  socket.addEventListener('open', function () {
     onOpen();
   });
 
-  socket.addEventListener("error", function (error) {
+  socket.addEventListener('error', function (error) {
     console.error(error);
     process.exit(1);
   });
 
-  socket.addEventListener("close", async ({ code, reason }) => {
+  socket.addEventListener('close', async ({ code, reason }) => {
     if (code === 1000) {
       process.exit(0);
     } else {
@@ -66,7 +66,7 @@ function initWebSocket(
     }
   });
 
-  socket.addEventListener("message", function (event) {
+  socket.addEventListener('message', function (event) {
     // All the messages we are sending are in JSON format
     const message = JSON.parse(event.data.toString());
     printMessage(message);
@@ -85,14 +85,14 @@ async function start() {
     (chunk) => socket?.send(chunk),
     // When the recording is stopped, we send a message to tell the server
     // we are done sending audio and it can start the post-processing
-    () => socket?.send(JSON.stringify({ type: "stop_recording" })),
+    () => socket?.send(JSON.stringify({ type: 'stop_recording' })),
     filepath,
   );
 
   // Connect to the WebSocket and start recording once the connection is open
   socket = initWebSocket(initiateResponse, () => {
     console.log();
-    console.log("################ Begin session ################");
+    console.log('################ Begin session ################');
     console.log();
 
     recorder.start();

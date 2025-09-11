@@ -1,15 +1,15 @@
-import WebSocket from "ws";
+import WebSocket from 'ws';
 import {
   getMicrophoneAudioFormat,
   initMicrophoneRecorder,
   printMessage,
-  readGladiaKey,
-} from "./helpers";
-import { InitiateResponse, StreamingConfig } from "./types";
+  readGladiaApiKey,
+} from './helpers.js';
+import { InitiateResponse, StreamingConfig } from './types.js';
 
-const gladiaApiUrl = "https://api.gladia.io";
-const region = "eu-west" // us-west
-const gladiaKey = readGladiaKey();
+const gladiaApiKey = readGladiaApiKey();
+const gladiaApiUrl = 'https://api.gladia.io';
+const region = 'eu-west'; // us-west
 
 const config: StreamingConfig = {
   language_config: {
@@ -18,16 +18,16 @@ const config: StreamingConfig = {
   },
   messages_config: {
     receive_partial_transcripts: false, // Set to true to receive partial/intermediate transcript
-    receive_final_transcripts: true
-  }
+    receive_final_transcripts: true,
+  },
 };
 
 async function initLiveSession(): Promise<InitiateResponse> {
   const response = await fetch(`${gladiaApiUrl}/v2/live?region=${region}`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
-      "X-GLADIA-KEY": gladiaKey,
+      'Content-Type': 'application/json',
+      'X-GLADIA-KEY': gladiaApiKey,
     },
     body: JSON.stringify({ ...getMicrophoneAudioFormat(), ...config }),
   });
@@ -48,30 +48,30 @@ function initWebSocketClient({ url }: InitiateResponse) {
   let stopRecording = false;
 
   function initWebSocket() {
-    console.log(">>>>> Connecting to websocket");
+    console.log('>>>>> Connecting to websocket');
     socket = new WebSocket(url);
 
-    socket.addEventListener("open", function () {
-      console.log(">>>>> Connected to websocket");
+    socket.addEventListener('open', function () {
+      console.log('>>>>> Connected to websocket');
       if (audioBuffer.byteLength) {
         socket?.send(audioBuffer);
         audioBuffer = Buffer.alloc(0);
       }
       if (stopRecording) {
-        socket?.send(JSON.stringify({ type: "stop_recording" }));
+        socket?.send(JSON.stringify({ type: 'stop_recording' }));
       }
     });
 
-    socket.addEventListener("error", function (error) {
+    socket.addEventListener('error', function (error) {
       console.error(error);
       process.exit(1);
     });
 
-    socket.addEventListener("close", async ({ code, reason }) => {
+    socket.addEventListener('close', async ({ code, reason }) => {
       if (code === 1000 || stopRecording) {
         process.exit(0);
       } else {
-        console.log(">>>>> Lost connection with websocket");
+        console.log('>>>>> Lost connection with websocket');
         socket?.removeAllListeners();
         socket = null;
         await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -79,12 +79,12 @@ function initWebSocketClient({ url }: InitiateResponse) {
       }
     });
 
-    socket.addEventListener("message", function (event) {
+    socket.addEventListener('message', function (event) {
       // All the messages we are sending are in JSON format
       const message = JSON.parse(event.data.toString());
       printMessage(message);
 
-      if (message.type === "audio_chunk" && message.acknowledged) {
+      if (message.type === 'audio_chunk' && message.acknowledged) {
         audioBuffer = audioBuffer.subarray(
           message.data.byte_range[1] - bytesSent,
         );
@@ -105,7 +105,7 @@ function initWebSocketClient({ url }: InitiateResponse) {
     stopRecording: () => {
       stopRecording = true;
       if (socket?.readyState === WebSocket.OPEN) {
-        socket.send(JSON.stringify({ type: "stop_recording" }));
+        socket.send(JSON.stringify({ type: 'stop_recording' }));
       }
     },
     forceClose: () => {
@@ -138,7 +138,7 @@ async function start() {
   // since the client buffers the audio
 
   console.log();
-  console.log("################ Begin session ################");
+  console.log('################ Begin session ################');
   console.log();
 
   recorder.start();

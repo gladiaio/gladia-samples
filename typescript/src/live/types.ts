@@ -1,12 +1,5 @@
-export type StreamingAudioFormat = {
-  encoding: "wav/pcm" | "wav/alaw" | "wav/ulaw";
-  bit_depth: 8 | 16 | 24 | 32;
-  sample_rate: 8_000 | 16_000 | 32_000 | 44_100 | 48_000;
-  channels: number;
-};
-
 export type StreamingConfig = {
-  model?: "solaria-1";
+  model?: 'solaria-1';
   endpointing?: number;
   maximum_duration_without_endpointing?: number;
 
@@ -31,7 +24,7 @@ export type StreamingConfig = {
     translation?: boolean;
     translation_config?: {
       target_languages: string[];
-      model?: "base" | "enhanced";
+      model?: 'base' | 'enhanced';
       match_original_utterances?: boolean;
     };
     named_entity_recognition?: boolean;
@@ -41,7 +34,7 @@ export type StreamingConfig = {
   post_processing?: {
     summarization?: boolean;
     summarization_config?: {
-      type?: "general" | "bullet_points" | "concise";
+      type?: 'general' | 'bullet_points' | 'concise';
     };
     chapterization?: boolean;
   };
@@ -78,11 +71,6 @@ export type Vocab = {
   intensity?: number;
   pronunciations?: string[];
   language?: string;
-};
-
-export type Recorder = {
-  start(): void;
-  stop(): void;
 };
 
 export type InitiateResponse = {

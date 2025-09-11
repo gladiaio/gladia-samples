@@ -62,10 +62,10 @@
       <button type="submit">Start streaming</button>
     </form>
 
-    <div id="result" style="display: none;">
+    <div id="result" style="display: none">
       <audio id="audio-player"></audio>
       <div id="finals"></div>
-      <div style="color: red;" id="partials"></div>
+      <div style="color: red" id="partials"></div>
     </div>
 
     <script>
@@ -110,7 +110,10 @@
         const bit_depth = dataview.getUint16(34, true);
 
         let nextSubChunk = 16 + 4 + fmtSize;
-        while (textDecoder.decode(buffer.slice(nextSubChunk, nextSubChunk + 4)) !== 'data') {
+        while (
+          textDecoder.decode(buffer.slice(nextSubChunk, nextSubChunk + 4)) !==
+          'data'
+        ) {
           nextSubChunk += 8 + dataview.getUint32(nextSubChunk + 4, true);
         }
 
@@ -119,24 +122,29 @@
           sample_rate,
           channels,
           bit_depth,
-          data: buffer.slice(nextSubChunk + 8, dataview.getUint32(nextSubChunk + 4, true)),
+          data: buffer.slice(
+            nextSubChunk + 8,
+            dataview.getUint32(nextSubChunk + 4, true),
+          ),
         };
       }
 
       async function initiateSession(gladiaKey, config) {
         const response = await fetch(`https://api.gladia.io/v2/live`, {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
-            "X-GLADIA-KEY": gladiaKey,
+            'Content-Type': 'application/json',
+            'X-GLADIA-KEY': gladiaKey,
           },
           body: JSON.stringify(config),
-        })
+        });
         if (!response.ok) {
-          const message = `${response.status}: ${(await response.text()) || response.statusText}`
-          throw new Error(message)
+          const message = `${response.status}: ${
+            (await response.text()) || response.statusText
+          }`;
+          throw new Error(message);
         }
-        return await response.json()
+        return await response.json();
       }
 
       /** @type {HTMLFormElement} */
@@ -178,7 +186,7 @@
           audioPlayer.src = '';
           URL.revokeObjectURL(audioSrc);
           audioSrc = null;
-          
+
           submitButton.removeAttribute('disabled');
           submitButton.style.display = 'block';
           submitButton.textContent = 'Start streaming';
@@ -193,11 +201,11 @@
         };
 
         try {
-          const {data, ...rest} = await extractAudioFileData(audioFile);
+          const { data, ...rest } = await extractAudioFileData(audioFile);
           audioData = data;
           config = rest;
 
-          const {url} = await initiateSession(gladiaKey, config);
+          const { url } = await initiateSession(gladiaKey, config);
 
           const socketPromise = deferredPromise();
 
@@ -212,15 +220,15 @@
           socket.onclose = (event) => {
             socketPromise.reject(
               new Error(
-                `Server refuses the connection: [${event.code}] ${event.reason}`
-              )
+                `Server refuses the connection: [${event.code}] ${event.reason}`,
+              ),
             );
           };
 
           await socketPromise.promise;
         } catch (err) {
           window.alert(
-            `Error during the initialization: ${err?.message || err}`
+            `Error during the initialization: ${err?.message || err}`,
           );
           console.error(err);
           stop();
@@ -247,7 +255,7 @@
           if (message?.type === 'transcript') {
             let prefix = '- ';
             if (config.channels > 1) {
-              prefix = `${message.data.utterance.channel}: `
+              prefix = `${message.data.utterance.channel}: `;
             }
             if (message.data.is_final) {
               finalsContainer.innerHTML += `<div>${prefix}${message.data.utterance.text}</div>`;
@@ -269,13 +277,14 @@
         // Send chunk of 50ms
         const chunkDuration = 50;
         const bytesPerSample = config.bit_depth / 8;
-        const bytesPerSecond = config.sample_rate * config.channels * bytesPerSample;
+        const bytesPerSecond =
+          config.sample_rate * config.channels * bytesPerSample;
         const chunkSize = Math.round((chunkDuration / 1000) * bytesPerSecond);
         for (let i = 0; i < audioData.byteLength; i += chunkSize) {
           socket.send(audioData.slice(i, i + chunkSize));
           await new Promise((resolve) => setTimeout(resolve, chunkDuration));
         }
-        socket.send(JSON.stringify({type: 'stop_recording'}));
+        socket.send(JSON.stringify({ type: 'stop_recording' }));
       });
     </script>
   </body>
