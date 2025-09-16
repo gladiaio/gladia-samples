@@ -1,13 +1,11 @@
 import { readFileSync } from 'fs';
 import Mic from 'node-mic';
 import { resolve } from 'path';
+import type { LiveV2WebSocketMessage, LiveV2InitRequest } from '@gladiaio/sdk';
 
-type StreamingAudioFormat = {
-  encoding: 'wav/pcm' | 'wav/alaw' | 'wav/ulaw';
-  bit_depth: 8 | 16 | 24 | 32;
-  sample_rate: 8_000 | 16_000 | 32_000 | 44_100 | 48_000;
-  channels: number;
-};
+type LiveV2InitRequestAudioFormat = Required<
+  Pick<LiveV2InitRequest, 'encoding' | 'bit_depth' | 'sample_rate' | 'channels'>
+>;
 
 type Recorder = {
   start(): void;
@@ -25,14 +23,13 @@ export function readGladiaApiKey(): string {
   return gladiaApiKey;
 }
 
-export function printMessage(message: {
-  type: 'transcript' | 'post_final_transcript';
-  data: any;
-}) {
+export function printMessage(message: LiveV2WebSocketMessage) {
   if (message.type === 'transcript') {
     const is_final = message.data.is_final;
     const { text, start, end, language } = message.data.utterance;
-    const line = `${formatSeconds(start)} --> ${formatSeconds(end)} | ${language} | ${text.trim()}`;
+    const line = `${formatSeconds(start)} --> ${formatSeconds(
+      end,
+    )} | ${language} | ${text.trim()}`;
     if (process.stdout.isTTY) {
       process.stdout.clearLine(0);
       process.stdout.cursorTo(0);
@@ -84,7 +81,7 @@ function formatSeconds(duration: number | null | undefined) {
   ].join('.');
 }
 
-export function getMicrophoneAudioFormat(): StreamingAudioFormat {
+export function getMicrophoneAudioFormat(): LiveV2InitRequestAudioFormat {
   return {
     encoding: 'wav/pcm',
     bit_depth: 16,
@@ -142,7 +139,7 @@ export function initMicrophoneRecorder(
 
 function parseAudioFile(
   filePath: string,
-): StreamingAudioFormat & { startDataChunk: number; buffer: Buffer } {
+): LiveV2InitRequestAudioFormat & { startDataChunk: number; buffer: Buffer } {
   const textDecoder = new TextDecoder();
   const buffer = readFileSync(resolve(filePath));
   if (
@@ -154,7 +151,7 @@ function parseAudioFile(
   }
 
   const fmtSize = buffer.readUInt32LE(16);
-  let encoding: StreamingAudioFormat['encoding'];
+  let encoding: LiveV2InitRequestAudioFormat['encoding'];
   const format = buffer.readUInt16LE(20);
   if (format === 1) {
     encoding = 'wav/pcm';
@@ -168,10 +165,10 @@ function parseAudioFile(
   const channels = buffer.readUInt16LE(22);
   const sample_rate = buffer.readUInt32LE(
     24,
-  ) as StreamingAudioFormat['sample_rate'];
+  ) as LiveV2InitRequestAudioFormat['sample_rate'];
   const bit_depth = buffer.readUInt16LE(
     34,
-  ) as StreamingAudioFormat['bit_depth'];
+  ) as LiveV2InitRequestAudioFormat['bit_depth'];
 
   let nextSubChunk = 16 + 4 + fmtSize;
   while (
@@ -191,7 +188,9 @@ function parseAudioFile(
   };
 }
 
-export function getAudioFileFormat(filePath: string): StreamingAudioFormat {
+export function getAudioFileFormat(
+  filePath: string,
+): LiveV2InitRequestAudioFormat {
   const { startDataChunk, buffer, ...format } = parseAudioFile(filePath);
   return format;
 }

@@ -1,4 +1,4 @@
-import WebSocket from 'ws';
+import { GladiaClient } from '@gladiaio/sdk';
 import {
   getMicrophoneAudioFormat,
   initMicrophoneRecorder,
@@ -18,63 +18,43 @@ const config = {
     receive_final_transcripts: true,
   },
 };
-async function initLiveSession() {
-  const response = await fetch(`${gladiaApiUrl}/v2/live?region=${region}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-GLADIA-KEY': gladiaApiKey,
-    },
-    body: JSON.stringify({ ...getMicrophoneAudioFormat(), ...config }),
+async function start() {
+  const gladiaClient = new GladiaClient({
+    apiKey: gladiaApiKey,
+    apiUrl: gladiaApiUrl,
+    region,
   });
-  if (!response.ok) {
-    console.error(
-      `${response.status}: ${(await response.text()) || response.statusText}`,
+  const liveSession = gladiaClient.liveV2().startSession({
+    ...getMicrophoneAudioFormat(),
+    ...config,
+  });
+  liveSession.once('started', () => {
+    console.log();
+    console.log(
+      `################ Begin session ${liveSession.sessionId} ################`,
     );
-    process.exit(response.status);
-  }
-  return await response.json();
-}
-function initWebSocket({ url }, onOpen) {
-  const socket = new WebSocket(url);
-  socket.addEventListener('open', function () {
-    onOpen();
+    console.log();
   });
-  socket.addEventListener('error', function (error) {
-    console.error(error);
-    process.exit(1);
-  });
-  socket.addEventListener('close', async ({ code, reason }) => {
-    if (code === 1000) {
-      process.exit(0);
-    } else {
-      console.error(`Connection closed with code ${code} and reason ${reason}`);
-      process.exit(1);
-    }
-  });
-  socket.addEventListener('message', function (event) {
-    // All the messages we are sending are in JSON format
-    const message = JSON.parse(event.data.toString());
+  liveSession.on('message', (message) => {
     printMessage(message);
   });
-  return socket;
-}
-async function start() {
-  const initiateResponse = await initLiveSession();
-  let socket = null;
+  liveSession.on('error', (error) => {
+    console.error(error);
+  });
+  liveSession.once('ended', () => {
+    console.log();
+    console.log(
+      `################  End session ${liveSession.sessionId}  ################`,
+    );
+    console.log();
+  });
   const recorder = initMicrophoneRecorder(
     // Send every chunk from recorder to the socket
-    (chunk) => socket?.send(chunk),
+    (chunk) => liveSession.sendAudio(chunk),
     // When the recording is stopped, we send a message to tell the server
     // we are done sending audio and it can start the post-processing
-    () => socket?.send(JSON.stringify({ type: 'stop_recording' })),
+    () => liveSession.stopRecording(),
   );
-  // Connect to the WebSocket and start recording once the connection is open
-  socket = initWebSocket(initiateResponse, () => {
-    console.log();
-    console.log('################ Begin session ################');
-    console.log();
-    recorder.start();
-  });
+  recorder.start();
 }
 start();
