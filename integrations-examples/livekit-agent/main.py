@@ -14,35 +14,39 @@ from livekit.agents import (
     llm,
     metrics,
 )
-
 from livekit.plugins.gladia.stt import STT as GladiaSTT
 
 logger = logging.getLogger("transcriber")
 
+
 class Transcriber(Agent):
-    def __init__(self):
-        api_key = os.getenv("GLADIA_API_KEY")
-        if not api_key:
-            raise RuntimeError(
-                "GLADIA_API_KEY is not set. Please create a .env from .env.example and set it, or export it in your shell."
-            )   
+    def __init__(self) -> None:
         super().__init__(
-            stt=GladiaSTT(
-                api_key=api_key,
-            ),
+            instructions="None",
         )
 
-    async def on_user_turn_completed(self, chat_ctx: llm.ChatContext, new_message: llm.ChatMessage):
+    async def on_user_turn_completed(
+        self, chat_ctx: llm.ChatContext, new_message: llm.ChatMessage
+    ):
         user_transcript = new_message.text_content
         logger.info(f" -> {user_transcript}")
 
         raise StopResponse()
-    
+
+
 async def entrypoint(ctx: JobContext):
+    api_key = os.getenv("GLADIA_API_KEY")
+    if not api_key:
+        raise RuntimeError(
+            "GLADIA_API_KEY is not set. Please create a .env from .env.example and set it, or export it in your shell."
+        )
+
     logger.info(f"Starting transcriber (speech to text) in room: {ctx.room.name}")
     await ctx.connect(auto_subscribe=AutoSubscribe.AUDIO_ONLY)
 
-    session = AgentSession()
+    session = AgentSession(
+        stt=GladiaSTT(api_key=api_key, interim_results=True),
+    )
 
     @session.on("metrics_collected")
     def on_metrics_collected(ev: MetricsCollectedEvent):
@@ -57,6 +61,7 @@ async def entrypoint(ctx: JobContext):
             audio_enabled=False,
         ),
     )
+
 
 if __name__ == "__main__":
     cli.run_app(WorkerOptions(entrypoint_fnc=entrypoint))
