@@ -15,16 +15,16 @@ Documentation can be found [here](https://docs.gladia.io/api-reference/pre-recor
 You can run an example with a pre-recorded file on disk:
 
 ```bash
-npm run pre-recorded-file <your_gladia_key>
+GLADIA_API_KEY=<your_gladia_key> npm run pre-recorded-file
 ```
 
 To run with a url pointing to an audio or video file:
 
 ```bash
-npm run pre-recorded-url <your_gladia_key>
+GLADIA_API_KEY=<your_gladia_key> npm run pre-recorded-url
 ```
 
-## Live - Basic
+## Live
 
 Documentation can be found [here](https://docs.gladia.io/api-reference/live-flow)
 
@@ -33,13 +33,13 @@ Documentation can be found [here](https://docs.gladia.io/api-reference/live-flow
 To run a live example simulating a session with an audio file, you have to run:
 
 ```bash
-npm run live-file <your_gladia_key>
+GLADIA_API_KEY=<your_gladia_key> npm run live-file
 ```
 
 Or from microphone (it requires [arecord](https://www.thegeekdiary.com/arecord-command-not-found/) on Linux and [SoX](https://formulae.brew.sh/formula/sox) on MacOS):
 
 ```bash
-npm run live-microphone <your_gladia_key>
+GLADIA_API_KEY=<your_gladia_key> npm run live-microphone
 ```
 
 Note: You can get your Gladia key from https://app.gladia.io.
@@ -56,22 +56,4 @@ When running the file example you should get an output like this one:
 00:53.924 --> 00:57.644 | And where do you see yourself in the future, like five years from now?
 00:58.120 --> 01:06.384 | Well, I would like to start off my new company and start building a new startup that I have in mind, but that's still some ideas that I have.
 01:08.588 --> 01:22.691 | Et finalement, il faut qu'on parle en français. Donc je sais que tu ne parles pas français mais tu peux quand même dire un mot pour finir la conversation. Oui merci, oui.
-```
-
-## Live - With error handling and automatic reconnection mechanism
-
-Documentation can be found [here](https://docs.gladia.io/api-reference/live-flow)
-
-### run
-
-To run a live example simulating a session with an audio file, you have to run:
-
-```bash
-npm run live-file-with-resume <your_gladia_key>
-```
-
-Or from microphone (it requires [arecord](https://www.thegeekdiary.com/arecord-command-not-found/) on Linux and [SoX](https://formulae.brew.sh/formula/sox) on MacOS):
-
-```bash
-npm run live-microphone-with-resume <your_gladia_key>
 ```

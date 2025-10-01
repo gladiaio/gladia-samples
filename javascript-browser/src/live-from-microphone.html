@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="https://unpkg.com/@gladiaio/sdk@0.5.2"></script>
     <title>Gladia - Live from microphone</title>
 
     <!-- We are using a 3rd party library to record audio as WAV on every browser. -->
@@ -70,24 +71,12 @@
     </form>
 
     <div id="result" style="display: none">
-      <span id="finals"></span>
-      <span style="color: red" id="partials"></span>
+      <div id="finals"></div>
+      <div style="color: red" id="partials"></div>
     </div>
 
     <script>
       const SAMPLE_RATE = 16000;
-
-      /**
-       * @returns {{promise: Promise<any>; resolve(value: any): void; reject(err: any): void;}}
-       */
-      function deferredPromise() {
-        const deferred = {};
-        deferred.promise = new Promise((resolve, reject) => {
-          deferred.resolve = resolve;
-          deferred.reject = reject;
-        });
-        return deferred;
-      }
 
       // Initialize the audio input devices
       async function listAudioDevices() {
@@ -135,7 +124,7 @@
           return;
         }
 
-        inputDeviceSelect.innerHTML = '';
+        inputDeviceSelect.textContent = '';
         audioDevices.forEach((device) => {
           const option = document.createElement('option');
           option.value = device.deviceId;
@@ -147,26 +136,6 @@
       }
       listAudioDevices();
 
-      async function initiateSession(gladiaKey) {
-        const response = await fetch(`https://api.gladia.io/v2/live`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-GLADIA-KEY': gladiaKey,
-          },
-          body: JSON.stringify({
-            sample_rate: SAMPLE_RATE,
-          }),
-        });
-        if (!response.ok) {
-          const message = `${response.status}: ${
-            (await response.text()) || response.statusText
-          }`;
-          throw new Error(message);
-        }
-        return await response.json();
-      }
-
       /** @type {HTMLFormElement} */
       const form = document.querySelector('#form');
       /** @type {HTMLButtonElement} */
@@ -175,9 +144,9 @@
       const stopButton = document.querySelector('button[type="button"]');
       /** @type {HTMLDivElement} */
       const resultContainer = document.querySelector('#result');
-      /** @type {HTMLSpanElement} */
+      /** @type {HTMLDivElement} */
       const finalsContainer = document.querySelector('#finals');
-      /** @type {HTMLSpanElement} */
+      /** @type {HTMLDivElement} */
       const partialsContainer = document.querySelector('#partials');
 
       form.addEventListener('submit', async (evt) => {
@@ -192,15 +161,14 @@
         submitButton.setAttribute('disabled', 'true');
         submitButton.textContent = 'Waiting for connection...';
         resultContainer.style.display = 'none';
-        finalsContainer.textContent = '';
+        finalsContainer.innerHTML = '';
         partialsContainer.textContent = '...';
 
         /** @type {MediaStream | undefined} */
         let audioStream;
         /** @type {RecordRTC | undefined} */
         let recorder;
-        /** @type {WebSocket | undefined} */
-        let socket;
+        let liveSession;
 
         const stop = () => {
           submitButton.removeAttribute('disabled');
@@ -214,35 +182,48 @@
 
           recorder?.destroy();
           audioStream?.getTracks().forEach((track) => track.stop());
-          if (socket) {
-            socket.onopen = null;
-            socket.onerror = null;
-            socket.onclose = null;
-            socket.onmessage = null;
-            socket.close();
+
+          if (liveSession) {
+            liveSession.endSession();
+            liveSession = null;
           }
         };
 
         try {
-          const { url } = await initiateSession(gladiaKey);
+          liveSession = new Gladia.GladiaClient({
+            apiKey: gladiaKey,
+          })
+            .liveV2()
+            .startSession({
+              sample_rate: SAMPLE_RATE,
+              messages_config: {
+                receive_partial_transcripts: true,
+              },
+            });
 
-          const socketPromise = deferredPromise();
+          liveSession.on('message', (message) => {
+            if (message.type !== 'transcript') {
+              return;
+            }
 
-          // Initializes the websocket
-          socket = new WebSocket(url);
-          socket.onopen = () => {
-            socketPromise.resolve(true);
-          };
-          socket.onerror = () => {
-            socketPromise.reject(new Error(`Couldn't connect to the server`));
-          };
-          socket.onclose = (event) => {
-            socketPromise.reject(
-              new Error(
-                `Server refuses the connection: [${event.code}] ${event.reason}`,
-              ),
-            );
-          };
+            let prefix = '- ';
+            if (message.data.is_final) {
+              const div = document.createElement('div');
+              div.textContent = `${prefix}${message.data.utterance.text}`;
+              finalsContainer.appendChild(div);
+              partialsContainer.textContent = '';
+            } else {
+              partialsContainer.textContent = `${prefix}${message.data.utterance.text}`;
+            }
+          });
+          liveSession.on('error', (error) => {
+            const message = `An error occurred: ${error}`;
+            window.alert(message);
+            console.error(message, error);
+          });
+          liveSession.on('ended', () => {
+            stop();
+          });
 
           // Get the input stream
           audioStream = await navigator.mediaDevices.getUserMedia({
@@ -259,13 +240,11 @@
               const buffer = await blob.arrayBuffer();
               // Remove WAV header
               const modifiedBuffer = buffer.slice(44);
-              socket?.send(modifiedBuffer);
+              liveSession?.sendAudio(modifiedBuffer);
             },
             desiredSampRate: SAMPLE_RATE,
             numberOfAudioChannels: 1,
           });
-
-          await socketPromise.promise;
         } catch (err) {
           window.alert(
             `Error during the initialization: ${err?.message || err}`,
@@ -275,34 +254,15 @@
           return;
         }
 
-        // Register new listeners
-        socket.onopen = null;
-        socket.onerror = null;
-        socket.onclose = (event) => {
-          const message = `Lost connection to the server: [${event.code}] ${event.reason}`;
-          window.alert(message);
-          console.error(message);
-          stop();
-        };
-        socket.onmessage = (event) => {
-          const message = JSON.parse(event.data);
-          console.log(message);
-          if (message?.type === 'transcript') {
-            if (message.data.is_final) {
-              finalsContainer.textContent += message.data.utterance.text;
-              partialsContainer.textContent = '';
-            } else {
-              partialsContainer.textContent = message.data.utterance.text;
-            }
-          }
-        };
-
         submitButton.textContent = 'Recording...';
 
         stopButton.removeAttribute('disabled');
         stopButton.style.backgroundColor = '#d94242';
         stopButton.style.color = '#fff';
-        stopButton.addEventListener('click', stop);
+        stopButton.addEventListener('click', () => {
+          recorder.stopRecording();
+          liveSession.stopRecording();
+        });
 
         resultContainer.style.display = 'block';
 
