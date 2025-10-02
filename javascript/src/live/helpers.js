@@ -1,16 +1,6 @@
 import { readFileSync } from 'fs';
 import Mic from 'node-mic';
 import { resolve } from 'path';
-export function readGladiaApiKey() {
-  const gladiaApiKey = process.argv[2];
-  if (!gladiaApiKey) {
-    console.error(
-      'You must provide a Gladia API key. Go to https://app.gladia.io to get yours.',
-    );
-    process.exit(1);
-  }
-  return gladiaApiKey;
-}
 export function printMessage(message) {
   if (message.type === 'transcript') {
     const is_final = message.data.is_final;
