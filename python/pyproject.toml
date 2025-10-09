@@ -1,0 +1,25 @@
+[project]
+name = "gladia-python-samples"
+version = "1.0.0"
+description = "Samples for Gladia API"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "gladiaio-sdk>=0.2.0",
+    "httpx>=0.28.1",
+    "pyaudio>=0.2.14",
+    "websockets>=15.0.1",
+]
+
+[tool.uv]
+package = true
+
+[project.scripts]
+pre-recorded-file = "pre_recorded.pre_recorded_file:main"
+pre-recorded-url = "pre_recorded.pre_recorded_url:main"
+live-file = "streaming.live_from_file:main"
+live-file-asyncio = "streaming.live_from_file_asyncio:main"
+live-file-without-sdk = "streaming.live_from_file_without_sdk:main"
+live-microphone = "streaming.live_from_microphone:main"
+live-microphone-asyncio = "streaming.live_from_microphone_asyncio:main"
+live-microphone-without-sdk = "streaming.live_from_microphone_without_sdk:main"

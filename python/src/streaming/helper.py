@@ -1,40 +1,10 @@
-import json
+import asyncio
 from datetime import time
-import sys
-from websockets.asyncio.client import ClientConnection
-from typing import Literal, TypedDict
+import os
+import signal
+import threading
+from gladiaio_sdk import LiveV2WebSocketMessage, create_live_v2_web_socket_message_from_json
 
-def get_gladia_key() -> str:
-    if len(sys.argv) != 2 or not sys.argv[1]:
-        print("You must provide a Gladia key as the first argument.")
-        exit(1)
-    return sys.argv[1]
-
-## Type definitions
-class InitiateResponse(TypedDict):
-    id: str
-    url: str
-
-
-class LanguageConfiguration(TypedDict):
-    languages: list[str] | None
-    code_switching: bool | None
-
-
-class MessagesConfiguration(TypedDict):
-    receive_partial_transcripts: bool | None
-    receive_final_transcripts: bool | None
-
-
-class StreamingConfiguration(TypedDict):
-    # This is a reduced set of options. For a full list, see the API documentation.
-    # https://docs.gladia.io/api-reference/v2/live/init
-    encoding: Literal["wav/pcm", "wav/alaw", "wav/ulaw"]
-    bit_depth: Literal[8, 16, 24, 32]
-    sample_rate: Literal[8_000, 16_000, 32_000, 44_100, 48_000]
-    channels: int
-    language_config: LanguageConfiguration | None
-    messages_config: MessagesConfiguration | None
 
 def format_duration(seconds: float) -> str:
     milliseconds = int(seconds * 1_000)
@@ -46,15 +16,55 @@ def format_duration(seconds: float) -> str:
     ).isoformat(timespec="milliseconds")
 
 
-def print_message(content: dict) -> None:
-    if content["type"] == "transcript":
-        start = format_duration(content["data"]["utterance"]["start"])
-        end = format_duration(content["data"]["utterance"]["end"])
-        is_final = content["data"]["is_final"]
-        text = content["data"]["utterance"]["text"].strip()
-        
+def print_message(message: LiveV2WebSocketMessage | str) -> None:
+    if isinstance(message, str):
+        message = create_live_v2_web_socket_message_from_json(message)
+    if message.type == "transcript":
+        start = format_duration(message.data.utterance.start)
+        end = format_duration(message.data.utterance.end)
+        is_final = message.data.is_final
+        text = message.data.utterance.text.strip()
+
         if is_final:
             print(f"\r{start} --> {end} | {text}")
         else:
             print(f"\r{start} --> {end} | {text}", end="", flush=True)
 
+def handle_sigint()  -> tuple[threading.Event, threading.Event]:
+    ended_event = threading.Event()
+    stop_event = threading.Event()
+
+    ctrl_c_count = 0
+
+    def handle_sigint() -> None:
+        nonlocal ctrl_c_count
+        ctrl_c_count += 1
+        if ctrl_c_count == 1:
+            print("\nStopping… (press Ctrl+C again to force exit)")
+            stop_event.set()
+        else:
+            os._exit(130)
+
+    _ = signal.signal(signal.SIGINT, lambda s, f: handle_sigint())
+
+    return ended_event, stop_event
+
+def handle_asyncio_sigint() -> tuple[asyncio.Event, asyncio.Event]:
+    ended_event = asyncio.Event()
+    stop_event = asyncio.Event()
+
+    ctrl_c_count = 0
+
+    def handle_sigint() -> None:
+        nonlocal ctrl_c_count
+        ctrl_c_count += 1
+        if ctrl_c_count == 1:
+            print("\nStopping… (press Ctrl+C again to force exit)")
+            stop_event.set()
+        else:
+            os._exit(130)
+
+    loop = asyncio.get_running_loop()
+    loop.add_signal_handler(signal.SIGINT, handle_sigint)
+
+    return ended_event, stop_event

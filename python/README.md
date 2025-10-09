@@ -1,12 +1,12 @@
 # Python
 
-First, install all the required package by running:
+First, install [uv](https://docs.astral.sh/uv/getting-started/installation/) and run:
 
 ```bash
-pip install -r requirements.txt
+uv sync
 ```
 
-Then, change your gladia keys in `pre-recorded/transcription.py` or `streaming/live.py` depending on which one you're trying to run.
+Then get your Gladia API key by following the [documentation](https://docs.gladia.io/chapters/get-started/pages/configure-account).
 
 ## Pre-recorded
 
@@ -16,10 +16,16 @@ https://docs.gladia.io/api-reference/pre-recorded-flow
 
 ### run
 
-You can run a live example by running:
+You can run our pre-recorded example with file upload by running:
 
 ```bash
-cd pre-recorded && python transcription.py
+GLADIA_API_KEY=<your_api_key> uv run pre-recorded-file
+```
+
+You can also run our example with file url by running:
+
+```bash
+GLADIA_API_KEY=<your_api_key> uv run pre-recorded-url
 ```
 
 ## Live
@@ -30,15 +36,11 @@ https://docs.gladia.io/api-reference/live-flow
 
 ### run
 
-To run a streaming example you have to first install the dependencies located in `src/requirements.txt`. You can use a virtual environment for this.
-
-Then run the following python file:
+You can run our live example with a local file by running:
 
 ```bash
-python src/streaming/live-from-file.py <gladia_key>
+GLADIA_API_KEY=<your_api_key> uv run live-file
 ```
-
-Note: You can get your Gladia key by following the [documentation](https://docs.gladia.io/chapters/get-started/pages/configure-account)
 
 When running this example you should get an output like this one:
 
@@ -58,8 +60,8 @@ When running this example you should get an output like this one:
 ################ End of session ################
 ```
 
-If you want to test it using your microphone, use:
+If you want to test with live caption using your microphone, run:
 
 ```bash
-python src/streaming/live-from-microphone.py <gladia_key>
+GLADIA_API_KEY=<your_api_key> uv run live-microphone
 ```
