@@ -1,0 +1,89 @@
+import asyncio
+from typing import Any
+
+import httpx
+import pyaudio
+from websockets.asyncio.client import ClientConnection, connect
+
+from env import get_gladia_api_key, get_gladia_api_url, get_gladia_region
+
+from .helper import print_message
+
+audio_file = "anna-and-sasha-16000.wav"
+sample_rate = 16_000
+bit_depth = 16
+channels = 1
+format = pyaudio.paInt16
+frames_per_buffer = 3200
+
+STREAMING_CONFIGURATION = {
+    "encoding": "wav/pcm",
+    "sample_rate": sample_rate,
+    "bit_depth": bit_depth,
+    "channels": channels,
+    "language_config": {
+        "languages": [],
+        "code_switching": True,
+    },
+    "messages_config": {
+        "receive_partial_transcripts": False,  # Set to True to receive partial/intermediate transcript
+        "receive_final_transcripts": True,
+    },
+}
+
+
+async def run():
+    response = init_live_session(STREAMING_CONFIGURATION)
+    async with connect(response["url"]) as websocket:
+        tasks: list[asyncio.Task[Any]] = []
+        try:
+            print(
+                f"\n################ Begin session {response['id']} ################\n"
+            )
+            tasks.append(asyncio.create_task(send_audio(websocket)))
+            tasks.append(asyncio.create_task(receive_messages_from_socket(websocket)))
+
+            _ = await asyncio.wait(tasks)
+        except asyncio.exceptions.CancelledError:
+            for task in tasks:
+                _ = task.cancel()
+    print(f"\n################ End session {response['id']} ################\n")
+
+
+async def receive_messages_from_socket(socket: ClientConnection) -> None:
+    async for message in socket:
+        print_message(str(message))
+
+
+def init_live_session(config: dict[str, Any]) -> dict[str, Any]:
+    gladia_key = get_gladia_api_key()
+    return httpx.post(
+        f"{get_gladia_api_url()}/v2/live",
+        params={"region": get_gladia_region()},
+        headers={"X-Gladia-Key": gladia_key},
+        json=config,
+        timeout=3,
+    ).json()
+
+
+async def send_audio(socket: ClientConnection) -> None:
+    stream = pyaudio.PyAudio().open(
+        format=format,
+        channels=channels,
+        rate=sample_rate,
+        input=True,
+        frames_per_buffer=frames_per_buffer,
+    )
+
+    while True:
+        data = stream.read(frames_per_buffer)
+        await socket.send(data, text=False)
+        await asyncio.sleep(0.1)  # Send audio every 100ms
+
+
+def main():
+    asyncio.run(run())
+
+
+if __name__ == "__main__":
+    main()
