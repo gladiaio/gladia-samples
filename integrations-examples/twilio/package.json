@@ -12,7 +12,7 @@
     "body-parser": "^2.2.1",
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
-    "express": "^5.1.0",
+    "express": "^5.2.0",
     "ngrok": "^5.0.0-beta.2",
     "twilio": "^5.9.0",
     "wavefile": "^11.0.0",
