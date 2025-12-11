@@ -1,0 +1,30 @@
+{
+  "name": "twilio-solaria-javascript",
+  "version": "1.0.0",
+  "description": "Real-time transcription of Twilio calls using Gladia's Speech-to-Text API",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node src/main.js",
+    "dev": "nodemon src/main.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "node-fetch": "^2.6.7",
+    "ws": "^8.12.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "keywords": [
+    "twilio",
+    "gladia",
+    "transcription",
+    "websocket",
+    "speech-to-text"
+  ],
+  "author": "",
+  "license": "MIT"
+}
