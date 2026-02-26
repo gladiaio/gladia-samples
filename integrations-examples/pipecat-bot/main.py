@@ -28,6 +28,7 @@ transport_params = {
     ),
 }
 
+
 class TranscriptionLogger(FrameProcessor):
     async def process_frame(self, frame: Frame, direction: FrameDirection):
         await super().process_frame(frame, direction)
@@ -47,7 +48,7 @@ async def run_bot(transport: BaseTransport, runner_args: RunnerArguments):
     if not api_key:
         raise RuntimeError(
             "GLADIA_API_KEY is not set. Please create a .env from .env.example and set it, or export it in your shell."
-        )   
+        )
 
     rtvi = RTVIProcessor(config=RTVIConfig(config=[]))
 
@@ -99,6 +100,7 @@ async def run_bot(transport: BaseTransport, runner_args: RunnerArguments):
     runner = PipelineRunner(handle_sigint=runner_args.handle_sigint)
 
     await runner.run(task)
+
 
 async def bot(runner_args: RunnerArguments):
     """Main bot entry point for the bot starter."""
