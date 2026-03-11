@@ -195,11 +195,12 @@ def save_mls_sample_to_wav(language: str, idx: int = 0) -> tuple[str, str]:
 def extract_result(job_data: dict) -> dict:
     """Extract transcription and language info from a completed job response."""
     result = job_data.get("result") or {}
-    print(result)
     transcription = result.get("transcription") or {}
+    error = job_data.get("error_code") or None
     return {
         "languages": transcription.get("languages", []),
         "full_transcript": transcription.get("full_transcript", ""),
+        "error": error,
     }
 
 
@@ -335,10 +336,12 @@ def print_results_table(results: list[TestResult]):
     print("-" * 160)
     for r in results:
         langs_str = ",".join(r.languages) if r.languages else ""
+        code_switching_str = "" if r.code_switching is None else str(r.code_switching)
         if r.error:
             print(
                 f"{r.test_case:<40} | {'ERROR':>10} | {langs_str:>14} | "
                 f"{str(r.code_switching or ''):>10} | {'':>12} | "
+                f"{code_switching_str:>10} | {'':>12} | "
                 f"{'':>6} | {r.error[:80]}"
             )
         else:
@@ -346,6 +349,7 @@ def print_results_table(results: list[TestResult]):
             print(
                 f"{r.test_case:<40} | {r.audio_language:>10} | {langs_str:>14} | "
                 f"{str(r.code_switching or ''):>10} | {detected:>12} | "
+                f"{code_switching_str:>10} | {detected:>12} | "
                 f"{r.elapsed_s:>6.1f} | {r.transcription[:80]}"
             )
     print("=" * 160)
@@ -512,7 +516,7 @@ def cmd_all_languages(args):
             print(f"ERROR: {e}")
             results.append({"lang_input": lang, "error": str(e)})
 
-    print(f"  auto...", end=" ", flush=True)
+    print("  auto...", end=" ", flush=True)
     try:
         t0 = time.time()
         job = client.create_job(audio_url, model=args.model)
