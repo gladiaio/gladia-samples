@@ -408,7 +408,7 @@ def cmd_investigate(args):
     print_results_table(results)
 
     out_path = Path(args.output)
-    out_path.write_text(json.dumps([asdict(r) for r in results], indent=2))
+    out_path.write_text(json.dumps([asdict(r) for r in results], indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"\nResults saved to {out_path}")
 
 
@@ -461,7 +461,7 @@ def cmd_single(args):
     print(f"  Transcription: {extracted['full_transcript']}")
 
     if args.output:
-        Path(args.output).write_text(json.dumps(completed, indent=2))
+        Path(args.output).write_text(json.dumps(completed, indent=2, ensure_ascii=False), encoding="utf-8")
         print(f"\nFull response saved to {args.output}")
 
 
@@ -539,7 +539,7 @@ def cmd_all_languages(args):
         results.append({"lang_input": "auto", "error": str(e)})
 
     out_path = Path(args.output)
-    out_path.write_text(json.dumps(results, indent=2))
+    out_path.write_text(json.dumps(results, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"\nResults saved to {out_path}")
 
 
