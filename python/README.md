@@ -6,6 +6,12 @@ First, install [uv](https://docs.astral.sh/uv/getting-started/installation/) and
 uv sync
 ```
 
+To run the MLS benchmark, install with the `benchmarks` extra:
+
+```bash
+uv sync --extra benchmarks
+```
+
 Then get your Gladia API key by following the [documentation](https://docs.gladia.io/chapters/get-started/pages/configure-account).
 
 ## Pre-recorded
@@ -71,6 +77,8 @@ GLADIA_API_KEY=<your_api_key> uv run live-microphone
 CLI tool that benchmarks Gladia's pre-recorded transcription API against the [Facebook Multilingual LibriSpeech](https://huggingface.co/datasets/facebook/multilingual_librispeech) dataset. It uploads audio samples, submits transcription jobs, and collects results across multiple language configurations (correct language, wrong language, code switching, auto-detect).
 
 Supported MLS languages: German, Dutch, French, Spanish, Italian, Portuguese, Polish.
+
+> **Prerequisite:** install the benchmark dependencies first: `uv sync --extra benchmarks`
 
 ### Usage
 

@@ -634,32 +634,37 @@ name = "gladia-python-samples"
 version = "1.0.0"
 source = { editable = "." }
 dependencies = [
-    { name = "datasets" },
     { name = "gladiaio-sdk" },
     { name = "httpx" },
-    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
-    { name = "numpy", version = "2.4.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
     { name = "pyaudio" },
     { name = "requests" },
+    { name = "websockets" },
+]
+
+[package.optional-dependencies]
+benchmarks = [
+    { name = "datasets" },
+    { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "numpy", version = "2.4.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
     { name = "soundfile" },
     { name = "torch" },
     { name = "torchcodec" },
-    { name = "websockets" },
 ]
 
 [package.metadata]
 requires-dist = [
-    { name = "datasets", specifier = ">=4.7.0" },
+    { name = "datasets", marker = "extra == 'benchmarks'", specifier = ">=4.7.0" },
     { name = "gladiaio-sdk", specifier = ">=0.2.0" },
     { name = "httpx", specifier = ">=0.28.1" },
-    { name = "numpy", specifier = ">=2.2.6" },
+    { name = "numpy", marker = "extra == 'benchmarks'", specifier = ">=2.2.6" },
     { name = "pyaudio", specifier = ">=0.2.14" },
     { name = "requests", specifier = ">=2.32.5" },
-    { name = "soundfile", specifier = ">=0.13.1" },
-    { name = "torch", specifier = ">=2.10.0" },
-    { name = "torchcodec", specifier = ">=0.10.0" },
+    { name = "soundfile", marker = "extra == 'benchmarks'", specifier = ">=0.13.1" },
+    { name = "torch", marker = "extra == 'benchmarks'", specifier = ">=2.10.0" },
+    { name = "torchcodec", marker = "extra == 'benchmarks'", specifier = ">=0.10.0" },
     { name = "websockets", specifier = ">=15.0.1" },
 ]
+provides-extras = ["benchmarks"]
 
 [[package]]
 name = "gladiaio-sdk"

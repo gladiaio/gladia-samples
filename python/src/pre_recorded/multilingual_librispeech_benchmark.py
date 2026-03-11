@@ -186,6 +186,7 @@ def save_mls_sample_to_wav(language: str, idx: int = 0) -> tuple[str, str]:
             tmp = tempfile.NamedTemporaryFile(
                 suffix=".wav", delete=False, prefix=f"mls_{language}_"
             )
+            tmp.close()
             sf.write(tmp.name, audio_arr, sr)
             return tmp.name, transcript
     raise ValueError(f"No sample at index {idx} for language {language}")
