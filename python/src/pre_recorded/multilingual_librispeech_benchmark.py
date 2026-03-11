@@ -1,13 +1,10 @@
 """
-CLI for testing qwen3 ASR via the Gladia HTTP API.
+CLI for testing solaria-3 model from the Gladia HTTP API.
 
 Flow:
   1. POST /v2/upload           — upload audio file, get back audio_url
   2. POST /v2/pre-recorded     — create transcription job with audio_url
   3. GET  /v2/pre-recorded/:id — poll until status is "done" or "error"
-
-Mirrors the test matrix from cli_qwen3_asr_utterance_ensemble.py but goes
-through the full API stack instead of direct Triton gRPC.
 
 # Single file transcription
 uv run python src/pre_recorded/multilingual_librispeech_benchmark.py --api-key YOUR_KEY single --audio-file test.wav --languages fr
@@ -37,7 +34,7 @@ DEFAULT_API_URL = "https://api.gladia.io"
 POLL_INTERVAL_S = 2.0
 POLL_TIMEOUT_S = 300.0
 
-QWEN3_SUPPORTED_LANGUAGES = [
+SOLARIA_3_SUPPORTED_LANGUAGES = [
     "zh",
     "en",
     "yue",
@@ -340,7 +337,6 @@ def print_results_table(results: list[TestResult]):
         if r.error:
             print(
                 f"{r.test_case:<40} | {'ERROR':>10} | {langs_str:>14} | "
-                f"{str(r.code_switching or ''):>10} | {'':>12} | "
                 f"{code_switching_str:>10} | {'':>12} | "
                 f"{'':>6} | {r.error[:80]}"
             )
@@ -348,7 +344,6 @@ def print_results_table(results: list[TestResult]):
             detected = ",".join(r.detected_languages) if r.detected_languages else ""
             print(
                 f"{r.test_case:<40} | {r.audio_language:>10} | {langs_str:>14} | "
-                f"{str(r.code_switching or ''):>10} | {detected:>12} | "
                 f"{code_switching_str:>10} | {detected:>12} | "
                 f"{r.elapsed_s:>6.1f} | {r.transcription[:80]}"
             )
@@ -408,7 +403,10 @@ def cmd_investigate(args):
     print_results_table(results)
 
     out_path = Path(args.output)
-    out_path.write_text(json.dumps([asdict(r) for r in results], indent=2, ensure_ascii=False), encoding="utf-8")
+    out_path.write_text(
+        json.dumps([asdict(r) for r in results], indent=2, ensure_ascii=False),
+        encoding="utf-8",
+    )
     print(f"\nResults saved to {out_path}")
 
 
@@ -461,7 +459,9 @@ def cmd_single(args):
     print(f"  Transcription: {extracted['full_transcript']}")
 
     if args.output:
-        Path(args.output).write_text(json.dumps(completed, indent=2, ensure_ascii=False), encoding="utf-8")
+        Path(args.output).write_text(
+            json.dumps(completed, indent=2, ensure_ascii=False), encoding="utf-8"
+        )
         print(f"\nFull response saved to {args.output}")
 
 
@@ -483,10 +483,12 @@ def cmd_all_languages(args):
         Path(wav_path).unlink(missing_ok=True)
 
     print(f"Audio URL: {audio_url}")
-    print(f"\nTesting all {len(QWEN3_SUPPORTED_LANGUAGES)} supported languages...\n")
+    print(
+        f"\nTesting all {len(SOLARIA_3_SUPPORTED_LANGUAGES)} supported languages...\n"
+    )
 
     results = []
-    for lang in QWEN3_SUPPORTED_LANGUAGES:
+    for lang in SOLARIA_3_SUPPORTED_LANGUAGES:
         print(f"  {lang}...", end=" ", flush=True)
         try:
             t0 = time.time()
@@ -539,7 +541,9 @@ def cmd_all_languages(args):
         results.append({"lang_input": "auto", "error": str(e)})
 
     out_path = Path(args.output)
-    out_path.write_text(json.dumps(results, indent=2, ensure_ascii=False), encoding="utf-8")
+    out_path.write_text(
+        json.dumps(results, indent=2, ensure_ascii=False), encoding="utf-8"
+    )
     print(f"\nResults saved to {out_path}")
 
 
