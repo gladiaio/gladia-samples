@@ -5,9 +5,15 @@ description = "Samples for Gladia API"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+    "datasets>=4.7.0",
     "gladiaio-sdk>=0.2.0",
     "httpx>=0.28.1",
+    "numpy>=2.2.6",
     "pyaudio>=0.2.14",
+    "requests>=2.32.5",
+    "soundfile>=0.13.1",
+    "torch>=2.10.0",
+    "torchcodec>=0.10.0",
     "websockets>=15.0.1",
 ]
 

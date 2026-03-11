@@ -5,8 +5,7 @@ from time import sleep
 from typing import Any
 
 import httpx
-
-from env import get_gladia_api_key, get_gladia_api_url
+from env import get_gladia_api_key, get_gladia_api_url, get_gladia_model
 from file import get_data_file_path
 
 file_name = "anna-and-sasha-16000.wav"
@@ -17,6 +16,7 @@ config = {
         "code_switching": True,
     },
     "diarization": True,
+    "model": get_gladia_model(),
 }
 
 
@@ -61,7 +61,7 @@ async def run():
 
     if not result_url:
         print(f"No result URL found in post response: {post_response}")
-        return  
+        return
 
     while True:
         print("Polling for results...")
@@ -71,11 +71,7 @@ async def run():
 
         if poll_response.get("status") == "done":
             print("- Transcription done: \n")
-            print(
-                json.dumps(
-                    poll_response.get("result"), indent=2, ensure_ascii=False
-                )
-            )
+            print(json.dumps(poll_response.get("result"), indent=2, ensure_ascii=False))
             break
         elif poll_response.get("status") == "error":
             print("- Transcription failed")

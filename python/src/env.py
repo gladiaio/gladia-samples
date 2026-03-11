@@ -14,3 +14,7 @@ def get_gladia_api_url() -> str:
 
 def get_gladia_region() -> str:
     return os.getenv("GLADIA_REGION", "eu-west")  # eu-west or us-west
+
+
+def get_gladia_model() -> str:
+    return os.getenv("GLADIA_MODEL", "solaria-1")
