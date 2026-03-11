@@ -10,16 +10,16 @@ Mirrors the test matrix from cli_qwen3_asr_utterance_ensemble.py but goes
 through the full API stack instead of direct Triton gRPC.
 
 # Single file transcription
-python utils/cli_qwen3_asr_api.py --api-key YOUR_KEY single --audio-file test.wav --languages fr
+uv run python src/pre_recorded/multilingual_librispeech_benchmark.py --api-key YOUR_KEY single --audio-file test.wav --languages fr
 
 # Full investigation with MLS dataset
-python utils/cli_qwen3_asr_api.py --api-key YOUR_KEY investigate --mls-languages french,german
+uv run python src/pre_recorded/multilingual_librispeech_benchmark.py --api-key YOUR_KEY investigate --mls-languages french,german
 
 # Test all 30 languages on one sample
-python utils/cli_qwen3_asr_api.py --api-key YOUR_KEY all-languages --audio-file test.wav
+uv run python src/pre_recorded/multilingual_librispeech_benchmark.py --api-key YOUR_KEY all-languages --audio-file test.wav
 
 # Skip upload if you already have an audio_url
-python utils/cli_qwen3_asr_api.py --api-key YOUR_KEY single --audio-url https://files.gladia.io/...
+uv run python src/pre_recorded/multilingual_librispeech_benchmark.py --api-key YOUR_KEY single --audio-url https://files.gladia.io/...
 """
 
 import argparse
