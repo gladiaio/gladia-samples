@@ -4,7 +4,6 @@ from time import sleep
 from typing import Any
 
 import httpx
-
 from env import get_gladia_api_key, get_gladia_api_url
 
 file_url = "http://files.gladia.io/example/audio-transcription/split_infinity.wav"
@@ -14,6 +13,7 @@ config = {
         "code_switching": False,
     },
 }
+
 
 async def run():
     data = {
@@ -28,7 +28,7 @@ async def run():
 
     print("- Sending request to Gladia API...")
     post_response: dict[str, Any] = httpx.post(
-        url=f"{get_gladia_api_url()}/v2/pre-recorded/", headers=headers, json=data
+        url=f"{get_gladia_api_url()}/v2/pre-recorded", headers=headers, json=data
     ).json()
 
     print("Post response with Transcription ID:", post_response)
@@ -36,9 +36,8 @@ async def run():
 
     if not result_url:
         print(f"No result URL found in post response: {post_response}")
-        return  
+        return
 
-    
     while True:
         print("Polling for results...")
         poll_response: dict[str, Any] = httpx.get(
@@ -47,11 +46,7 @@ async def run():
 
         if poll_response.get("status") == "done":
             print("- Transcription done: \n")
-            print(
-                json.dumps(
-                    poll_response.get("result"), indent=2, ensure_ascii=False
-                )
-            )
+            print(json.dumps(poll_response.get("result"), indent=2, ensure_ascii=False))
             break
         elif poll_response.get("status") == "error":
             print("- Transcription failed")

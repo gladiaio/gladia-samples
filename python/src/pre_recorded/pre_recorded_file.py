@@ -37,7 +37,7 @@ async def run():
 
     print("- Uploading file to Gladia...")
     upload_response: dict[str, Any] = httpx.post(
-        url=f"{get_gladia_api_url()}/v2/upload/", headers=headers, files=files
+        url=f"{get_gladia_api_url()}/v2/upload", headers=headers, files=files
     ).json()
     print("Upload response with File ID:", upload_response)
     audio_url = upload_response.get("audio_url")
@@ -53,7 +53,7 @@ async def run():
 
     print("- Sending request to Gladia API...")
     post_response: dict[str, Any] = httpx.post(
-        url=f"{get_gladia_api_url()}/v2/pre-recorded/", headers=headers, json=data
+        url=f"{get_gladia_api_url()}/v2/pre-recorded", headers=headers, json=data
     ).json()
 
     print("Post response with Transcription ID:", post_response)
