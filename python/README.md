@@ -6,6 +6,12 @@ First, install [uv](https://docs.astral.sh/uv/getting-started/installation/) and
 uv sync
 ```
 
+To run the MLS benchmark, install with the `benchmarks` extra:
+
+```bash
+uv sync --extra benchmarks
+```
+
 Then get your Gladia API key by following the [documentation](https://docs.gladia.io/chapters/get-started/pages/configure-account).
 
 ## Pre-recorded
@@ -65,3 +71,33 @@ If you want to test with live caption using your microphone, run:
 ```bash
 GLADIA_API_KEY=<your_api_key> uv run live-microphone
 ```
+
+## Benchmark multilingual with Librispeech multilingual facebook open dataset
+
+CLI tool that benchmarks Gladia's pre-recorded transcription API against the [Facebook Multilingual LibriSpeech](https://huggingface.co/datasets/facebook/multilingual_librispeech) dataset. It uploads audio samples, submits transcription jobs, and collects results across multiple language configurations (correct language, wrong language, code switching, auto-detect).
+
+Supported MLS languages: German, Dutch, French, Spanish, Italian, Portuguese, Polish.
+
+> **Prerequisite:** install the benchmark dependencies first: `uv sync --extra benchmarks`
+
+### Usage
+
+Single file transcription:
+
+```bash
+uv run python src/pre_recorded/multilingual_librispeech_benchmark.py --api-key $GLADIA_API_KEY single --audio-file test.wav --languages fr
+```
+
+Full investigation across MLS dataset languages:
+
+```bash
+uv run python src/pre_recorded/multilingual_librispeech_benchmark.py --api-key $GLADIA_API_KEY investigate --mls-languages french,german,spanish
+```
+
+Test all 30 supported languages on a single audio sample:
+
+```bash
+uv run python src/pre_recorded/multilingual_librispeech_benchmark.py --api-key $GLADIA_API_KEY all-languages --audio-file test.wav
+```
+
+Results are saved as JSON (default: `api_investigation_results.json`). Use `--output` to customize the output path.

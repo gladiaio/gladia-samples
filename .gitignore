@@ -143,4 +143,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-
+# temp files
+api_investigation_results.json
+data/*.mp3
+data/*.wav
