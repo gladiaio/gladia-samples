@@ -4,13 +4,13 @@ This repo contains Gladia samples for several languages. Feel free to do a PR to
 
 All languages aim to have 2 minimalist examples:
 
-- [Pre-recorded](https://docs.gladia.io/reference/pre-recorded) (You have an audio file that you'd like to transcribe)
-- [Live transcription](https://docs.gladia.io/reference/live-audio) (You'd like to have a live transcription of a file/audio stream)
+- [Pre-recorded](https://docs.gladia.io/api-reference/pre-recorded-flow) (You have an audio file that you'd like to transcribe)
+- [Live transcription](https://docs.gladia.io/api-reference/live-flow) (You'd like to have a live transcription of a file/audio stream)
 
 All examples are using the `audio/text/audio-transcription` endpoint, but you can change this to `video/text/video-transcription` endpoint if you are using videos.
 Keep in mind that parameters are `video` and `video_url` instead of `audio` and `audio_url` if you want to use `video/text/video-transcription` endpoint.
 
-You can still check the full documentation [here](https://docs.gladia.io/reference/introduction)
+You can still check the full documentation [here](https://docs.gladia.io/chapters/introduction/getting-started)
 
 ## Available Samples Status
 
@@ -22,7 +22,7 @@ You can still check the full documentation [here](https://docs.gladia.io/referen
 
 ## Something is missing? Contact us!
 
-You can contact us directly [here](https://gladiaio.typeform.com/support?typeform-source=github.com/gladiaio/gladia-samples) and you can also open an issue in this repository.
+You can contact us directly [here](https://gladia.support.site) and you can also open an issue in this repository.
 
 ## Git LFS
 
