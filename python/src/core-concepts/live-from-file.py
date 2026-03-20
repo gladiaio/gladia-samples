@@ -1,7 +1,4 @@
-from time import sleep
-import subprocess
-import threading
-
+# pip install gladiaio-sdk
 from gladiaio_sdk import (
     GladiaClient,
     LiveV2EndedMessage,
@@ -12,16 +9,21 @@ from gladiaio_sdk import (
     LiveV2WebSocketMessage,
 )
 
+from time import sleep
+import subprocess
+import threading
 
 SAMPLE_RATE = 16_000
 BIT_DEPTH = 16
 CHANNELS = 1
 ENDPOINTING = 0.1
 
-gladia_client = GladiaClient(your_api_key="your_api_key").live()
-audio_file = "../../../data/online-meeting-example.mp4"
+# Create your account and get your API key in 30 seconds ! [Click here](https://docs.gladia.io/chapters/introduction/getting-started) to get started.
+gladia_client = GladiaClient(api_key="GLADIA_API_KEY").live()
+audio_url = "../../../data/online-meeting-example.mp4"
 
-# if necessary, convert the audio file to PCM
+
+## If necessary, convert the audio file to PCM:
 def convert_to_pcm(input_path: str) -> bytes:
     result = subprocess.run(
         [
@@ -44,18 +46,21 @@ def convert_to_pcm(input_path: str) -> bytes:
         raise RuntimeError(f"ffmpeg failed: {result.stderr.decode()}")
     return result.stdout
 
-
-pcm_audio = convert_to_pcm(audio_file)
+pcm_audio = convert_to_pcm(audio_url)
 print(f"Audio: {len(pcm_audio)} bytes of raw PCM")
+
 
 ended_event = threading.Event()
 
 session = gladia_client.start_session(
     LiveV2InitRequest(
+        # Check the encoding, bit depth, sample rate and channels supported at https://docs.gladia.io/api-reference/v2/live/init
         encoding="wav/pcm",
         sample_rate=SAMPLE_RATE,
         bit_depth=BIT_DEPTH,
         channels=CHANNELS,
+
+        # Check the language code supported at https://docs.gladia.io/chapters/language/supported-languages#supported-languages
         language_config=LiveV2LanguageConfig(languages=["en"], code_switching=False),
         messages_config=LiveV2MessagesConfig(
             receive_partial_transcripts=False,
@@ -103,12 +108,3 @@ def stream_file():
 
 threading.Thread(target=stream_file, daemon=True).start()
 ended_event.wait()
-
-# import os
-# # For MacOS, use certifi's CA bundle so SSL verification works 
-# try:
-#     import certifi
-#     os.environ.setdefault("SSL_CERT_FILE", certifi.where())
-#     os.environ.setdefault("REQUESTS_CA_BUNDLE", certifi.where())
-# except ImportError:
-#     pass  # certifi not installed; rely on system defaults

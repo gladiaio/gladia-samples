@@ -1,11 +1,21 @@
-from gladiaio_sdk import GladiaClient
+# !pip install gladiaio-sdk
+from gladiaio_sdk import (
+  GladiaClient,
+  PreRecordedV2SummarizationConfig,
+  PreRecordedV2TranscriptionOptions,
+)
 
-gladia_client = GladiaClient(your_api_key="your_api_key").prerecorded()
+# Create your account and get your API key in 30 seconds at https://docs.gladia.io/chapters/introduction/getting-started
+gladia_client = GladiaClient(api_key='GLADIA_API_KEY').prerecorded()
 
 transcription = gladia_client.transcribe(
-    audio="../../../data/call-center-example.mp4",
-    options={
-        "summarization": True,
-    }
+    audio_url="../../../data/call-center-example.mp4",
+    options=PreRecordedV2TranscriptionOptions(
+        summarization=True,
+        summarization_config=PreRecordedV2SummarizationConfig(
+            # check all the summarization possible outputs at https://docs.gladia.io/chapters/audio-intelligence/summarization#summarization
+            type="bullet_points",
+        ),
+    ),
 )
 print(transcription.result.summarization)

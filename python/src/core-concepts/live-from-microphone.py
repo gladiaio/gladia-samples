@@ -1,8 +1,5 @@
-import signal
-import threading
-from time import sleep
-import pyaudio
-
+# pip install gladiaio-sdk
+from dataclasses_json import api
 from gladiaio_sdk import (
     GladiaClient,
     LiveV2EndedMessage,
@@ -13,12 +10,19 @@ from gladiaio_sdk import (
     LiveV2WebSocketMessage,
 )
 
+import signal
+import threading
+from time import sleep
+import pyaudio
+
 SAMPLE_RATE = 16_000
 BIT_DEPTH = 16
 CHANNELS = 1
 FRAMES_PER_BUFFER = 3200
 
-gladia_client = GladiaClient(your_api_key="your_api_key").live()
+
+# Create your account and get your API key in 30 seconds ! [Click here](https://docs.gladia.io/chapters/introduction/getting-started) to get started.
+gladia_client = GladiaClient(api_key="GLADIA_API_KEY").live()
 
 ended_event = threading.Event()
 stop_event = threading.Event()
@@ -27,10 +31,12 @@ signal.signal(signal.SIGINT, lambda s, f: stop_event.set())
 
 session = gladia_client.start_session(
     LiveV2InitRequest(
+        # Check the encoding, bit depth, sample rate and channels supported at https://docs.gladia.io/api-reference/v2/live/init
         encoding="wav/pcm",
         sample_rate=SAMPLE_RATE,
         bit_depth=BIT_DEPTH,
         channels=CHANNELS,
+        # Check the language code supported at https://docs.gladia.io/chapters/language/supported-languages#supported-languages
         language_config=LiveV2LanguageConfig(languages=["en"], code_switching=False),
         messages_config=LiveV2MessagesConfig(
             receive_partial_transcripts=False,
@@ -38,7 +44,6 @@ session = gladia_client.start_session(
         ),
     )
 )
-
 
 @session.once("started")
 def on_started(response: LiveV2InitResponse):
@@ -92,7 +97,9 @@ threading.Thread(target=stream_microphone, daemon=True).start()
 ended_event.wait()
 
 
-# # For MacOS, use certifi's CA bundle so SSL verification works 
+# # For MacOS, use certifi's CA bundle so SSL verification works
+
+# import os
 # try:
 #     import certifi
 #     os.environ.setdefault("SSL_CERT_FILE", certifi.where())
