@@ -17,6 +17,10 @@ Full documentation: [docs.gladia.io](https://docs.gladia.io).
 
 *(Python uses the same structure; see the `python/` folder.)*
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for formatting and how to run checks for Python, JavaScript, and TypeScript samples.
+
 ## Something missing?
 
 You can [contact us](https://gladiaio.typeform.com/support?typeform-source=github.com/gladiaio/gladia-samples) or open an issue in this repository.

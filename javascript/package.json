@@ -12,6 +12,7 @@
     "ws": "^8.18.3"
   },
   "scripts": {
+    "format:check": "prettier --check \"src/**/*.js\"",
     "core:pre-recorded": "node src/core-concepts/pre-recorded.js",
     "core:live-from-file": "node src/core-concepts/live-from-file.js",
     "core:live-from-microphone": "node src/core-concepts/live-from-microphone.js",

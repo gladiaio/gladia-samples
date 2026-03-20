@@ -12,6 +12,12 @@ dependencies = [
     "websockets>=15.0.1",
 ]
 
+[dependency-groups]
+dev = [
+    "pytest>=8.3.0",
+    "ruff>=0.8.0",
+]
+
 [tool.uv]
 package = true
 
@@ -28,3 +34,15 @@ live-file-without-sdk = "streaming.live_from_file_without_sdk:main"
 live-microphone = "streaming.live_from_microphone:main"
 live-microphone-asyncio = "streaming.live_from_microphone_asyncio:main"
 live-microphone-without-sdk = "streaming.live_from_microphone_without_sdk:main"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "W"]
+# Sample scripts often embed long documentation URLs in comments.
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

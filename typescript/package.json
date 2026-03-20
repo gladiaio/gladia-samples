@@ -19,6 +19,8 @@
     "typescript": "^5.9.2"
   },
   "scripts": {
+    "format:check": "prettier --check \"src/**/*.ts\"",
+    "typecheck": "tsc --noEmit",
     "core:pre-recorded": "tsx src/core-concepts/pre-recorded.ts",
     "core:live-from-file": "tsx src/core-concepts/live-from-file.ts",
     "core:live-from-microphone": "tsx src/core-concepts/live-from-microphone.ts",
