@@ -4,7 +4,7 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
-    "@gladiaio/sdk": "^0.7.0",
+    "@gladiaio/sdk": "file:../../sdk/packages/sdk-js",
     "axios": "^1.12.2",
     "dotenv": "^16.4.5",
     "form-data": "^4.0.4",

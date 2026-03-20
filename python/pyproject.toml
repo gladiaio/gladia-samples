@@ -8,11 +8,16 @@ dependencies = [
     "gladiaio-sdk>=0.5.0",
     "httpx>=0.28.1",
     "pyaudio>=0.2.14",
+    "python-dotenv>=1.2.2",
     "websockets>=15.0.1",
 ]
 
 [tool.uv]
 package = true
+
+# 0.5.x is developed in-repo; PyPI may lag. Install the sibling SDK package.
+[tool.uv.sources]
+gladiaio-sdk = { path = "../../sdk/packages/sdk-python", editable = true }
 
 [project.scripts]
 pre-recorded-file = "pre_recorded.pre_recorded_file:main"
