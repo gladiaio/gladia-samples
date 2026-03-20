@@ -19,21 +19,27 @@ async function start() {
   });
 
   session.once('started', () => {
-    console.log(`\n################ Begin session ${session.sessionId} ################\n`);
+    console.log(
+      `\n################ Begin session ${session.sessionId} ################\n`,
+    );
   });
 
   session.on('message', (message) => {
     if (message.type !== 'transcript') return;
     const u = message.data.utterance;
     if (message.data.is_final) {
-      console.log(`${u.start.toFixed(3)} --> ${u.end.toFixed(3)} | ${u.text.trim()}`);
+      console.log(
+        `${u.start.toFixed(3)} --> ${u.end.toFixed(3)} | ${u.text.trim()}`,
+      );
     }
   });
 
   session.on('error', (err) => console.error('Error:', err));
 
   session.once('ended', () => {
-    console.log(`\n################ End session ${session.sessionId} ################\n`);
+    console.log(
+      `\n################ End session ${session.sessionId} ################\n`,
+    );
   });
 
   const recorder = initFileRecorder(

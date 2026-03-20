@@ -10,7 +10,7 @@ const result = await gladiaClient.preRecorded().transcribe(audioPath, {
   diarization: true,
   diarization_config: {
     number_of_speakers: 2,
-    // max_speakers: 2, 
+    // max_speakers: 2,
     // min_speakers: 1,
   },
 });

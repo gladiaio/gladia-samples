@@ -1,8 +1,8 @@
 # !pip install gladiaio-sdk
-from gladiaio_sdk import GladiaClient
-
 #### debug
 from dotenv import load_dotenv
+from gladiaio_sdk import GladiaClient
+
 load_dotenv()
 gladia_client = GladiaClient().pre_recorded()
 ### end debug

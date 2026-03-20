@@ -1,4 +1,8 @@
 # pip install gladiaio-sdk
+import subprocess
+import threading
+from time import sleep
+
 from gladiaio_sdk import (
     GladiaClient,
     LiveV2EndedMessage,
@@ -8,10 +12,6 @@ from gladiaio_sdk import (
     LiveV2MessagesConfig,
     LiveV2WebSocketMessage,
 )
-
-from time import sleep
-import subprocess
-import threading
 
 SAMPLE_RATE = 16_000
 BIT_DEPTH = 16
@@ -46,6 +46,7 @@ def convert_to_pcm(input_path: str) -> bytes:
         raise RuntimeError(f"ffmpeg failed: {result.stderr.decode()}")
     return result.stdout
 
+
 pcm_audio = convert_to_pcm(audio_url)
 print(f"Audio: {len(pcm_audio)} bytes of raw PCM")
 
@@ -59,7 +60,6 @@ session = gladia_client.start_session(
         sample_rate=SAMPLE_RATE,
         bit_depth=BIT_DEPTH,
         channels=CHANNELS,
-
         # Check the language code supported at https://docs.gladia.io/chapters/language/supported-languages#supported-languages
         language_config=LiveV2LanguageConfig(languages=["en"], code_switching=False),
         messages_config=LiveV2MessagesConfig(

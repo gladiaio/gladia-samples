@@ -1,21 +1,25 @@
+import type {
+  LiveV2BitDepth,
+  LiveV2SampleRate,
+  LiveV2WebSocketMessage,
+} from '@gladiaio/sdk';
 import { readFileSync } from 'fs';
 import Mic from 'node-mic';
 import { resolve } from 'path';
 
-export function printMessage(message: { type: string; data?: { is_final?: boolean; utterance?: { text: string; start: number; end: number; language?: string } } }) {
-  if (message.type === 'transcript' && message.data) {
-    const is_final = message.data.is_final ?? false;
-    const { text, start, end, language } = message.data.utterance ?? { text: '', start: 0, end: 0, language: '' };
-    const line = `${formatSeconds(start)} --> ${formatSeconds(end)} | ${language} | ${text.trim()}`;
-    if (process.stdout.isTTY) {
-      process.stdout.clearLine(0);
-      process.stdout.cursorTo(0);
-    }
-    if (is_final) {
-      console.log(line);
-    } else {
-      process.stdout.write(line);
-    }
+export function printMessage(message: LiveV2WebSocketMessage) {
+  if (message.type !== 'transcript') return;
+  const { is_final, utterance } = message.data;
+  const { text, start, end, language } = utterance;
+  const line = `${formatSeconds(start)} --> ${formatSeconds(end)} | ${language ?? ''} | ${text.trim()}`;
+  if (process.stdout.isTTY) {
+    process.stdout.clearLine(0);
+    process.stdout.cursorTo(0);
+  }
+  if (is_final) {
+    console.log(line);
+  } else {
+    process.stdout.write(line);
   }
 }
 
@@ -33,10 +37,15 @@ function extractDurationFromDurationInMs(durationInMs: number) {
 }
 
 function formatSeconds(duration: number) {
-  if (duration == null || Number.isNaN(duration) || !Number.isFinite(duration)) {
+  if (
+    duration == null ||
+    Number.isNaN(duration) ||
+    !Number.isFinite(duration)
+  ) {
     return '--:--.---';
   }
-  const { hours, minutes, seconds, milliseconds } = extractDurationFromDurationInMs(duration * 1000);
+  const { hours, minutes, seconds, milliseconds } =
+    extractDurationFromDurationInMs(duration * 1000);
   const fractions = [minutes, seconds];
   if (hours) fractions.unshift(hours);
   return [
@@ -47,8 +56,8 @@ function formatSeconds(duration: number) {
 
 export function getMicrophoneAudioFormat(): {
   encoding: 'wav/pcm';
-  bit_depth: 16;
-  sample_rate: number;
+  bit_depth: LiveV2BitDepth;
+  sample_rate: LiveV2SampleRate;
   channels: number;
 } {
   return {
@@ -61,7 +70,7 @@ export function getMicrophoneAudioFormat(): {
 
 export function initMicrophoneRecorder(
   onAudioChunk: (data: Buffer) => void,
-  onEnd: () => void
+  onEnd: () => void,
 ) {
   const config = getMicrophoneAudioFormat();
   const microphone = new Mic({
@@ -115,25 +124,48 @@ function parseAudioFile(filePath: string) {
   const sample_rate = buffer.readUInt32LE(24);
   const bit_depth = buffer.readUInt16LE(34);
   let nextSubChunk = 16 + 4 + fmtSize;
-  while (textDecoder.decode(buffer.subarray(nextSubChunk, nextSubChunk + 4)) !== 'data') {
+  while (
+    textDecoder.decode(buffer.subarray(nextSubChunk, nextSubChunk + 4)) !==
+    'data'
+  ) {
     nextSubChunk += 8 + buffer.readUInt32LE(nextSubChunk + 4);
   }
-  return { encoding, sample_rate, channels, bit_depth, startDataChunk: nextSubChunk, buffer };
+  return {
+    encoding,
+    sample_rate,
+    channels,
+    bit_depth,
+    startDataChunk: nextSubChunk,
+    buffer,
+  };
 }
 
-export function getAudioFileFormat(filePath: string) {
+export function getAudioFileFormat(filePath: string): {
+  encoding: 'wav/pcm' | 'wav/alaw' | 'wav/ulaw';
+  sample_rate: LiveV2SampleRate;
+  channels: number;
+  bit_depth: LiveV2BitDepth;
+} {
   const { startDataChunk, buffer, ...format } = parseAudioFile(filePath);
-  return format;
+  return {
+    ...format,
+    sample_rate: format.sample_rate as LiveV2SampleRate,
+    bit_depth: format.bit_depth as LiveV2BitDepth,
+  };
 }
 
 export function initFileRecorder(
   onAudioChunk: (chunk: Buffer) => void,
   onEnd: () => void,
-  filePath: string
+  filePath: string,
 ) {
-  const { startDataChunk, buffer, bit_depth, sample_rate, channels } = parseAudioFile(filePath);
+  const { startDataChunk, buffer, bit_depth, sample_rate, channels } =
+    parseAudioFile(filePath);
   const dataSize = buffer.readUInt32LE(startDataChunk + 4);
-  const audioData = buffer.subarray(startDataChunk + 8, startDataChunk + 8 + dataSize);
+  const audioData = buffer.subarray(
+    startDataChunk + 8,
+    startDataChunk + 8 + dataSize,
+  );
   const chunkDuration = 0.1;
   const bytesPerSample = bit_depth / 8;
   const bytesPerSecond = sample_rate * channels * bytesPerSample;

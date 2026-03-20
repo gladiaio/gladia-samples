@@ -33,10 +33,15 @@ function extractDurationFromDurationInMs(durationInMs) {
 }
 
 function formatSeconds(duration) {
-  if (duration == null || Number.isNaN(duration) || !Number.isFinite(duration)) {
+  if (
+    duration == null ||
+    Number.isNaN(duration) ||
+    !Number.isFinite(duration)
+  ) {
     return '--:--.---';
   }
-  const { hours, minutes, seconds, milliseconds } = extractDurationFromDurationInMs(duration * 1000);
+  const { hours, minutes, seconds, milliseconds } =
+    extractDurationFromDurationInMs(duration * 1000);
   const fractions = [minutes, seconds];
   if (hours) fractions.unshift(hours);
   return [
@@ -107,10 +112,20 @@ function parseAudioFile(filePath) {
   const sample_rate = buffer.readUInt32LE(24);
   const bit_depth = buffer.readUInt16LE(34);
   let nextSubChunk = 16 + 4 + fmtSize;
-  while (textDecoder.decode(buffer.subarray(nextSubChunk, nextSubChunk + 4)) !== 'data') {
+  while (
+    textDecoder.decode(buffer.subarray(nextSubChunk, nextSubChunk + 4)) !==
+    'data'
+  ) {
     nextSubChunk += 8 + buffer.readUInt32LE(nextSubChunk + 4);
   }
-  return { encoding, sample_rate, channels, bit_depth, startDataChunk: nextSubChunk, buffer };
+  return {
+    encoding,
+    sample_rate,
+    channels,
+    bit_depth,
+    startDataChunk: nextSubChunk,
+    buffer,
+  };
 }
 
 export function getAudioFileFormat(filePath) {
@@ -119,9 +134,13 @@ export function getAudioFileFormat(filePath) {
 }
 
 export function initFileRecorder(onAudioChunk, onEnd, filePath) {
-  const { startDataChunk, buffer, bit_depth, sample_rate, channels } = parseAudioFile(filePath);
+  const { startDataChunk, buffer, bit_depth, sample_rate, channels } =
+    parseAudioFile(filePath);
   const dataSize = buffer.readUInt32LE(startDataChunk + 4);
-  const audioData = buffer.subarray(startDataChunk + 8, startDataChunk + 8 + dataSize);
+  const audioData = buffer.subarray(
+    startDataChunk + 8,
+    startDataChunk + 8 + dataSize,
+  );
   const chunkDuration = 0.1;
   const bytesPerSample = bit_depth / 8;
   const bytesPerSecond = sample_rate * channels * bytesPerSample;

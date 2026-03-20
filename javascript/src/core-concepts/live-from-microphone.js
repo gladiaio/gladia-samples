@@ -1,5 +1,9 @@
 import { GladiaClient } from '@gladiaio/sdk';
-import { getMicrophoneAudioFormat, initMicrophoneRecorder, printMessage } from '../live_helpers.js';
+import {
+  getMicrophoneAudioFormat,
+  initMicrophoneRecorder,
+  printMessage,
+} from '../live_helpers.js';
 
 const gladiaClient = new GladiaClient();
 
@@ -18,13 +22,17 @@ async function start() {
   });
 
   session.once('started', () => {
-    console.log(`\n################ Begin session ${session.sessionId} ################\n`);
+    console.log(
+      `\n################ Begin session ${session.sessionId} ################\n`,
+    );
   });
 
   session.on('message', (message) => printMessage(message));
   session.on('error', (err) => console.error('Error:', err));
   session.once('ended', () => {
-    console.log(`\n################ End session ${session.sessionId} ################\n`);
+    console.log(
+      `\n################ End session ${session.sessionId} ################\n`,
+    );
   });
 
   const recorder = initMicrophoneRecorder(

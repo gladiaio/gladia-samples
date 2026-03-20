@@ -2,15 +2,18 @@ import { GladiaClient } from '@gladiaio/sdk';
 import 'dotenv/config';
 
 const gladiaClient = new GladiaClient();
-const result = await gladiaClient.preRecorded().transcribe('../data/call-center-example.mp4', {
-  language: 'en',
-  sentiment_analysis: true,
-  diarization: true,
-  diarization_config: { number_of_speakers: 2,
-    // max_speakers: 2,
-    // min_speakers: 1,
-  },
-});
+const result = await gladiaClient
+  .preRecorded()
+  .transcribe('../data/call-center-example.mp4', {
+    language: 'en',
+    sentiment_analysis: true,
+    diarization: true,
+    diarization_config: {
+      number_of_speakers: 2,
+      // max_speakers: 2,
+      // min_speakers: 1,
+    },
+  });
 
 const sentiments = result.result?.sentiment_analysis?.results;
 if (!sentiments) {
@@ -18,8 +21,16 @@ if (!sentiments) {
   process.exit(0);
 }
 
-type SentimentRow = { speaker: string; sentiment: string; emotion: string; text: string; start: number; end: number };
-const list: SentimentRow[] = typeof sentiments === 'string' ? JSON.parse(sentiments) : sentiments;
+type SentimentRow = {
+  speaker: string;
+  sentiment: string;
+  emotion: string;
+  text: string;
+  start: number;
+  end: number;
+};
+const list: SentimentRow[] =
+  typeof sentiments === 'string' ? JSON.parse(sentiments) : sentiments;
 
 for (let i = 0; i < list.length; i++) {
   const r = list[i];

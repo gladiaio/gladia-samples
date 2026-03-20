@@ -1,5 +1,9 @@
 # pip install gladiaio-sdk
-from dataclasses_json import api
+import signal
+import threading
+from time import sleep
+
+import pyaudio
 from gladiaio_sdk import (
     GladiaClient,
     LiveV2EndedMessage,
@@ -9,11 +13,6 @@ from gladiaio_sdk import (
     LiveV2MessagesConfig,
     LiveV2WebSocketMessage,
 )
-
-import signal
-import threading
-from time import sleep
-import pyaudio
 
 SAMPLE_RATE = 16_000
 BIT_DEPTH = 16
@@ -44,6 +43,7 @@ session = gladia_client.start_session(
         ),
     )
 )
+
 
 @session.once("started")
 def on_started(response: LiveV2InitResponse):

@@ -2,12 +2,11 @@
 from gladiaio_sdk import GladiaClient
 
 # Create your account and get your API key in 30 seconds at https://docs.gladia.io/chapters/introduction/getting-started
-gladia_client = GladiaClient(api_key='GLADIA_API_KEY').prerecorded()
+gladia_client = GladiaClient(api_key="GLADIA_API_KEY").prerecorded()
 
 transcription = gladia_client.transcribe(
     audio_url="https://www.youtube.com/watch?v=hbhTVIa9arE",
-    options=
-    {
+    options={
         # check all the supported languages at https://docs.gladia.io/chapters/language/supported-languages#supported-languages
         "language_config": {
             "languages": ["en", "ko", "zh", "mn", "ru", "ja"],
@@ -17,7 +16,7 @@ transcription = gladia_client.transcribe(
         "custom_vocabulary_config": {
             "vocabulary": [
                 "aaruul",
-                { "value": "mutton" },
+                {"value": "mutton"},
                 {
                     "value": "Misha",
                     "pronunciations": ["micha, misha, mi cha, mi sha"],
@@ -33,10 +32,9 @@ transcription = gladia_client.transcribe(
         "translation_config": {
             "target_languages": ["en"],
         },
-    }
+    },
 )
-    
+
 print("Transcription: ", transcription.result.transcription.full_transcript)
 print("--------------------------------")
 print("Translation: ", transcription.result.translation.results[0].full_transcript)
-

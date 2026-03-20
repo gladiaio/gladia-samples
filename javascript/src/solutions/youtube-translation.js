@@ -1,9 +1,9 @@
 import { GladiaClient } from '@gladiaio/sdk';
 
 const gladiaClient = new GladiaClient();
-const result = await gladiaClient.preRecorded().transcribe(
-  'https://www.youtube.com/watch?v=hbhTVIa9arE',
-  {
+const result = await gladiaClient
+  .preRecorded()
+  .transcribe('https://www.youtube.com/watch?v=hbhTVIa9arE', {
     language_config: {
       languages: ['en', 'ko', 'zh', 'mn', 'ru', 'ja'],
       code_switching: true,
@@ -25,9 +25,14 @@ const result = await gladiaClient.preRecorded().transcribe(
     translation_config: {
       target_languages: ['en'],
     },
-  }
-);
+  });
 
-console.log('Transcription: ', result.result?.transcription?.full_transcript ?? '');
+console.log(
+  'Transcription: ',
+  result.result?.transcription?.full_transcript ?? '',
+);
 console.log('--------------------------------');
-console.log('Translation: ', result.result?.translation?.results?.[0]?.full_transcript ?? '');
+console.log(
+  'Translation: ',
+  result.result?.translation?.results?.[0]?.full_transcript ?? '',
+);
