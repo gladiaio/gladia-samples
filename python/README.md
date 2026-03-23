@@ -21,10 +21,9 @@ Plus a set of real-world solution scripts you can run straight away:
 
 | Solution | Description | Run |
 |----------|-------------|-----|
-| **Anonymized call** | Pre-recorded transcription with PII redaction (GDPR-style) | `python solutions/anonymized-call.py` |
-| **Call sentiment analysis** | Pre-recorded transcription with sentiment analysis and diarization | `python solutions/call-sentiment-analysis.py` |
-| **Meeting summary** | Pre-recorded transcription with summarization | `python solutions/meeting-summary.py` |
-| **YouTube translation** | Transcribe a YouTube URL with multi-language and translation options | `python solutions/youtube-translation.py` |
-
+| **Anonymized call** | Pre-recorded transcription with PII redaction (GDPR-style) | `python src/solutions/anonymized-call.py` |
+| **Call sentiment analysis** | Pre-recorded transcription with sentiment analysis and diarization | `python src/solutions/call-sentiment-analysis.py` |
+| **Meeting summary** | Pre-recorded transcription with summarization | `python src/solutions/meeting-summary.py` |
+| **YouTube translation** | Transcribe a YouTube URL with multi-language and translation options | `python src/solutions/youtube-translation.py` |
 
 From there, play around — drop in a YouTube link, a local video, your own audio. Have fun with it!

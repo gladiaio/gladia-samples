@@ -22,6 +22,12 @@ async function start() {
     console.log(
       `\n################ Begin session ${session.sessionId} ################\n`,
     );
+    const recorder = initFileRecorder(
+      (chunk) => session.sendAudio(chunk),
+      () => session.stopRecording(),
+      filePath,
+    );
+    recorder.start();
   });
 
   session.on('message', (message) => {
@@ -41,13 +47,6 @@ async function start() {
       `\n################ End session ${session.sessionId} ################\n`,
     );
   });
-
-  const recorder = initFileRecorder(
-    (chunk) => session.sendAudio(chunk),
-    () => session.stopRecording(),
-    filePath,
-  );
-  recorder.start();
 }
 
 start().catch((err) => {

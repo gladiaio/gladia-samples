@@ -22,8 +22,6 @@ dev = [
 package = true
 
 # 0.5.x is developed in-repo; PyPI may lag. Install the sibling SDK package.
-[tool.uv.sources]
-gladiaio-sdk = { path = "../../sdk/packages/sdk-python", editable = true }
 
 [project.scripts]
 pre-recorded-file = "pre_recorded.pre_recorded_file:main"

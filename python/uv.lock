@@ -79,7 +79,6 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "gladiaio-sdk", editable = "../../sdk/packages/sdk-python" },
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "pyaudio", specifier = ">=0.2.14" },
     { name = "python-dotenv", specifier = ">=1.2.2" },
@@ -95,7 +94,6 @@ dev = [
 [[package]]
 name = "gladiaio-sdk"
 version = "0.5.0"
-source = { editable = "../../sdk/packages/sdk-python" }
 dependencies = [
     { name = "dataclasses-json" },
     { name = "httpx" },
