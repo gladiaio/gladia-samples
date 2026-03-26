@@ -1,17 +1,12 @@
 # !pip install gladiaio-sdk
-#### debug
-from dotenv import load_dotenv
+
 from gladiaio_sdk import GladiaClient
 
-load_dotenv()
-gladia_client = GladiaClient().pre_recorded()
-### end debug
-
 # Create your account and get your API key in 30 seconds ! [Click here](https://docs.gladia.io/chapters/introduction/getting-started) to get started.
-# gladia_client = GladiaClient(api_key='GLADIA_API_KEY').prerecorded()
+gladia_client = GladiaClient(api_key="GLADIA_API_KEY").prerecorded()
 
 transcription = gladia_client.transcribe(
-    audio_url="../../../data/call-center-example.mp4",
+    audio_url="../data/call-center-example.mp4",
     options={
         "pii_redaction": True,
         "pii_redaction_config": {

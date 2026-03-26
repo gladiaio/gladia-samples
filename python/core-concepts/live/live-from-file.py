@@ -20,7 +20,7 @@ ENDPOINTING = 0.1
 
 # Create your account and get your API key in 30 seconds ! [Click here](https://docs.gladia.io/chapters/introduction/getting-started) to get started.
 gladia_client = GladiaClient(api_key="GLADIA_API_KEY").live()
-audio_url = "../../../data/online-meeting-example.mp4"
+audio_url = "../data/online-meeting-example.mp4"
 
 
 ## If necessary, convert the audio file to PCM:

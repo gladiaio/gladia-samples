@@ -3,7 +3,7 @@ import {
   getMicrophoneAudioFormat,
   initMicrophoneRecorder,
   printMessage,
-} from '../live_helpers.js';
+} from './live_helpers.js';
 
 const gladiaClient = new GladiaClient();
 

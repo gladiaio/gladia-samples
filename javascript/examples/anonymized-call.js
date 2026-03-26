@@ -6,7 +6,7 @@ const result = await gladiaClient
   .transcribe('../data/call-center-example.mp4', {
     pii_redaction: true,
     pii_redaction_config: {
-      entity_types: 'GDPR',
+      entity_types: ['GDPR'],
       processed_text_type: 'MASK',
     },
   });

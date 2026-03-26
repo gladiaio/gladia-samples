@@ -136,19 +136,20 @@ export function getAudioFileFormat(filePath) {
 export function initFileRecorder(onAudioChunk, onEnd, filePath) {
   const { startDataChunk, buffer, bit_depth, sample_rate, channels } =
     parseAudioFile(filePath);
-    const dataSize = buffer.readUInt32LE(startDataChunk + 4);  
-    const audioData = buffer.subarray(  
-      startDataChunk + 8,  
-      startDataChunk + 8 + dataSize,  
-    );  
-    const chunkDuration = 0.1;  
-    const bytesPerSample = bit_depth / 8;  
-    const bytesPerFrame = channels * bytesPerSample;  
-    const bytesPerSecond = sample_rate * channels * bytesPerSample;  
-    const chunkSize = Math.max(  
-      bytesPerFrame,  
-      Math.round((chunkDuration * bytesPerSecond) / bytesPerFrame) * bytesPerFrame,  
-    );  
+  const dataSize = buffer.readUInt32LE(startDataChunk + 4);
+  const audioData = buffer.subarray(
+    startDataChunk + 8,
+    startDataChunk + 8 + dataSize,
+  );
+  const chunkDuration = 0.1;
+  const bytesPerSample = bit_depth / 8;
+  const bytesPerFrame = channels * bytesPerSample;
+  const bytesPerSecond = sample_rate * channels * bytesPerSample;
+  const chunkSize = Math.max(
+    bytesPerFrame,
+    Math.round((chunkDuration * bytesPerSecond) / bytesPerFrame) *
+      bytesPerFrame,
+  );
   const recorder = {
     interval: null,
     start() {

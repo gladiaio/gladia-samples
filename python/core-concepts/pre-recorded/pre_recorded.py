@@ -5,7 +5,7 @@ from gladiaio_sdk import GladiaClient
 gladia_client = GladiaClient(api_key="GLADIA_API_KEY").prerecorded()
 
 transcription = gladia_client.transcribe(
-    audio_url="../../../data/online-meeting-example.mp4",
+    audio_url="../data/anna-and-sasha-16000.wav",
     options={
         "language_config": {
             # check all the supported languages at https://docs.gladia.io/chapters/language/supported-languages#supported-languages

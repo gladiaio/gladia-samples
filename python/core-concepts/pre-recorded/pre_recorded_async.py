@@ -10,7 +10,7 @@ async def main() -> None:
     gladia_client = GladiaClient(api_key="GLADIA_API_KEY").prerecorded_async()
 
     transcription = await gladia_client.transcribe(
-        audio_url="../../../data/anna-and-sasha-16000.wav",
+        audio_url="../data/anna-and-sasha-16000.wav",
         options={
             "language_config": {
                 # check all the supported languages at https://docs.gladia.io/chapters/language/supported-languages#supported-languages

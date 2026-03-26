@@ -6,7 +6,8 @@ const result = await gladiaClient
   .transcribe('../data/call-center-example.mp4', {
     pii_redaction: true,
     pii_redaction_config: {
-      entity_types: 'GDPR',
+      // @ts-expect-error - check all supported entity types at https://docs.gladia.io/chapters/audio-intelligence/named-entity-recognition
+      entity_types: ['GDPR'],
       processed_text_type: 'MASK',
     },
   });

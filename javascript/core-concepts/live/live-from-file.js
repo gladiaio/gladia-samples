@@ -1,5 +1,5 @@
 import { GladiaClient } from '@gladiaio/sdk';
-import { getAudioFileFormat, initFileRecorder } from '../live_helpers.js';
+import { getAudioFileFormat, initFileRecorder } from './live-helpers.js';
 
 const gladiaClient = new GladiaClient();
 const filePath = '../data/anna-and-sasha-16000.wav';

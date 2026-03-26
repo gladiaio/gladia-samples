@@ -19,7 +19,6 @@ BIT_DEPTH = 16
 CHANNELS = 1
 FRAMES_PER_BUFFER = 3200
 
-
 # Create your account and get your API key in 30 seconds ! [Click here](https://docs.gladia.io/chapters/introduction/getting-started) to get started.
 gladia_client = GladiaClient(api_key="GLADIA_API_KEY").live()
 
@@ -83,14 +82,18 @@ def stream_microphone():
     )
     try:
         while not stop_event.is_set():
-            data = stream.read(FRAMES_PER_BUFFER)
+            # Avoid raising on occasional capture overruns when the consumer is momentarily late.
+            data = stream.read(FRAMES_PER_BUFFER, exception_on_overflow=False)
             session.send_audio(data)
             sleep(0.1)
     finally:
-        stream.stop_stream()
+        if stream.is_active():
+            stream.stop_stream()
+        if not stream.is_stopped():
+            stream.stop_stream()
         stream.close()
         p.terminate()
-    session.stop_recording()
+        session.stop_recording()
 
 
 threading.Thread(target=stream_microphone, daemon=True).start()

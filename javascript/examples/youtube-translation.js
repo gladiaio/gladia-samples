@@ -16,7 +16,7 @@ const result = await gladiaClient
           value: 'Misha',
           pronunciations: ['micha, misha, mi cha, mi sha'],
           intensity: 0.4,
-          language: 'de',
+          language: 'ko',
         },
       ],
       default_intensity: 0.6,

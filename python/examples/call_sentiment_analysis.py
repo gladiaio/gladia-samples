@@ -7,7 +7,7 @@ from gladiaio_sdk import GladiaClient
 gladia_client = GladiaClient(api_key="GLADIA_API_KEY").prerecorded()
 
 transcription = gladia_client.transcribe(
-    audio_url="../../../data/call-center-example.mp4",
+    audio_url="../../data/call-center-example.mp4",
     options={
         # check all the supported languages at https://docs.gladia.io/chapters/language/supported-languages#supported-languages
         "language_config": {
