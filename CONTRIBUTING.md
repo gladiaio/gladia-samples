@@ -13,25 +13,19 @@ uv sync --group dev
 **Format** (apply fixes):
 
 ```bash
-uv run ruff format src tests
-```
-
-**Format check** (CI-style, no writes):
-
-```bash
-uv run ruff format --check src tests
+uv run ruff format
 ```
 
 **Lint:**
 
 ```bash
-uv run ruff check src tests
+uv run ruff check 
 ```
 
 You can run formatting, lint, and tests in one go:
 
 ```bash
-uv run ruff format src tests && uv run ruff check src tests && uv run pytest
+uv run ruff format && uv run ruff check 
 ```
 
 Configuration lives in `python/pyproject.toml` (`[tool.ruff]`, `[tool.pytest.ini_options]`).
@@ -54,12 +48,6 @@ npm run format
 
 ```bash
 npm run format:check
-```
-
-**Tests** (Prettier check + `node --check` on every `.js` file under `src/`):
-
-```bash
-npm test
 ```
 
 ## TypeScript (`typescript/`)
@@ -85,4 +73,4 @@ npm run format:check
 
 ---
 
-If you add a new sample file, put it under the same `src/` layout as existing examples so the glob-based checks still cover it.
+If you add a new sample file, put it under the same layout as existing samples (`core-concepts/` or `examples/` in each language folder) so the glob-based checks still cover it.
