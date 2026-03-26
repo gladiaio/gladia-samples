@@ -5,7 +5,9 @@ const gladiaClient = new GladiaClient();
 const result = await gladiaClient
   .preRecorded()
   .transcribe('../data/call-center-example.mp4', {
-    language: 'en',
+    language_config: {
+      languages: ['en'],
+    },
     sentiment_analysis: true,
     diarization: true,
     diarization_config: {
