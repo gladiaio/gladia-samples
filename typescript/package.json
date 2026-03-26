@@ -4,7 +4,7 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
-    "@gladiaio/sdk": "^0.7.0",
+    "@gladiaio/sdk": "^1.0.0",
     "axios": "^1.12.2",
     "dotenv": "^16.4.5",
     "form-data": "^4.0.4",
@@ -19,16 +19,16 @@
     "typescript": "^5.9.2"
   },
   "scripts": {
-    "format:check": "prettier --check \"src/**/*.ts\"",
+    "format:check": "prettier --check \"**/*.ts\"",
     "typecheck": "tsc --noEmit",
-    "core:pre-recorded": "tsx src/core-concepts/pre-recorded.ts",
-    "core:live-from-file": "tsx src/core-concepts/live-from-file.ts",
-    "core:live-from-microphone": "tsx src/core-concepts/live-from-microphone.ts",
-    "solution:anonymized-call": "tsx src/solutions/anonymized-call.ts",
-    "solution:call-sentiment-analysis": "tsx src/solutions/call-sentiment-analysis.ts",
-    "solution:meeting-summary": "tsx src/solutions/meeting-summary.ts",
-    "solution:youtube-translation": "tsx src/solutions/youtube-translation.ts",
-    "format": "prettier --write \"src/**/*.ts\""
+    "core:pre-recorded": "tsx core-concepts/pre-recorded/pre-recorded.ts",
+    "core:live-from-file": "tsx core-concepts/live/live-from-file.ts",
+    "core:live-from-microphone": "tsx core-concepts/live/live-from-microphone.ts",
+    "example:anonymized-call": "tsx examples/anonymized-call.ts",
+    "example:call-sentiment-analysis": "tsx examples/call-sentiment-analysis.ts",
+    "example:meeting-summary": "tsx examples/meeting-summary.ts",
+    "example:youtube-translation": "tsx examples/youtube-translation.ts",
+    "format": "prettier --write \"**/*.ts\""
   },
   "engines": {
     "node": ">=20"

@@ -4,7 +4,7 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
-    "@gladiaio/sdk": "^0.7.0",
+    "@gladiaio/sdk": "^1.0.0",
     "axios": "^1.12.2",
     "dotenv": "^16.4.5",
     "form-data": "^4.0.4",
@@ -12,15 +12,15 @@
     "ws": "^8.18.3"
   },
   "scripts": {
-    "format:check": "prettier --check \"src/**/*.js\"",
-    "core:pre-recorded": "node src/core-concepts/pre-recorded.js",
-    "core:live-from-file": "node src/core-concepts/live-from-file.js",
-    "core:live-from-microphone": "node src/core-concepts/live-from-microphone.js",
-    "solution:anonymized-call": "node src/solutions/anonymized-call.js",
-    "solution:call-sentiment-analysis": "node src/solutions/call-sentiment-analysis.js",
-    "solution:meeting-summary": "node src/solutions/meeting-summary.js",
-    "solution:youtube-translation": "node src/solutions/youtube-translation.js",
-    "format": "prettier --write \"src/**/*.js\""
+    "format:check": "prettier --check \"**/*.js\"",
+    "core:pre-recorded": "node core-concepts/pre-recorded/pre-recorded.js",
+    "core:live-from-file": "node core-concepts/live/live-from-file.js",
+    "core:live-from-microphone": "node core-concepts/live/live-from-microphone.js",
+    "example:anonymized-call": "node examples/anonymized-call.js",
+    "example:call-sentiment-analysis": "node examples/call-sentiment-analysis.js",
+    "example:meeting-summary": "node examples/meeting-summary.js",
+    "example:youtube-translation": "node examples/youtube-translation.js",
+    "format": "prettier --write \"**/*.js\""
   },
   "engines": {
     "node": ">=20"
