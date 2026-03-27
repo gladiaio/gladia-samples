@@ -125,7 +125,13 @@
         const gladiaKey = queryParams.get("token");
         if (!gladiaKey) {
           window.alert(
-            'Append your API token to query param "token": "?token=aaaa-bbbb-cccc-dddd".\nYou can get one for free at https://app.gladia.io/\nYou can add a source language with "source_language" and a target language with "target_language".\nto perform a realtime translation.\nthe url should look like subtitles.gladia.io/?token=aaaa-bbbb-cccc-dddd&source_language=french&target_language=english\nfor example to translate from french to english.'
+            'Append your API token to query param "token": "?token=aaaa-bbbb-cccc-dddd".\n' +
+            'You can get one for free at https://app.gladia.io/\n' +
+            'You can add a source language with "source_language" and a target language with "target_language".\n' +
+            'To perform a realtime translation.\n' +
+            'You can disable audio enhancement with "audio_enhancer=false" (enabled by default).\n' +
+            'The url should look like subtitles.gladia.io/?token=aaaa-bbbb-cccc-dddd&source_language=french&target_language=english\n' +
+            'For example to translate from french to english.'
           );
           return;
         }
@@ -138,7 +144,7 @@
         const endpointing = queryParams.get("endpointing") ?? "200";
         const model = queryParams.get("model") ?? "accurate";
         const vocab = queryParams.get("vocab") ?? "";
-
+        const audio_enhancer = queryParams.get("audio_enhancer") === null ? true : queryParams.get("audio_enhancer") !== "false";
 
         let transcription_hint = "";
         if (vocab !== "") {
@@ -182,7 +188,8 @@
               sample_rate: SAMPLE_RATE,
               model_type: model,
               endpointing: parseInt(endpointing, 10),
-              ...(vocab ? { transcription_hint: transcription_hint } : {})
+              ...(vocab ? { transcription_hint: transcription_hint } : {}),
+              audio_enhancer: audio_enhancer
             },
             {
               async onTranscript(transcription) {
