@@ -63,7 +63,7 @@ wheels = [
 [[package]]
 name = "gladia-python-samples"
 version = "1.0.0"
-source = { editable = "." }
+source = { virtual = "." }
 dependencies = [
     { name = "gladiaio-sdk" },
     { name = "httpx" },
