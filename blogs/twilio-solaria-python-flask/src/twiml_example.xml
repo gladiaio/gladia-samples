@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+  <Start>
+    <Stream url="wss://jl.mydomain.com/media"/>
+  </Start>
+
+  <!-- Continue your call flow - change this number to your desired destination -->
+  <Dial>+14155551234</Dial>
+</Response> 
