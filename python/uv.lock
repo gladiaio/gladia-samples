@@ -72,7 +72,7 @@ requires-dist = [
 
 [[package]]
 name = "gladiaio-sdk"
-version = "0.2.0"
+version = "1.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anyio" },
@@ -92,9 +92,9 @@ dependencies = [
     { name = "typing-inspect" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/74/ce/05b579b969b34155d11c2dbb00f32ca0e89b0b9c10960f9ca47f32556ac1/gladiaio_sdk-0.2.0.tar.gz", hash = "sha256:adb8cb805908f18721115bd7c31ada04e4a46f327e60139daff491c13b326ec1", size = 37116, upload-time = "2025-10-06T16:16:11.241Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/90/f6/0634581406f76fc15cc808cf9e1d1b293c3d2cf85b9e87f1c8441030cae4/gladiaio_sdk-1.0.0.tar.gz", hash = "sha256:4cf2fcde336811f13a3f949aa61b155fef420dedc77c9a410067075c28976a62", size = 53019, upload-time = "2026-03-26T13:21:54.335Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/6a/d9/109763ce9459714644e654a97aeeee98a76b1d6dd9130ee85308ac9e6336/gladiaio_sdk-0.2.0-py3-none-any.whl", hash = "sha256:6c3d5be39199024096d8bbbb9e156412dfa22743f74b2a54edb912cdbb6f9f98", size = 25083, upload-time = "2025-10-06T16:16:09.933Z" },
+    { url = "https://files.pythonhosted.org/packages/96/18/8a53951c004bd61e91111d28120cbea687f679789fbc0cc45da1acec850e/gladiaio_sdk-1.0.0-py3-none-any.whl", hash = "sha256:8441d543d81397bc168c8ca823e880692040f2376be2aa1ba422856c750d31be", size = 46380, upload-time = "2026-03-26T13:21:53.1Z" },
 ]
 
 [[package]]
@@ -145,14 +145,14 @@ wheels = [
 
 [[package]]
 name = "marshmallow"
-version = "3.26.1"
+version = "3.26.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "packaging" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ab/5e/5e53d26b42ab75491cda89b871dab9e97c840bf12c63ec58a1919710cd06/marshmallow-3.26.1.tar.gz", hash = "sha256:e6d8affb6cb61d39d26402096dc0aee12d5a26d490a121f118d2e81dc0719dc6", size = 221825, upload-time = "2025-02-03T15:32:25.093Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/55/79/de6c16cc902f4fc372236926b0ce2ab7845268dcc30fb2fbb7f71b418631/marshmallow-3.26.2.tar.gz", hash = "sha256:bbe2adb5a03e6e3571b573f42527c6fe926e17467833660bebd11593ab8dfd57", size = 222095, upload-time = "2025-12-22T06:53:53.309Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/34/75/51952c7b2d3873b44a0028b1bd26a25078c18f92f256608e8d1dc61b39fd/marshmallow-3.26.1-py3-none-any.whl", hash = "sha256:3350409f20a70a7e4e11a27661187b77cdcaeb20abca41c1454fe33636bea09c", size = 50878, upload-time = "2025-02-03T15:32:22.295Z" },
+    { url = "https://files.pythonhosted.org/packages/be/2f/5108cb3ee4ba6501748c4908b908e55f42a5b66245b4cfe0c99326e1ef6e/marshmallow-3.26.2-py3-none-any.whl", hash = "sha256:013fa8a3c4c276c24d26d84ce934dc964e2aa794345a0f8c7e5a7191482c8a73", size = 50964, upload-time = "2025-12-22T06:53:51.801Z" },
 ]
 
 [[package]]
