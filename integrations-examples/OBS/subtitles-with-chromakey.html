@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -54,22 +54,22 @@
 
       async function start() {
         /** @type {HTMLDivElement} */
-        const resultContainer = document.querySelector("#result"); // Move this line to the top of the start function
+        const resultContainer = document.querySelector('#result'); // Move this line to the top of the start function
 
         // Set styles
-        const font_size = parseInt(queryParams.get("font_size") || "24", 10);
+        const font_size = parseInt(queryParams.get('font_size') || '24', 10);
         const line_height = parseFloat(
-          queryParams.get("line_height") || "1.25"
+          queryParams.get('line_height') || '1.25',
         );
-        const font_name = queryParams.get("font_name") || "Arial";
-        const background_color = queryParams.get("background_color") || "#333";
-        const text_color = queryParams.get("text_color") || "#fff";
-        const max_lines = parseInt(queryParams.get("max_lines") || "3", 10);
+        const font_name = queryParams.get('font_name') || 'Arial';
+        const background_color = queryParams.get('background_color') || '#333';
+        const text_color = queryParams.get('text_color') || '#fff';
+        const max_lines = parseInt(queryParams.get('max_lines') || '3', 10);
         const scroll_speed = parseInt(
-          queryParams.get("scroll_speed") || "2000",
-          10
+          queryParams.get('scroll_speed') || '2000',
+          10,
         );
-        const alignment = queryParams.get("alignment") || "center";
+        const alignment = queryParams.get('alignment') || 'center';
 
         const lineHeight = font_size * line_height;
         const containerHeight = lineHeight * max_lines;
@@ -78,13 +78,13 @@
         resultContainer.style.height = `${containerHeight}px`;
         resultContainer.style.paddingTop = `${containerHeight}px`;
         resultContainer.style.fontFamily = font_name;
-        resultContainer.style.backgroundColor = background_color.startsWith("#")
+        resultContainer.style.backgroundColor = background_color.startsWith('#')
           ? background_color
           : `#${background_color}`;
-	document.body.style.backgroundColor = background_color.startsWith("#")
+        document.body.style.backgroundColor = background_color.startsWith('#')
           ? background_color
           : `#${background_color}`;
-        resultContainer.style.color = text_color.startsWith("#")
+        resultContainer.style.color = text_color.startsWith('#')
           ? text_color
           : `#${text_color}`;
         resultContainer.style.textAlign = alignment;
@@ -98,7 +98,7 @@
           ) {
             resultContainer.scrollTo({
               top: resultContainer.scrollTop + lineHeight,
-              behavior: "smooth",
+              behavior: 'smooth',
             });
           }
         };
@@ -122,28 +122,27 @@
           }, scroll_speed);
         };
 
-        const gladiaKey = queryParams.get("token");
+        const gladiaKey = queryParams.get('token');
         if (!gladiaKey) {
           window.alert(
-            'Append your API token to query param "token": "?token=aaaa-bbbb-cccc-dddd".\nYou can get one for free at https://app.gladia.io/\nYou can add a source language with "source_language" and a target language with "target_language".\nto perform a realtime translation.\nthe url should look like subtitles.gladia.io/?token=aaaa-bbbb-cccc-dddd&source_language=french&target_language=english\nfor example to translate from french to english.'
+            'Append your API token to query param "token": "?token=aaaa-bbbb-cccc-dddd".\nYou can get one for free at https://app.gladia.io/\nYou can add a source language with "source_language" and a target language with "target_language".\nto perform a realtime translation.\nthe url should look like subtitles.gladia.io/?token=aaaa-bbbb-cccc-dddd&source_language=french&target_language=english\nfor example to translate from french to english.',
           );
           return;
         }
 
-        const source_language = queryParams.get("source_language");
+        const source_language = queryParams.get('source_language');
 
         const target_language =
-          queryParams.get("target_language") ?? source_language;
+          queryParams.get('target_language') ?? source_language;
 
-        const endpointing = queryParams.get("endpointing") ?? "200";
-        const model = queryParams.get("model") ?? "accurate";
-        const vocab = queryParams.get("vocab") ?? "";
+        const endpointing = queryParams.get('endpointing') ?? '200';
+        const model = queryParams.get('model') ?? 'accurate';
+        const vocab = queryParams.get('vocab') ?? '';
 
-
-        let transcription_hint = "";
-        if (vocab !== "") {
-          const terms = vocab.split(",");
-          transcription_hint = "I will mention the following terms ";
+        let transcription_hint = '';
+        if (vocab !== '') {
+          const terms = vocab.split(',');
+          transcription_hint = 'I will mention the following terms ';
           for (let i = 0; i < terms.length; i++) {
             if (i === terms.length - 1) {
               transcription_hint += `and ${terms[i]}.`;
@@ -154,7 +153,6 @@
         }
 
         console.log(transcription_hint);
-
 
         /** @type {MediaStream | undefined} */
         let audioStream;
@@ -167,43 +165,43 @@
 
         try {
           socket = new WebSocketClient(
-            "wss://api.gladia.io/audio/text/audio-transcription",
+            'wss://api.gladia.io/audio/text/audio-transcription',
             {
               x_gladia_key: gladiaKey,
-              frames_format: "bytes",
+              frames_format: 'bytes',
               ...(source_language
                 ? {
-                    language_behaviour: "manual",
+                    language_behaviour: 'manual',
                     language: source_language,
                   }
                 : {
-                    language_behaviour: "automatic single language",
+                    language_behaviour: 'automatic single language',
                   }),
               sample_rate: SAMPLE_RATE,
               model_type: model,
               endpointing: parseInt(endpointing, 10),
-              ...(vocab ? { transcription_hint: transcription_hint } : {})
+              ...(vocab ? { transcription_hint: transcription_hint } : {}),
             },
             {
               async onTranscript(transcription) {
                 if (
                   !transcription.transcription ||
-                  transcription.type !== "final"
+                  transcription.type !== 'final'
                 ) {
                   return;
                 }
 
                 if (
                   [
-                    "Bye, Bye!",
+                    'Bye, Bye!',
                     "Let's see! Let's see!",
-                    "Thank you.",
-                    "Merci.",
-                    "Salut!",
-                    "Come on!",
-                    "Thank you and competence.",
+                    'Thank you.',
+                    'Merci.',
+                    'Salut!',
+                    'Come on!',
+                    'Thank you and competence.',
                     "Thanks'",
-                    "thank you for watching",
+                    'thank you for watching',
                     "Let's get going.",
                   ].includes(transcription.transcription)
                 ) {
@@ -211,19 +209,21 @@
                 }
 
                 const transcriptId = seqId++;
-                const transcriptContainer = document.createElement(alignment === "center" ? "div" : "span");
-                transcriptContainer.setAttribute("id", transcriptId);
+                const transcriptContainer = document.createElement(
+                  alignment === 'center' ? 'div' : 'span',
+                );
+                transcriptContainer.setAttribute('id', transcriptId);
                 resultContainer.appendChild(transcriptContainer);
 
                 if (source_language == target_language || !source_language) {
                   transcriptContainer.textContent = transcription.transcription;
                   updateScroll();
                 } else {
-                  const url = "https://subtitles.gladia.io/translate";
+                  const url = 'https://subtitles.gladia.io/translate';
                   const rep = await fetch(url, {
-                    method: "POST",
+                    method: 'POST',
                     headers: {
-                      "Content-Type": "application/json",
+                      'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
                       source_lang:
@@ -250,7 +250,7 @@
 
                 window.alert(message);
               },
-            }
+            },
           );
 
           // Get the input stream
@@ -260,8 +260,8 @@
 
           // Initializes the recorder
           recorder = new RecordRTC(audioStream, {
-            type: "audio",
-            mimeType: "audio/wav",
+            type: 'audio',
+            mimeType: 'audio/wav',
             recorderType: RecordRTC.StereoAudioRecorder,
             timeSlice: 100,
             async ondataavailable(blob) {
@@ -274,15 +274,15 @@
             numberOfAudioChannels: 1,
             reinject_context: true,
             model_type: model,
-            language_behaviour: "manual",
+            language_behaviour: 'manual',
             ...(source_language ? { language: source_language } : {}),
-            ...(vocab ? { transcription_hint: transcription_hint } : {})
+            ...(vocab ? { transcription_hint: transcription_hint } : {}),
           });
 
           await socket.ready();
         } catch (err) {
           window.alert(
-            `Error during the initialization: ${err?.message || err}`
+            `Error during the initialization: ${err?.message || err}`,
           );
           console.error(err);
           return;
@@ -311,7 +311,7 @@
 
         #socket = null;
 
-        #status = "initializing";
+        #status = 'initializing';
         #readyPromise = null;
 
         #pendingMessages = [];
@@ -327,10 +327,10 @@
         }
 
         ready() {
-          if (this.#status === "ready") {
+          if (this.#status === 'ready') {
             return Promise.resolve(true);
-          } else if (this.#status === "closed") {
-            return Promise.reject(new Error("closed"));
+          } else if (this.#status === 'closed') {
+            return Promise.reject(new Error('closed'));
           } else {
             if (!this.#readyPromise) {
               this.#readyPromise = deferredPromise();
@@ -340,7 +340,7 @@
         }
 
         sendMessage(message) {
-          if (this.#status === "closed") {
+          if (this.#status === 'closed') {
             return this.ready();
           }
 
@@ -357,7 +357,7 @@
                   }
                   return true;
                 } catch (err) {
-                  console.error("Error while sending a message", err);
+                  console.error('Error while sending a message', err);
                   return false;
                 }
               })
@@ -369,7 +369,7 @@
         }
 
         close() {
-          if (this.#status === "closed") return;
+          if (this.#status === 'closed') return;
 
           this.#doClose();
         }
@@ -377,9 +377,9 @@
         #init() {
           this.#clearSocket();
 
-          if (this.#status !== "initializing") {
+          if (this.#status !== 'initializing') {
             this.#readyPromise = deferredPromise();
-            this.#status = "initializing";
+            this.#status = 'initializing';
           }
 
           const startTime = Date.now();
@@ -389,32 +389,35 @@
             const reject = (err) => {
               clearTimeout(this.#currentTimeout);
               this.#clearSocket();
-              if (this.#status === "closed") return;
+              if (this.#status === 'closed') return;
 
-              this.#currentTimeout = setTimeout(() => {
-                if (this.#status === "closed") return;
+              this.#currentTimeout = setTimeout(
+                () => {
+                  if (this.#status === 'closed') return;
 
-                connect();
-              }, Math.min(20000, 500 * Math.pow(2, ++retries)));
+                  connect();
+                },
+                Math.min(20000, 500 * Math.pow(2, ++retries)),
+              );
             };
             const resolve = () => {
               clearTimeout(this.#currentTimeout);
-              if (this.#status === "closed") return;
+              if (this.#status === 'closed') return;
               if (!this.#socket) {
                 // should never happen
-                reject({ code: 4500, reason: "No socket" });
+                reject({ code: 4500, reason: 'No socket' });
                 return;
               }
 
-              console.log("Connected to WebSocket and ready to send frames");
+              console.log('Connected to WebSocket and ready to send frames');
 
               this.#socket.onopen = null;
               this.#socket.onerror = null;
               this.#socket.onmessage = null;
               this.#socket.onclose = null;
-              this.#socket.addEventListener("message", this.#onMessage);
-              this.#socket.addEventListener("close", this.#onClose);
-              this.#status = "ready";
+              this.#socket.addEventListener('message', this.#onMessage);
+              this.#socket.addEventListener('close', this.#onClose);
+              this.#status = 'ready';
               this.#readyPromise?.resolve(true);
             };
 
@@ -439,7 +442,7 @@
                 });
               }
 
-              if (data?.event === "connected") {
+              if (data?.event === 'connected') {
                 // Since we can't know exactly when the server is rdy, we wait a bit
                 this.#currentTimeout = setTimeout(() => {
                   resolve();
@@ -461,8 +464,8 @@
             this.#socket.onerror = null;
             this.#socket.onmessage = null;
             this.#socket.onclose = null;
-            this.#socket.removeEventListener("message", this.#onMessage);
-            this.#socket.removeEventListener("close", this.#onClose);
+            this.#socket.removeEventListener('message', this.#onMessage);
+            this.#socket.removeEventListener('close', this.#onClose);
             if (
               this.#socket.readyState === WebSocket.CONNECTING ||
               this.#socket.readyState === WebSocket.OPEN
@@ -470,7 +473,7 @@
               try {
                 this.#socket.close();
               } catch (err) {
-                console.error("Error closing the websocket", err);
+                console.error('Error closing the websocket', err);
               }
             }
             this.#socket = null;
@@ -484,13 +487,13 @@
           } catch (err) {
             try {
               this.#listeners.onError?.({
-                event: "error",
+                event: 'error',
                 code: 4500,
                 reason: `Cannot parse the received api-key: ${event.data}`,
                 closed: false,
               });
             } catch (error) {
-              console.error("Error caught on error callback", error);
+              console.error('Error caught on error callback', error);
             }
             return;
           }
@@ -498,41 +501,41 @@
           try {
             this.#listeners.onMessage?.(message);
           } catch (error) {
-            console.error("Error caught on message callback", error);
+            console.error('Error caught on message callback', error);
           }
 
           switch (message.event) {
-            case "transcript":
+            case 'transcript':
               try {
                 this.#listeners.onTranscript?.(message);
               } catch (error) {
-                console.error("Error caught on transcript callback", error);
+                console.error('Error caught on transcript callback', error);
               }
               break;
-            case "error":
+            case 'error':
               try {
                 this.#listeners.onError?.({
                   ...message,
                   closed: false,
                 });
               } catch (error) {
-                console.error("Error caught on error callback", error);
+                console.error('Error caught on error callback', error);
               }
               break;
             default:
-              console.log("Received an unknown message type", message);
+              console.log('Received an unknown message type', message);
           }
         };
 
         #onClose = (event) => {
           const code = event.code || 1005;
-          const reason = event.reason || "Connection closed";
+          const reason = event.reason || 'Connection closed';
           console.error(`[${code}] ${reason}. Reconnecting...`);
           this.#init();
         };
 
         #doClose(err) {
-          this.#status = "closed";
+          this.#status = 'closed';
           this.#pendingMessages = [];
           clearTimeout(this.#currentTimeout);
 
@@ -541,19 +544,19 @@
           if (err) {
             try {
               this.#listeners.onError?.({
-                event: "error",
+                event: 'error',
                 code: err.code,
                 reason: err.reason,
                 closed: true,
               });
             } catch (error) {
-              console.error("Error caught on error callback", error);
+              console.error('Error caught on error callback', error);
             }
           }
 
           if (this.#readyPromise) {
             this.#readyPromise.reject(
-              new Error(err ? `[${err.code}] ${err.reason}` : "Closed by user")
+              new Error(err ? `[${err.code}] ${err.reason}` : 'Closed by user'),
             );
           }
         }

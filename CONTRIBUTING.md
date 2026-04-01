@@ -19,13 +19,13 @@ uv run ruff format
 **Lint:**
 
 ```bash
-uv run ruff check 
+uv run ruff check
 ```
 
 You can run formatting, lint, and tests in one go:
 
 ```bash
-uv run ruff format && uv run ruff check 
+uv run ruff format && uv run ruff check
 ```
 
 Configuration lives in `python/pyproject.toml` (`[tool.ruff]`, `[tool.pytest.ini_options]`).
@@ -69,7 +69,6 @@ npm run format
 ```bash
 npm run format:check
 ```
-
 
 ---
 
