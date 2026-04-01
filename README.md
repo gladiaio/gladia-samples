@@ -1,21 +1,42 @@
-# Gladia Sample Repository
+# Gladia sample repository
 
-This repository contains Gladia API samples in several languages. Each language includes:
+Sample code for the [Gladia API](https://docs.gladia.io).
 
-- **Core concepts** — [Pre-recorded](https://docs.gladia.io/api-reference/pre-recorded-flow) transcription (audio/video file) and [Live](https://docs.gladia.io/api-reference/live-flow) transcription (from file or microphone).
-- **Solutions** — End-to-end examples (e.g. meeting summary, sentiment analysis, PII redaction, YouTube translation).
+## Layout inside each language folder
 
-Full documentation: [docs.gladia.io](https://docs.gladia.io).
+For **`python/`**, **`javascript/`**, and **`typescript/`**, you will find this tree structure:
 
-## Available samples
+```text
+language/                          <-- python | javascript | typescript
+├── core-concepts/                 <-- basic code samples
+│   ├── pre-recorded/              <-- pre-recorded STT (sync / async)
+│   └── live/                      <-- live STT (from file and from microphone)
+├── examples/                      <-- applied use cases
+│   ├── anonymized-call
+│   ├── call-sentiment-analysis
+│   ├── meeting-summary
+│   └── youtube-translation
+└── README.md                      <-- how to run samples in that language
+```
 
-|                  | Python | TypeScript | JavaScript | Browser   | PHP  |
-| :--------------- | :----: | :--------: | :--------: | :-------: | :--: |
-| **Pre-recorded** |   ✅   |     ✅     |     ✅     |     ✅    |  ✅  |
-| **Live**         |   ✅   |     ✅     |     ✅     |     ✅    |  ✅  |
-| **README**       |   [Link](python/README.md)   | [Link](typescript/README.md) | [Link](javascript/README.md) | [Link](javascript-browser/README.md) | [Link](php/README.md) |
+## Language samples
 
-*(Python uses the same structure; see the `python/` folder.)*
+|                  |                Python                |                  TypeScript                  |                  JavaScript                  |
+| :--------------- | :----------------------------------: | :------------------------------------------: | :------------------------------------------: |
+| **Pre-recorded** |                  ✅                  |                      ✅                      |                      ✅                      |
+| **Live**         |                  ✅                  |                      ✅                      |                      ✅                      |
+| **README**       | [python/README.md](python/README.md) | [typescript/README.md](typescript/README.md) | [javascript/README.md](javascript/README.md) |
+
+## Integration examples
+
+| Integration     | README                                                                                         |
+| :-------------- | :--------------------------------------------------------------------------------------------- |
+| Discord         | [integrations-examples/discord/README.md](integrations-examples/discord/README.md)             |
+| Google Meet bot | [integrations-examples/gmeet-bot/README.md](integrations-examples/gmeet-bot/README.md)         |
+| LiveKit agent   | [integrations-examples/livekit-agent/README.md](integrations-examples/livekit-agent/README.md) |
+| OBS             | [integrations-examples/OBS/README.md](integrations-examples/OBS/README.md)                     |
+| Pipecat bot     | [integrations-examples/pipecat-bot/README.md](integrations-examples/pipecat-bot/README.md)     |
+| Twilio          | [integrations-examples/twilio/README.md](integrations-examples/twilio/README.md)               |
 
 ## Contributing
 
@@ -24,13 +45,3 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for formatting and how to run checks for 
 ## Something missing?
 
 You can [contact us](https://gladiaio.typeform.com/support?typeform-source=github.com/gladiaio/gladia-samples) or open an issue in this repository.
-
-## Git LFS
-
-To retrieve sample data files:
-
-```bash
-brew install git-lfs
-git lfs install
-git lfs pull
-```

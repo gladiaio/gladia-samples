@@ -2,9 +2,7 @@
 
 Welcome to the Gladia samples for TypeScript developers!
 
-First, grab your API key at [docs.gladia.io](https://docs.gladia.io/chapters/introduction/getting-started) and you're good to go.
-
-Set `GLADIA_API_KEY` in your environment, or create a `.env` file in this folder (samples load it via [dotenv](https://github.com/motdotla/dotenv)).
+First, grab your API key at [docs.gladia.io](https://docs.gladia.io/chapters/introduction/getting-started), set `GLADIA_API_KEY` in your environment and you're good to go!
 
 ## Quickstart
 
@@ -19,19 +17,19 @@ This folder covers pre-recorded transcription, live from file, and live from mic
 
 **Core concepts**
 
-| | Run |
-|---|-----|
-| Pre-recorded (local file) | `npm run core:pre-recorded` |
-| Live from file | `npm run core:live-from-file` |
-| Live from microphone | `npm run core:live-from-microphone` |
+|                           | Run                                 |
+| ------------------------- | ----------------------------------- |
+| Pre-recorded (local file) | `npm run core:pre-recorded`         |
+| Live from file            | `npm run core:live-from-file`       |
+| Live from microphone      | `npm run core:live-from-microphone` |
 
 **Examples** (end-to-end scripts):
 
-| Example | Description | Run |
-|---------|-------------|-----|
-| **Anonymized call** | Pre-recorded transcription with PII redaction (GDPR-style) | `npm run example:anonymized-call` |
-| **Call sentiment analysis** | Pre-recorded transcription with sentiment analysis and diarization | `npm run example:call-sentiment-analysis` |
-| **Meeting summary** | Pre-recorded transcription with summarization | `npm run example:meeting-summary` |
-| **YouTube translation** | Transcribe a YouTube URL with multi-language and translation options | `npm run example:youtube-translation` |
+| Example                     | Description                                                          | Run                                       |
+| --------------------------- | -------------------------------------------------------------------- | ----------------------------------------- |
+| **Anonymized call**         | Pre-recorded transcription with PII redaction (GDPR-style)           | `npm run example:anonymized-call`         |
+| **Call sentiment analysis** | Pre-recorded transcription with sentiment analysis and diarization   | `npm run example:call-sentiment-analysis` |
+| **Meeting summary**         | Pre-recorded transcription with summarization                        | `npm run example:meeting-summary`         |
+| **YouTube translation**     | Transcribe a YouTube URL with multi-language and translation options | `npm run example:youtube-translation`     |
 
 From there, play around — drop in a YouTube link, a local video, your own audio. Have fun with it!
