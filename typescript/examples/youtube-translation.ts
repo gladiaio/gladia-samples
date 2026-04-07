@@ -14,7 +14,7 @@ const result = await gladiaClient
         { value: 'mutton' },
         {
           value: 'Misha',
-          pronunciations: ['micha, misha, mi cha, mi sha'],
+          pronunciations: ['micha', 'misha', 'mi cha', 'mi sha'],
           intensity: 0.4,
           language: 'de',
         },
