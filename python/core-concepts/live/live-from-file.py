@@ -86,7 +86,10 @@ def on_message(message: LiveV2WebSocketMessage):
 
 @session.on("error")
 def on_error(error: Exception):
-    print(f"Error: {error}")
+    try:
+        print(f"Error: {error}")
+    finally:
+        ended_event.set()
 
 
 @session.once("ended")
