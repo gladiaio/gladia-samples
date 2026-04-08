@@ -6,6 +6,12 @@ on:
   pull_request:
     branches: [main, master]
 
+# Least-privilege GITHUB_TOKEN (public repo; CI only needs read + npm cache)
+permissions:
+  contents: read
+  actions: read
+  actions: write
+
 concurrency:
   group: validate-samples-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
