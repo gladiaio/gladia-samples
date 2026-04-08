@@ -1,59 +1,35 @@
-# JavaScript
+# Gladia JavaScript Samples
 
-First, install all the required packages by running:
+Welcome to the Gladia samples for JavaScript developers!
+
+First, grab your API key at [docs.gladia.io](https://docs.gladia.io/chapters/introduction/getting-started) set the `GLADIA_API_KEY` in your environment and you're good to go.
+
+## Quickstart
+
+Two commands and you're running:
 
 ```bash
 npm install
+npm run core:pre-recorded
 ```
 
-## Pre-recorded
+This folder covers pre-recorded transcription, live from file, and live from microphone.
 
-Documentation can be found [here](https://docs.gladia.io/api-reference/pre-recorded-flow)
+**Core concepts**
 
-### run
+|                           | Run                                 |
+| ------------------------- | ----------------------------------- |
+| Pre-recorded (local file) | `npm run core:pre-recorded`         |
+| Live from file            | `npm run core:live-from-file`       |
+| Live from microphone      | `npm run core:live-from-microphone` |
 
-You can run an example with a pre-recorded file on disk:
+**Examples** (end-to-end scripts):
 
-```bash
-GLADIA_API_KEY=<your_gladia_key> npm run pre-recorded-file
-```
+| Example                     | Description                                                          | Run                                       |
+| --------------------------- | -------------------------------------------------------------------- | ----------------------------------------- |
+| **Anonymized call**         | Pre-recorded transcription with PII redaction (GDPR-style)           | `npm run example:anonymized-call`         |
+| **Call sentiment analysis** | Pre-recorded transcription with sentiment analysis and diarization   | `npm run example:call-sentiment-analysis` |
+| **Meeting summary**         | Pre-recorded transcription with summarization                        | `npm run example:meeting-summary`         |
+| **YouTube translation**     | Transcribe a YouTube URL with multi-language and translation options | `npm run example:youtube-translation`     |
 
-To run with a url pointing to an audio or video file:
-
-```bash
-GLADIA_API_KEY=<your_gladia_key> npm run pre-recorded-url
-```
-
-## Live
-
-Documentation can be found [here](https://docs.gladia.io/api-reference/live-flow)
-
-### run
-
-To run a live example simulating a session with an audio file, you have to run:
-
-```bash
-GLADIA_API_KEY=<your_gladia_key> npm run live-file
-```
-
-Or from microphone (it requires [arecord](https://www.thegeekdiary.com/arecord-command-not-found/) on Linux and [SoX](https://formulae.brew.sh/formula/sox) on MacOS):
-
-```bash
-GLADIA_API_KEY=<your_gladia_key> npm run live-microphone
-```
-
-Note: You can get your Gladia key from https://app.gladia.io.
-
-When running the file example you should get an output like this one:
-
-```bash
-00:01.124 --> 00:04.588 | Hola Sasha, ¿qué tal? Hace mucho tiempo que no nos vemos. ¿Cómo vas?
-00:05.128 --> 00:10.707 | Hola, ¿qué tal? Yo estoy muy bien. ¿Qué tal estás tú? Yo muy bien. ¿Qué has hecho ayer?
-00:11.788 --> 00:18.836 | Pues ayer estuve trabajando todo el día, desde que tengo el trabajo nuevo no paro, tengo muchas cosas que hacer y a veces pienso que no me da tiempo.
-00:19.599 --> 00:28.635 | ¿Qué lío? ¿Y qué estás haciendo exactamente? Trabajo... de periodista en una compañía española para el diario AS.
-00:29.240 --> 00:38.596 | Как долго ты работаешь на этой работе? Ну, устроилась недавно, но работа очень нравится, я чувствую прекрасно, делаю то, что мне нравится.
-00:39.700 --> 00:52.164 | И ты не скучаешь по России? Нет. Мне очень нравится. Здесь жить, и мне очень нравится климат, люди, всё прекрасно, место прекрасное.
-00:53.924 --> 00:57.644 | And where do you see yourself in the future, like five years from now?
-00:58.120 --> 01:06.384 | Well, I would like to start off my new company and start building a new startup that I have in mind, but that's still some ideas that I have.
-01:08.588 --> 01:22.691 | Et finalement, il faut qu'on parle en français. Donc je sais que tu ne parles pas français mais tu peux quand même dire un mot pour finir la conversation. Oui merci, oui.
-```
+From there, play around — drop in a YouTube link, a local video, your own audio. Have fun with it!

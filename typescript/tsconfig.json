@@ -14,6 +14,13 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src"],
+  "include": [
+    "src",
+    "core-concepts",
+    "env.ts",
+    "interface.d.ts",
+    "core-concepts/live_helpers.ts",
+    "examples"
+  ],
   "exclude": ["node_modules", "lib"]
 }

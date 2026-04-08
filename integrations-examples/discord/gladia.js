@@ -1,29 +1,29 @@
-import { exit } from "process";
-import WebSocket from "ws";
+import { exit } from 'process';
+import WebSocket from 'ws';
 
-const ERROR_KEY = "error";
-const TYPE_KEY = "type";
-const TRANSCRIPTION_KEY = "transcription";
-const LANGUAGE_KEY = "language";
+const ERROR_KEY = 'error';
+const TYPE_KEY = 'type';
+const TRANSCRIPTION_KEY = 'transcription';
+const LANGUAGE_KEY = 'language';
 const SAMPLE_RATE = 48_000;
 
 // Your Gladia Token
 const gladiaKey = process.argv[2];
 if (!gladiaKey) {
   console.error(
-    "You must provide a Gladia key. Go to https://app.gladia.io to get yours."
+    'You must provide a Gladia key. Go to https://app.gladia.io to get yours.',
   );
   exit(1);
 } else {
   console.log(`Using the Gladia key: ${gladiaKey}`);
 }
 
-const gladiaUrl = "wss://api.gladia.io/audio/text/audio-transcription";
+const gladiaUrl = 'wss://api.gladia.io/audio/text/audio-transcription';
 
 export function initGladiaConnection(userName) {
   const socket = new WebSocket(gladiaUrl);
 
-  socket.on("message", (event) => {
+  socket.on('message', (event) => {
     if (event) {
       const utterance = JSON.parse(event.toString());
       if (Object.keys(utterance).length !== 0) {
@@ -33,27 +33,27 @@ export function initGladiaConnection(userName) {
         } else {
           if (utterance && utterance[TRANSCRIPTION_KEY])
             console.log(
-              `${userName} [${utterance[TYPE_KEY]}] (${utterance[LANGUAGE_KEY]}): ${utterance[TRANSCRIPTION_KEY]}`
+              `${userName} [${utterance[TYPE_KEY]}] (${utterance[LANGUAGE_KEY]}): ${utterance[TRANSCRIPTION_KEY]}`,
             );
         }
       }
     } else {
-      console.log("Empty ...");
+      console.log('Empty ...');
     }
   });
 
-  socket.on("error", (error) => {
+  socket.on('error', (error) => {
     console.log(error.message);
   });
 
-  socket.on("close", () => {
-    console.log("Connection closed.");
+  socket.on('close', () => {
+    console.log('Connection closed.');
   });
 
-  socket.on("open", async () => {
+  socket.on('open', async () => {
     const configuration = {
       x_gladia_key: gladiaKey,
-      language_behaviour: "automatic single language",
+      language_behaviour: 'automatic single language',
       sample_rate: SAMPLE_RATE,
       // "model_type":"accurate" <- Slower but more accurate model, useful if you need precise addresses for example.
     };
@@ -64,11 +64,11 @@ export function initGladiaConnection(userName) {
 }
 
 export function sendDataToGladia(chunkPCM, socket) {
-  const base64 = chunkPCM.toString("base64");
+  const base64 = chunkPCM.toString('base64');
 
   if (socket.readyState === WebSocket.OPEN) {
     socket.send(JSON.stringify({ frames: base64 }));
   } else {
-    console.log("WebSocket ready state is not [ OPEN ]");
+    console.log('WebSocket ready state is not [ OPEN ]');
   }
 }

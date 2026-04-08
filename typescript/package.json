@@ -2,9 +2,11 @@
   "name": "gladia-samples-typescript",
   "version": "1.0.0",
   "license": "MIT",
+  "type": "module",
   "dependencies": {
-    "@gladiaio/sdk": "^0.5.2",
-    "axios": "^1.13.5",
+    "@gladiaio/sdk": "^1.0.0",
+    "axios": "^1.12.2",
+    "dotenv": "^16.4.5",
     "form-data": "^4.0.4",
     "node-mic": "^1.0.1",
     "ws": "^8.18.3"
@@ -17,14 +19,16 @@
     "typescript": "^5.9.2"
   },
   "scripts": {
-    "live-file": "tsx src/live/live-from-file.ts",
-    "live-microphone": "tsx src/live/live-from-microphone.ts",
-    "live-file-without-sdk": "tsx src/live/live-from-file-without-sdk.ts",
-    "live-microphone-without-sdk": "tsx src/live/live-from-microphone-without-sdk.ts",
-    "pre-recorded-file": "tsx src/pre-recorded/pre-recorded-file.ts",
-    "pre-recorded-url": "tsx src/pre-recorded/pre-recorded-url.ts",
-    "format": "prettier --write \"src/**/*.ts\"",
-    "to-js": "tsc && sed 's/# TypeScript/# JavaScript/' ./README.md > ../javascript/README.md && (cd ../javascript && npm i && npm run format)"
+    "format:check": "prettier --check \"**/*.ts\"",
+    "typecheck": "tsc --noEmit",
+    "core:pre-recorded": "tsx core-concepts/pre-recorded/pre-recorded.ts",
+    "core:live-from-file": "tsx core-concepts/live/live-from-file.ts",
+    "core:live-from-microphone": "tsx core-concepts/live/live-from-microphone.ts",
+    "example:anonymized-call": "tsx examples/anonymized-call.ts",
+    "example:call-sentiment-analysis": "tsx examples/call-sentiment-analysis.ts",
+    "example:meeting-summary": "tsx examples/meeting-summary.ts",
+    "example:youtube-translation": "tsx examples/youtube-translation.ts",
+    "format": "prettier --write \"**/*.ts\""
   },
   "engines": {
     "node": ">=20"
