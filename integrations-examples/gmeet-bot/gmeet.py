@@ -169,7 +169,7 @@ async def join_meet():
             "/html/body/div/div[3]/div[2]/div/div/div/div/div[2]/div/div[1]/button",
         ).click()
         sleep(2)
-    except:
+    except Exception:
         print("No popup")
 
     # disable microphone
@@ -191,7 +191,7 @@ async def join_meet():
             f.write(driver.page_source)
 
         missing_mic = True
-    except:
+    except Exception:
         pass
 
     try:
@@ -204,7 +204,7 @@ async def join_meet():
         # take screenshot
         driver.save_screenshot("screenshots/allow_microphone.png")
         print("Done save allow microphone")
-    except:
+    except Exception:
         print("No Allow Microphone popup")
 
     # if not missing_mic:
@@ -214,7 +214,7 @@ async def join_meet():
             By.XPATH,
             '//*[@id="yDmH0d"]/c-wiz/div/div/div[14]/div[3]/div/div[2]/div[4]/div/div/div[1]/div[1]/div/div[6]/div[1]/div/div',
         ).click()
-    except:
+    except Exception:
         print("No microphone to disable")
 
     sleep(2)
@@ -255,7 +255,7 @@ async def join_meet():
             '//*[@id="yDmH0d"]/c-wiz/div/div/div[14]/div[3]/div/div[2]/div[4]/div/div/div[2]/div[1]/div[2]/div[1]/div[1]/button/span',
         ).click()
         sleep(5)
-    except:
+    except Exception:
         print("authentification already done")
         sleep(5)
         # take screenshot
@@ -290,7 +290,7 @@ async def join_meet():
 
             driver.save_screenshot("screenshots/remove_popup.png")
             print("Done save popup in meeting")
-        except:
+        except Exception:
             print("No popup in meeting")
 
         print("Try to click expand options")
@@ -302,7 +302,7 @@ async def join_meet():
                     element.click()
                     expand_options = True
                     print("Expand options clicked")
-                except:
+                except Exception:
                     print("Not able to click expand options")
 
         driver.save_screenshot("screenshots/expand_options.png")

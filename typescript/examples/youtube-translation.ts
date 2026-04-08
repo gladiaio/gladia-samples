@@ -31,7 +31,6 @@ const result = await gladiaClient
     },
   });
 
-
 console.log(
   'Transcription: ',
   result.result?.transcription?.full_transcript ?? '',
