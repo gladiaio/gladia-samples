@@ -1,0 +1,75 @@
+name: Validate samples
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+# Least-privilege GITHUB_TOKEN (public repo; CI only needs read + npm cache)
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: validate-samples-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  layout:
+    name: Repository layout
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify folder structure
+        run: bash scripts/validate-sample-layout.sh
+
+  python:
+    name: Python (ruff)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install PortAudio headers (PyAudio on Linux)
+        run: sudo apt-get update && sudo apt-get install -y portaudio19-dev
+      - uses: astral-sh/setup-uv@v5
+        with:
+          version: "latest"
+      - name: Sync and lint
+        working-directory: python
+        run: |
+          uv sync --group dev
+          uv run ruff format --check
+          uv run ruff check
+
+  javascript:
+    name: JavaScript (prettier)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: javascript/package-lock.json
+      - name: Format check
+        working-directory: javascript
+        run: |
+          npm ci
+          npm run format:check
+
+  typescript:
+    name: TypeScript (prettier + tsc)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: typescript/package-lock.json
+      - name: Format and typecheck
+        working-directory: typescript
+        run: |
+          npm ci
+          npm run format:check
+          npm run typecheck
