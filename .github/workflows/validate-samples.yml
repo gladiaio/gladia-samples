@@ -10,7 +10,6 @@ on:
 permissions:
   contents: read
   actions: read
-  actions: write
 
 concurrency:
   group: validate-samples-${{ github.workflow }}-${{ github.ref }}
