@@ -8,10 +8,24 @@
 - On the left panel Develop > United States (US1) > Phone Numbers > Manage > Active numbers > Click on the phone number you just created
 - In 'Configure' panel, 'Voice Configuration' section, 'A call comes in' field, choose 'Webhook' with URL = 'http://[your-id-address]:[your-app-port-number]' and HTTP = 'HTTP POST'
 
-### Configure your server and install depandancies
+### Set up ngrok
 
-- in .env file, add `GLADIA_API_KEY` var with your api key obtained from gladia website (https://app.gladia.io/auth/signin) and `PORT` var, the port you used to configure your phone number in above section (default is 8080)
-- install dependencies:
+The app uses [ngrok](https://ngrok.com/) to expose your local server over a secure tunnel so Twilio can reach it.
+
+- Create a free account at https://ngrok.com/
+- Copy your **Authtoken** from the [ngrok dashboard](https://dashboard.ngrok.com/get-started/your-authtoken)
+- Claim a free static domain from the [ngrok Domains page](https://dashboard.ngrok.com/domains) (e.g. `your-name.ngrok-free.app`)
+
+Both values go in your `.env` file (see next section).
+
+### Configure your server and install dependencies
+
+- Copy `.env.example` to `.env` and fill in the following variables:
+  - `GLADIA_API_KEY` – your API key from the [Gladia dashboard](https://app.gladia.io/signin)
+  - `NGROK_AUTHTOKEN` – your ngrok authtoken
+  - `NGROK_DOMAIN` – your ngrok static domain (e.g. `your-name.ngrok-free.app`)
+  - `PORT` – the port your server listens on (default `8080`)
+- Install dependencies:
 
 ```bash
 npm i
@@ -34,4 +48,4 @@ The transcription should appear in the server logs.
 
 ## Under the hood
 
-To make it works, Twilio needs a secure websocket endpoint. This wss url is obtained using Ngrok. This have to be removed in order to be used in production.
+Twilio requires a secure WebSocket endpoint to stream call audio. The app uses the official ngrok Node.js SDK (`@ngrok/ngrok`) to create an HTTPS tunnel at startup, which is then converted to a `wss://` URL for the Twilio stream. In production you would replace ngrok with your own publicly reachable endpoint.
