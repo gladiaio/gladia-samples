@@ -9,11 +9,11 @@
   "author": "Gladia",
   "license": "MIT",
   "dependencies": {
+    "@ngrok/ngrok": "^1.7.0",
     "body-parser": "^2.2.1",
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
     "express": "^5.2.0",
-    "@ngrok/ngrok": "^1.4.1",
     "twilio": "^6.0.0",
     "ws": "^8.18.3"
   }
