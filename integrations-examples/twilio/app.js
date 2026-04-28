@@ -4,7 +4,7 @@ const twilio = require('twilio');
 const WebSocket = require('ws');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const ngrok = require('ngrok');
+const ngrok = require('@ngrok/ngrok');
 const app = express();
 const http = require('http');
 const server = http.createServer(app);
@@ -15,6 +15,8 @@ if (!gladiaApiKey) {
     'Required variable GLADIA_API_KEY is not defined in the .env file.',
   );
 }
+
+const ngrokDomain = process.env.NGROK_DOMAIN;
 
 const port = process.env.PORT || 8080;
 
@@ -71,7 +73,12 @@ app.post('/', async (req, res) => {
 
   res.set('Content-Type', 'text/xml');
   const voiceResponse = new twilio.twiml.VoiceResponse();
-  const secureWsUrl = (await ngrok.connect(port)).replace('https', 'wss');
+  const listener = await ngrok.forward({
+    addr: port,
+    authtoken_from_env: true,
+    domain: ngrokDomain,
+  });
+  const secureWsUrl = listener.url().replace('https', 'wss');
   voiceResponse.start().stream({
     url: secureWsUrl,
   });
