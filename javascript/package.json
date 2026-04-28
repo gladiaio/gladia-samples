@@ -4,8 +4,8 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
-    "@gladiaio/sdk": "^1.0.0",
-    "axios": "^1.12.2",
+    "@gladiaio/sdk": "^1.0.4",
+    "axios": "^1.15.2",
     "dotenv": "^16.4.5",
     "form-data": "^4.0.4",
     "node-mic": "^1.0.1",
