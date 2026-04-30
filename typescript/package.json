@@ -23,6 +23,7 @@
     "typecheck": "tsc --noEmit",
     "core:pre-recorded": "tsx core-concepts/pre-recorded/pre-recorded.ts",
     "core:live-from-file": "tsx core-concepts/live/live-from-file.ts",
+    "core:live-file-stop-resume-test": "tsx src/live/live-from-file-stop-and-resume.ts",
     "core:live-from-microphone": "tsx core-concepts/live/live-from-microphone.ts",
     "example:anonymized-call": "tsx examples/anonymized-call.ts",
     "example:call-sentiment-analysis": "tsx examples/call-sentiment-analysis.ts",

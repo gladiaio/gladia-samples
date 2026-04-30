@@ -143,4 +143,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-
+data
+!data/anna-and-sasha-16000.wav
+!data/call-center-example.mp4
+!data/online-meeting-example.mp4
+typescript/results
