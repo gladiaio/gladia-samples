@@ -1,0 +1,77 @@
+version: 2
+updates:
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      github-actions:
+        patterns: ["*"]
+
+  # Python — uv workspaces
+  - package-ecosystem: "uv"
+    directory: "/python"
+    schedule:
+      interval: "weekly"
+    groups:
+      python-deps:
+        patterns: ["*"]
+
+  - package-ecosystem: "uv"
+    directory: "/integrations-examples/livekit-agent"
+    schedule:
+      interval: "weekly"
+    groups:
+      livekit-agent-deps:
+        patterns: ["*"]
+
+  - package-ecosystem: "uv"
+    directory: "/integrations-examples/pipecat-bot"
+    schedule:
+      interval: "weekly"
+    groups:
+      pipecat-bot-deps:
+        patterns: ["*"]
+
+  # Python — legacy pip (gmeet-bot uses requirements.txt without a lockfile)
+  - package-ecosystem: "pip"
+    directory: "/integrations-examples/gmeet-bot"
+    schedule:
+      interval: "weekly"
+    groups:
+      gmeet-bot-deps:
+        patterns: ["*"]
+
+  # JavaScript / TypeScript — npm
+  - package-ecosystem: "npm"
+    directory: "/javascript"
+    schedule:
+      interval: "weekly"
+    groups:
+      javascript-deps:
+        patterns: ["*"]
+
+  - package-ecosystem: "npm"
+    directory: "/typescript"
+    schedule:
+      interval: "weekly"
+    groups:
+      typescript-deps:
+        patterns: ["*"]
+
+  - package-ecosystem: "npm"
+    directory: "/integrations-examples/discord"
+    schedule:
+      interval: "weekly"
+    groups:
+      discord-deps:
+        patterns: ["*"]
+
+  - package-ecosystem: "npm"
+    directory: "/integrations-examples/twilio"
+    schedule:
+      interval: "weekly"
+    groups:
+      twilio-deps:
+        patterns: ["*"]
