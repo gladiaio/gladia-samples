@@ -10,11 +10,11 @@
   "license": "MIT",
   "dependencies": {
     "@ngrok/ngrok": "^1.7.0",
-    "body-parser": "^2.2.1",
-    "cors": "^2.8.5",
-    "dotenv": "^17.2.2",
+    "body-parser": "^2.2.2",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
     "express": "^5.2.0",
-    "twilio": "^6.0.0",
-    "ws": "^8.18.3"
+    "twilio": "^6.0.2",
+    "ws": "^8.20.1"
   }
 }
