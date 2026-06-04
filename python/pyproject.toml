@@ -5,7 +5,7 @@ description = "Samples for Gladia API"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "gladiaio-sdk>=1.0.0",
+    "gladiaio-sdk>=1.0.2",
     "httpx>=0.28.1",
     "pyaudio>=0.2.14",
     "python-dotenv>=1.2.2",
@@ -15,7 +15,7 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pytest>=9.0.3",
-    "ruff>=0.8.0",
+    "ruff>=0.15.15",
 ]
 
 [tool.gladia.scripts]
