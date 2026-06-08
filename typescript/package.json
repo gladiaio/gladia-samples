@@ -5,7 +5,7 @@
   "type": "module",
   "dependencies": {
     "@gladiaio/sdk": "^1.0.4",
-    "axios": "^1.16.0",
+    "axios": "^1.17.0",
     "dotenv": "^16.4.5",
     "form-data": "^4.0.4",
     "node-mic": "^1.0.1",
