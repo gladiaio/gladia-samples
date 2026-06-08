@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ncco>
+  <connect>
+    <endpoint>
+      <type>websocket</type>
+      <uri>wss://my.domain.com/media</uri>
+      <content-type>audio/l16;rate=8000</content-type>
+    </endpoint>
+  </connect>
+  <text>Your call is being transcribed in real-time with Gladia</text>
+</ncco>

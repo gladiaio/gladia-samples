@@ -1,0 +1,7 @@
+Before running the application, create a .env file in the same directory with the following contents:
+
+GLADIA_API_KEY=your_gladia_api_key_here
+# Optional: Set a custom port (default is 5000)
+# HTTP_PORT=5001
+
+You need to replace 'your_gladia_api_key_here' with your actual Gladia API key from https://app.gladia.io/ 
