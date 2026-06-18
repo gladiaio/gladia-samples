@@ -95,29 +95,18 @@ dev = [
 
 [[package]]
 name = "gladiaio-sdk"
-version = "1.0.2"
+version = "1.0.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "anyio" },
-    { name = "certifi" },
     { name = "dataclasses-json" },
-    { name = "exceptiongroup", marker = "python_full_version < '3.11'" },
-    { name = "h11" },
-    { name = "httpcore" },
     { name = "httpx" },
-    { name = "idna" },
     { name = "marshmallow" },
-    { name = "mypy-extensions" },
-    { name = "packaging" },
     { name = "pyee" },
-    { name = "sniffio" },
-    { name = "typing-extensions" },
-    { name = "typing-inspect" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/9f/23/16cf18f6a25d2c72358e29ccc33cc6741a821a0a01ae0fd632d072109d81/gladiaio_sdk-1.0.2.tar.gz", hash = "sha256:864400881052d0bb40b420d603ae2abe42ae58259d42232d5277f75dc2768143", size = 54024, upload-time = "2026-04-16T11:42:34.48Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/3c/56/2612619640148611617591364728dcbe9c20659667ede344a45b3b1f05fb/gladiaio_sdk-1.0.3.tar.gz", hash = "sha256:07486d038587759ad56ad7009e5fcae039847df0a335d5a0951a96c35b61bb68", size = 55103, upload-time = "2026-06-17T12:28:25.981Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/bb/49/caeaed2f477e8024b9ad882d6d8e609e9e886508e2692b27acc42872b2fa/gladiaio_sdk-1.0.2-py3-none-any.whl", hash = "sha256:3fba052b714c799deb4d02dbf358c9359fd2379f9257e08e4fe8781a3e61d654", size = 47276, upload-time = "2026-04-16T11:42:33.56Z" },
+    { url = "https://files.pythonhosted.org/packages/ba/c9/99f9803ce9ed2e334b3675d96025807efb16f91e0570bf79d89b6e8a24da/gladiaio_sdk-1.0.3-py3-none-any.whl", hash = "sha256:8a8246920e4662dcde798a56f595202cd6d7a2230501f203ffceb72ff6d4100c", size = 49497, upload-time = "2026-06-17T12:28:24.96Z" },
 ]
 
 [[package]]
@@ -159,11 +148,11 @@ wheels = [
 
 [[package]]
 name = "idna"
-version = "3.10"
+version = "3.15"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/f1/70/7703c29685631f5a7590aa73f1f1d3fa9a380e654b86af429e0934a32f7d/idna-3.10.tar.gz", hash = "sha256:12f65c9b470abda6dc35cf8e63cc574b1c52b11df2c86030af0ac09b01b13ea9", size = 190490, upload-time = "2024-09-15T18:07:39.745Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/82/77/7b3966d0b9d1d31a36ddf1746926a11dface89a83409bf1483f0237aa758/idna-3.15.tar.gz", hash = "sha256:ca962446ea538f7092a95e057da437618e886f4d349216d2b1e294abfdb65fdc", size = 199245, upload-time = "2026-05-12T22:45:57.011Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/76/c6/c88e154df9c4e1a2a66ccf0005a88dfb2650c1dffb6f5ce603dfbd452ce3/idna-3.10-py3-none-any.whl", hash = "sha256:946d195a0d259cbba61165e88e65941f16e9b36ea6ddb97f00452bae8b1287d3", size = 70442, upload-time = "2024-09-15T18:07:37.964Z" },
+    { url = "https://files.pythonhosted.org/packages/d2/23/408243171aa9aaba178d3e2559159c24c1171a641aa83b67bdd3394ead8e/idna-3.15-py3-none-any.whl", hash = "sha256:048adeaf8c2d788c40fee287673ccaa74c24ffd8dcf09ffa555a2fbb59f10ac8", size = 72340, upload-time = "2026-05-12T22:45:55.733Z" },
 ]
 
 [[package]]
