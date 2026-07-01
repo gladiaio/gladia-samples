@@ -5,17 +5,17 @@ description = "Samples for Gladia API"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "gladiaio-sdk>=1.0.2",
+    "gladiaio-sdk>=1.0.4",
     "httpx>=0.28.1",
     "pyaudio>=0.2.14",
     "python-dotenv>=1.2.2",
-    "websockets>=15.0.1",
+    "websockets>=16.0",
 ]
 
 [dependency-groups]
 dev = [
-    "pytest>=9.0.3",
-    "ruff>=0.15.15",
+    "pytest>=9.1.1",
+    "ruff>=0.15.20",
 ]
 
 [tool.gladia.scripts]
