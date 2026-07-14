@@ -1,0 +1,17 @@
+# Core dependencies for FTP pull mode transcription server
+requests>=2.31.0           # For Gladia API interactions
+paramiko>=3.0.0            # For SFTP support
+pysftp>=0.2.9             # Alternative SFTP client
+ftputil>=5.0.0            # For FTP support
+
+# Optional dependencies for enhanced functionality
+python-dotenv>=1.0.0      # For loading .env files
+pydantic>=2.0.0           # For configuration validation
+tenacity>=8.2.0           # For retry logic
+loguru>=0.7.0             # For better logging
+
+# Testing dependencies
+pytest>=7.4.0             # Testing framework
+pytest-mock>=3.11.1       # Mock fixtures for pytest
+pytest-cov>=4.1.0         # Coverage reporting
+pytest-asyncio>=0.21.0    # Async test support
