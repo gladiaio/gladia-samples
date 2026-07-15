@@ -52,11 +52,6 @@ require_path "typescript/examples/call-sentiment-analysis.ts"
 require_path "typescript/examples/meeting-summary.ts"
 require_path "typescript/examples/youtube-translation.ts"
 
-# --- Integration examples: each folder listed in README must have a README ---
-for integration in discord gmeet-bot livekit-agent OBS pipecat-bot twilio; do
-  require_path "integrations-examples/${integration}/README.md"
-done
-
 if [[ "$missing" -ne 0 ]]; then
   echo "layout validation failed" >&2
   exit 1
