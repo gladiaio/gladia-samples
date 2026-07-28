@@ -1,0 +1,15 @@
+[project]
+name = "gmeet-bot"
+version = "0.1.0"
+description = "Simple Gladia GMeet bot"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "click==8.4.1",
+    "datetime==6.0",
+    "pathlib==1.0.1",
+    "pyaudio==0.2.14",
+    "selenium==4.44.0",
+    "sounddevice",
+    "opencv-python-headless",
+]
