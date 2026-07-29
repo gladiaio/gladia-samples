@@ -20,7 +20,7 @@ jobs:
     name: Repository layout
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Verify folder structure
         run: bash scripts/validate-sample-layout.sh
 
@@ -28,7 +28,7 @@ jobs:
     name: Python (ruff)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Install PortAudio headers (PyAudio on Linux)
         run: sudo apt-get update && sudo apt-get install -y portaudio19-dev
       - uses: astral-sh/setup-uv@v7
@@ -45,8 +45,8 @@ jobs:
     name: JavaScript (prettier)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: "20"
           cache: npm
@@ -61,8 +61,8 @@ jobs:
     name: TypeScript (prettier + tsc)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: "20"
           cache: npm
