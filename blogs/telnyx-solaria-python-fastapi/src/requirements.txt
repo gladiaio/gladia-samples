@@ -1,0 +1,6 @@
+fastapi==0.108.0
+uvicorn==0.25.0
+websockets==15.0.1
+requests==2.31.0
+python-dotenv==1.0.1
+greenlet==3.2.1
