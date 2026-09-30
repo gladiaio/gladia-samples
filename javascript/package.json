@@ -4,12 +4,12 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
-    "@gladiaio/sdk": "^2.0.0",
+    "@gladiaio/sdk": "^2.1.0",
     "axios": "^1.20.0",
-    "dotenv": "^18.0.1",
+    "dotenv": "^18.0.4",
     "form-data": "^4.0.6",
     "node-mic": "^1.0.1",
-    "ws": "^8.21.3"
+    "ws": "^8.22.0"
   },
   "scripts": {
     "format:check": "prettier --check \"**/*.js\"",
@@ -26,7 +26,7 @@
     "node": ">=20"
   },
   "devDependencies": {
-    "prettier": "^3.9.8"
+    "prettier": "^3.9.9"
   },
   "overrides": {
     "brace-expansion": {
