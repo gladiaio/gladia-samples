@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ncco>
+  <websocket>
+    <uri>wss://jl.mydomain.com/media</uri>
+    <contentType>audio/l16;rate=8000</contentType>
+  </websocket>
+  <connect>
+    <endpoint>
+      <type>phone</type>
+      <number>14155551234</number>
+    </endpoint>
+  </connect>
+</ncco>
