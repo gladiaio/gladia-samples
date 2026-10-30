@@ -6,11 +6,7 @@ from pipecat.pipeline.pipeline import Pipeline
 from pipecat.pipeline.runner import PipelineRunner
 from pipecat.pipeline.task import PipelineParams, PipelineTask
 from pipecat.processors.frame_processor import FrameDirection, FrameProcessor
-from pipecat.processors.frameworks.rtvi import (
-    RTVIConfig,
-    RTVIObserver,
-    RTVIProcessor,
-)
+from pipecat.processors.frameworks.rtvi import RTVIObserver, RTVIProcessor
 from pipecat.runner.types import RunnerArguments
 from pipecat.runner.utils import create_transport
 from pipecat.services.gladia.config import GladiaInputParams, MessagesConfig
@@ -50,7 +46,7 @@ async def run_bot(transport: BaseTransport, runner_args: RunnerArguments):
             "GLADIA_API_KEY is not set. Please create a .env from .env.example and set it, or export it in your shell."
         )
 
-    rtvi = RTVIProcessor(config=RTVIConfig(config=[]))
+    rtvi = RTVIProcessor()
 
     stt = GladiaSTTService(
         api_key=api_key,
@@ -76,7 +72,6 @@ async def run_bot(transport: BaseTransport, runner_args: RunnerArguments):
     task = PipelineTask(
         pipeline,
         params=PipelineParams(
-            allow_interruptions=True,
             enable_metrics=True,
             enable_usage_metrics=True,
         ),
