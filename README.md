@@ -1,6 +1,12 @@
 # Gladia sample repository
 
-Sample code for the [Gladia speech-to-text API](https://docs.gladia.io): [pre-recorded (async) transcription](https://www.gladia.io/product/speech-to-text-api/async), [real-time transcription](https://www.gladia.io/product/speech-to-text-api/real-time) and [audio intelligence](https://www.gladia.io/product/audio-intelligence). See [pricing](https://www.gladia.io/pricing) for plans and limits.
+Sample code for the [Gladia speech-to-text API](https://docs.gladia.io):
+
+- [pre-recorded (async) transcription](https://www.gladia.io/product/speech-to-text-api/async)
+- [real-time transcription](https://www.gladia.io/product/speech-to-text-api/real-time)
+- [audio intelligence](https://www.gladia.io/product/audio-intelligence)
+
+See [pricing](https://www.gladia.io/pricing) for plans and limits.
 
 ## Layout inside each language folder
 
