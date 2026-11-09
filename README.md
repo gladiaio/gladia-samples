@@ -1,6 +1,12 @@
 # Gladia sample repository
 
-Sample code for the [Gladia API](https://docs.gladia.io).
+Sample code for the [Gladia speech-to-text API](https://docs.gladia.io):
+
+- [pre-recorded (async) transcription](https://www.gladia.io/product/speech-to-text-api/async)
+- [real-time transcription](https://www.gladia.io/product/speech-to-text-api/real-time)
+- [audio intelligence](https://www.gladia.io/product/audio-intelligence)
+
+See [pricing](https://www.gladia.io/pricing) for plans and limits.
 
 ## Layout inside each language folder
 
@@ -21,13 +27,26 @@ language/                          <-- python | javascript | typescript
 
 ## Language samples
 
-|                  |                Python                |                  TypeScript                  |                  JavaScript                  |
-| :--------------- | :----------------------------------: | :------------------------------------------: | :------------------------------------------: |
-| **Pre-recorded** |                  ✅                  |                      ✅                      |                      ✅                      |
-| **Live**         |                  ✅                  |                      ✅                      |                      ✅                      |
-| **README**       | [python/README.md](python/README.md) | [typescript/README.md](typescript/README.md) | [javascript/README.md](javascript/README.md) |
+|                                                                            |                Python                |                  TypeScript                  |                  JavaScript                  |
+| :------------------------------------------------------------------------- | :----------------------------------: | :------------------------------------------: | :------------------------------------------: |
+| **[Pre-recorded](https://www.gladia.io/product/speech-to-text-api/async)** |                  ✅                  |                      ✅                      |                      ✅                      |
+| **[Live](https://www.gladia.io/product/speech-to-text-api/real-time)**     |                  ✅                  |                      ✅                      |                      ✅                      |
+| **README**                                                                 | [python/README.md](python/README.md) | [typescript/README.md](typescript/README.md) | [javascript/README.md](javascript/README.md) |
+
+## Applied examples
+
+The `examples/` folder in each language shows [audio intelligence](https://www.gladia.io/product/audio-intelligence) features on top of transcription:
+
+| Example                 | Feature                                  |
+| :---------------------- | :--------------------------------------- |
+| anonymized-call         | PII redaction                            |
+| call-sentiment-analysis | Sentiment analysis + speaker diarization |
+| meeting-summary         | Summarization                            |
+| youtube-translation     | Translation                              |
 
 ## Integration examples
+
+These integrations stream audio to Gladia [real-time transcription](https://www.gladia.io/product/speech-to-text-api/real-time) to power voice agents and meeting bots.
 
 | Integration     | README                                                                                         |
 | :-------------- | :--------------------------------------------------------------------------------------------- |
